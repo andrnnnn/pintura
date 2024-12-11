@@ -26,6 +26,7 @@ CREATE TABLE users (
     name varchar(255) NOT NULL,
     email varchar(255) NOT NULL,
     password varchar(255) NOT NULL, -- Password terenkripsi
+    credits INTEGER DEFAULT 95,
     role_id int DEFAULT NULL, -- Mengacu ke tabel userroles
     email_verified enum('0', '1') DEFAULT '0', -- Status verifikasi email
     email_verification_token varchar(6) DEFAULT NULL, -- Token untuk verifikasi email
@@ -87,6 +88,7 @@ CREATE TABLE courses (
     category_id int DEFAULT NULL, -- Mengacu ke kategori
     rating float DEFAULT '0', -- Rating kursus
     price decimal(10, 2) NOT NULL, -- Harga kursus
+    credits INTEGER NOT NULL DEFAULT 5,
     image_url VARCHAR(255) DEFAULT NULL, -- URL gambar kursus
     institution varchar(100) DEFAULT NULL, -- Institusi penyelenggara
     is_trending enum('0', '1') DEFAULT '0', -- Apakah kursus trending
@@ -222,6 +224,7 @@ CREATE TABLE enrollments (
     completion_date datetime DEFAULT NULL, -- Tanggal penyelesaian
     enrolled_at datetime DEFAULT CURRENT_TIMESTAMP,
     PRIMARY KEY (enrollment_id),
+    UNIQUE KEY unique_enrollment (student_id, course_id),
     FOREIGN KEY (student_id) REFERENCES users (user_id),
     FOREIGN KEY (course_id) REFERENCES courses (course_id)
 );
