@@ -5,18 +5,21 @@ module.exports = {
   async up (queryInterface, Sequelize) {
     await queryInterface.bulkInsert('enrollments', [
       {
+        enrollment_id: 1,
         student_id: 4,
         course_id: 1,
         progress: 75.5,
         enrolled_at: new Date('2024-01-10 10:00:00')
       },
       {
+        enrollment_id: 2,
         student_id: 5,
         course_id: 4,
         progress: 45.0,
         enrolled_at: new Date('2024-01-12 15:00:00')
       },
       {
+        enrollment_id: 3,
         student_id: 4,
         course_id: 3,
         progress: 100.0,
@@ -24,6 +27,7 @@ module.exports = {
         enrolled_at: new Date('2024-01-05 09:00:00')
       },
       {
+        enrollment_id: 4,
         student_id: 5,
         course_id: 1,
         progress: 60.0,

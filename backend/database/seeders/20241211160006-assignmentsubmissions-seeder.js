@@ -5,6 +5,7 @@ module.exports = {
   async up (queryInterface, Sequelize) {
     await queryInterface.bulkInsert('assignmentsubmissions', [
       {
+        submission_id: 1,
         assignment_id: 1,
         student_id: 4,
         submission_content: 'https://github.com/ahmad/portfolio-website\n\nWebsite portfolio sudah selesai dibuat dengan fitur:\n- Responsive design\n- Dark/Light mode\n- Animasi smooth scroll\n- Contact form dengan validasi',
@@ -15,6 +16,7 @@ module.exports = {
         graded_at: new Date('2024-01-19 10:00:00')
       },
       {
+        submission_id: 2,
         assignment_id: 1,
         student_id: 5,
         submission_content: 'https://github.com/maya/my-portfolio\n\nPortfolio website features:\n- Minimalist design\n- CSS Grid layout\n- Portfolio gallery\n- Interactive elements',

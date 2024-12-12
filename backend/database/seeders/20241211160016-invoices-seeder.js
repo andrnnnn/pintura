@@ -5,6 +5,7 @@ module.exports = {
   async up (queryInterface, Sequelize) {
     await queryInterface.bulkInsert('invoices', [
       {
+        invoice_id: 1,
         order_id: 1,
         invoice_number: 'INV/2024/01/001',
         subtotal: 2500000.00,
@@ -14,6 +15,7 @@ module.exports = {
         created_at: new Date('2024-01-10 09:15:00')
       },
       {
+        invoice_id: 2,
         order_id: 2,
         invoice_number: 'INV/2024/01/002',
         subtotal: 2200000.00,
@@ -23,6 +25,7 @@ module.exports = {
         created_at: new Date('2024-01-12 14:15:00')
       },
       {
+        invoice_id: 3,
         order_id: 3,
         invoice_number: 'INV/2024/01/003',
         subtotal: 3000000.00,

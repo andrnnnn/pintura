@@ -5,8 +5,9 @@ module.exports = {
   async up (queryInterface, Sequelize) {
     await queryInterface.bulkInsert('counselingsessions', [
       {
-        counselor_id: 6, // Dr. Sarah Konselor
-        student_id: 4, // Ahmad Student
+        session_id: 1,
+        counselor_id: 6,
+        student_id: 4,
         session_date: new Date('2024-01-25 13:00:00'),
         status: 'scheduled',
         notes: 'Konsultasi mengenai perencanaan karir di bidang web development',
@@ -14,8 +15,9 @@ module.exports = {
         updated_at: new Date()
       },
       {
+        session_id: 2,
         counselor_id: 6,
-        student_id: 5, // Maya Student
+        student_id: 5,
         session_date: new Date('2024-01-15 14:00:00'),
         status: 'completed',
         notes: 'Diskusi tentang pengembangan skill UI/UX dan portfolio building',
@@ -23,6 +25,7 @@ module.exports = {
         updated_at: new Date()
       },
       {
+        session_id: 3,
         counselor_id: 6,
         student_id: 4,
         session_date: new Date('2024-01-10 11:00:00'),
@@ -32,6 +35,7 @@ module.exports = {
         updated_at: new Date()
       },
       {
+        session_id: 4,
         counselor_id: 6,
         student_id: 5,
         session_date: new Date('2024-01-28 15:30:00'),
@@ -41,6 +45,7 @@ module.exports = {
         updated_at: new Date()
       },
       {
+        session_id: 5,
         counselor_id: 6,
         student_id: 4,
         session_date: new Date('2024-01-05 10:00:00'),

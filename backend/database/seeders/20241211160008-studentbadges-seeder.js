@@ -5,26 +5,31 @@ module.exports = {
   async up (queryInterface, Sequelize) {
     await queryInterface.bulkInsert('studentbadges', [
       {
+        student_badge_id: 1,
         student_id: 4,
         badge_id: 1,
         earned_at: new Date('2024-01-10 15:30:00')
       },
       {
+        student_badge_id: 2,
         student_id: 4,
         badge_id: 2,
         earned_at: new Date('2024-01-15 18:45:00')
       },
       {
+        student_badge_id: 3,
         student_id: 5,
         badge_id: 1,
         earned_at: new Date('2024-01-12 14:20:00')
       },
       {
+        student_badge_id: 4,
         student_id: 5,
         badge_id: 4,
         earned_at: new Date('2024-01-18 09:15:00')
       },
       {
+        student_badge_id: 5,
         student_id: 4,
         badge_id: 5,
         earned_at: new Date('2024-01-20 16:00:00')
