@@ -1,8 +1,11 @@
 CREATE DATABASE IF NOT EXISTS pintura;
 
 USE pintura;
+
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
+
 START TRANSACTION;
+
 SET time_zone = "+00:00";
 
 -- Tabel untuk menyimpan peran pengguna (admin, instructor, dll)
@@ -285,6 +288,7 @@ CREATE TABLE invoices (
 CREATE TABLE materials (
     material_id int NOT NULL AUTO_INCREMENT,
     course_id int DEFAULT NULL, -- Mengacu ke kursus
+    title varchar(255) NOT NULL,
     type enum('video', 'text', 'quiz') NOT NULL, -- Jenis materi
     content text, -- Konten materi
     created_at datetime DEFAULT CURRENT_TIMESTAMP,
@@ -360,52 +364,54 @@ CREATE TABLE refunds (
 );
 
 CREATE TABLE `stripe_transactions` (
-  id int NOT NULL,
-  user_id int NOT NULL,
-  name varchar(255) DEFAULT NULL,
-  phone varchar(255) DEFAULT NULL,
-  session_id varchar(255) NOT NULL,
-  amount int NOT NULL,
-  quantity int DEFAULT NULL,
-  status varchar(255) NOT NULL,
-  created_at datetime DEFAULT CURRENT_TIMESTAMP,
-  updated_at datetime DEFAULT CURRENT_TIMESTAMP,
-  deleted_at datetime DEFAULT NULL,
-  PRIMARY KEY (id),
-  FOREIGN KEY (user_id) REFERENCES users (user_id)
+    id int NOT NULL,
+    user_id int NOT NULL,
+    name varchar(255) DEFAULT NULL,
+    phone varchar(255) DEFAULT NULL,
+    session_id varchar(255) NOT NULL,
+    amount int NOT NULL,
+    quantity int DEFAULT NULL,
+    status varchar(255) NOT NULL,
+    created_at datetime DEFAULT CURRENT_TIMESTAMP,
+    updated_at datetime DEFAULT CURRENT_TIMESTAMP,
+    deleted_at datetime DEFAULT NULL,
+    PRIMARY KEY (id),
+    FOREIGN KEY (user_id) REFERENCES users (user_id)
 );
 
-
 CREATE TABLE videocontents (
-  id INT PRIMARY KEY,
-  title VARCHAR(255) NOT NULL,
-  description TEXT NOT NULL,
-  url VARCHAR(255) NOT NULL,
-  tags JSON NOT NULL,
-  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-  updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    title VARCHAR(255) NOT NULL,
+    description TEXT NOT NULL,
+    url VARCHAR(255) NOT NULL,
+    tags JSON NOT NULL,
+    thumbnail_url VARCHAR(255) NULL,
+    date DATETIME NULL,
+    duration VARCHAR(255) NOT NULL,
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+    updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 );
 
 CREATE TABLE articles (
-  id INT PRIMARY KEY,
-  title VARCHAR(255) NOT NULL,
-  author_name VARCHAR(255) NOT NULL,
-  author_image_url VARCHAR(255) NOT NULL,
-  date TIMESTAMP NOT NULL,
-  category VARCHAR(255) NOT NULL,
-  description TEXT NOT NULL,
-  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-  updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    id INT PRIMARY KEY,
+    title VARCHAR(255) NOT NULL,
+    author_name VARCHAR(255) NOT NULL,
+    author_image_url VARCHAR(255) NOT NULL,
+    date TIMESTAMP NOT NULL,
+    category VARCHAR(255) NOT NULL,
+    description TEXT NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
 CREATE TABLE article_authors (
-  id INT PRIMARY KEY,
-  author_name VARCHAR(255) NOT NULL,
-  author_image_url VARCHAR(255) NOT NULL,
-  title VARCHAR(255) NOT NULL,
-  article_id INT NOT NULL,
-  description_new TEXT NOT NULL,
-  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-  updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-  FOREIGN KEY (article_id) REFERENCES articles(id) ON DELETE CASCADE
+    id INT PRIMARY KEY,
+    author_name VARCHAR(255) NOT NULL,
+    author_image_url VARCHAR(255) NOT NULL,
+    title VARCHAR(255) NOT NULL,
+    article_id INT NOT NULL,
+    description_new TEXT NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (article_id) REFERENCES articles (id) ON DELETE CASCADE
 );
