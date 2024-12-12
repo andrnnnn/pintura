@@ -7,6 +7,7 @@ module.exports = {
       id: {
         type: Sequelize.INTEGER,
         primaryKey: true,
+        autoIncrement: true,
         allowNull: false
       },
       title: {
@@ -25,12 +26,24 @@ module.exports = {
         type: Sequelize.JSON,
         allowNull: false
       },
+      thumbnail_url: {
+        type: Sequelize.STRING(255),
+        allowNull: true
+      },
+      date: {
+        type: Sequelize.DATETIME,
+        allowNull: true
+      },
+      duration: {
+        type: Sequelize.STRING(255),
+        allowNull: false
+      },
       created_at: {
-        type: Sequelize.DATE,
+        type: Sequelize.DATETIME,
         defaultValue: Sequelize.literal('CURRENT_TIMESTAMP')
       },
       updated_at: {
-        type: Sequelize.DATE,
+        type: Sequelize.DATETIME,
         defaultValue: Sequelize.literal('CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP')
       }
     });

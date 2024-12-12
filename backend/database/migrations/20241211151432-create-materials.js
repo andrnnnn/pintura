@@ -18,6 +18,10 @@ module.exports = {
         },
         allowNull: true
       },
+      title: {
+        type: Sequelize.STRING(255),
+        allowNull: false
+      },
       type: {
         type: Sequelize.ENUM('video', 'text', 'quiz'),
         allowNull: false
