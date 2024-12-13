@@ -56,6 +56,7 @@ export default {
 		},
 	  },
 	},
-import plugin from 'tailwindcss/plugin';
+		plugins: [require("tailwindcss-animate")],
+
   };
   
