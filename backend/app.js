@@ -10,9 +10,12 @@ const securityMiddleware = require('./middleware/security');
 const authenticateToken = require('./middleware/tokenAuthentication');
 const validateHostMiddleware = require('./middleware/validateHost');
 
-
 const app = express(); // Membuat aplikasi Express
 
+// API endpoint umum
+app.get('/api/hello', (req, res) => {
+  res.json({ message: 'Hello from Secure Express.js!' });
+});
 
 // Use middleware
 app.use(corsMiddleware);
@@ -21,12 +24,8 @@ app.use(securityMiddleware);
 app.use(validateHostMiddleware);
 app.use(headersMiddleware);
 
-
 // Middleware untuk parsing JSON
 app.use(express.json());
-
-
-
 
 // Middleware to handle third-party cookies
 app.use((req, res, next) => {
@@ -47,20 +46,11 @@ app.use((req, res, next) => {
   next();
 });
 
-
-
-
 // Nonaktifkan header X-Powered-By untuk menyembunyikan framework
 app.disable('x-powered-by');
 
-
 // Middleware untuk melayani file statis dari folder 'dist'
 app.use(express.static(path.join(__dirname, 'dist')));
-
-// API endpoint umum
-app.get('/api/hello', (req, res) => {
-  res.json({ message: 'Hello from Secure Express.js!' });
-});
 
 // API endpoint yang membutuhkan autentikasi
 app.get('/api/secure-data', authenticateToken, (req, res) => {
