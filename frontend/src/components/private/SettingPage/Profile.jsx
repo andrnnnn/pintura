@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useEffect, useState } from "react";
 import LayoutWithSidebar from "./LayoutWithSidebar";
 
 const Profile = () => {
@@ -23,7 +23,7 @@ const Profile = () => {
       try {
         const token = localStorage.getItem("token"); // Ambil token dari localStorage
         const response = await fetch(
-          "https://localhost:5000/api/auth/profile",
+          "/api/auth/profile",
           {
             method: "GET",
             headers: {
@@ -58,7 +58,7 @@ const Profile = () => {
     e.preventDefault();
     try {
       const token = localStorage.getItem("token");
-      const response = await fetch("https://localhost:5000/api/auth/profile", {
+      const response = await fetch("/api/auth/profile", {
         method: "PUT", // Menggunakan PUT untuk memperbarui data
         headers: {
           Authorization: `Bearer ${token}`,
