@@ -1,5 +1,9 @@
 /** @type {import('tailwindcss').Config} */
+import dotenv from "dotenv";
 import tailwindcssAnimate from "tailwindcss-animate";
+
+// Load environment variables
+dotenv.config();
 
 export default {
   darkMode: ["class"],
