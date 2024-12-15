@@ -33,7 +33,7 @@ const CourseCard = ({ course }) => {
         </div>
         <div className="flex items-center mt-2">
           <img
-            src={course.institutionLogo || "https://placehold.co/20x20?text=Logo"}
+            src={course.image_url || "https://placehold.co/20x20?text=Logo"}
             alt={course.institution || "Institution"}
             className="w-5 h-5 mr-2"
           />
