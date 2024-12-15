@@ -52,7 +52,7 @@ const Navbar = () => {
     const fetchProfile = async () => {
       try {
         const token = localStorage.getItem("token");
-        const response = await fetch("https://localhost:5000/api/auth/profile", {
+        const response = await fetch("/api/auth/profile", {
           method: "GET",
           headers: {
             Authorization: `Bearer ${token}`,

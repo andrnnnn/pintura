@@ -21,7 +21,7 @@ const InProgress = () => {
 
       try {
         const response = await fetch(
-          `https://localhost:5000/api/auth/mycourses`,
+          `/api/auth/mycourses`,
           {
             method: "GET",
             headers: {
