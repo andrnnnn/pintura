@@ -8,7 +8,7 @@ SET time_zone = "+00:00";
 -- Tabel untuk menyimpan peran pengguna (admin, instructor, dll)
 CREATE TABLE userroles (
     role_id int NOT NULL AUTO_INCREMENT,
-    role_name enum(
+    role_name enum( 
         'admin', -- Administrator sistem
         'instructor', -- Pengajar/guru
         'student', -- Pelajar/siswa
@@ -62,6 +62,7 @@ CREATE TABLE userprofiles (
     facebook_url VARCHAR(255) DEFAULT NULL, -- URL Facebook
     line_url VARCHAR(255) DEFAULT NULL, -- URL Line
     twitter_url VARCHAR(255) DEFAULT NULL, -- URL Twitter
+    credit int DEFAULT 100, -- Kredit untuk enroll courses
     created_at datetime DEFAULT CURRENT_TIMESTAMP,
     updated_at datetime DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     PRIMARY KEY (profile_id),
@@ -278,19 +279,19 @@ CREATE TABLE invoices (
     FOREIGN KEY (order_id) REFERENCES courseorders (order_id)
 );
 
--- Tabel untuk materi pembelajaran
-CREATE TABLE materials (
-    material_id int NOT NULL AUTO_INCREMENT,
-    course_id int DEFAULT NULL, -- Mengacu ke kursus
-    title varchar(255) NOT NULL, -- Judul materi
-    type enum('video', 'text', 'quiz') NOT NULL, -- Jenis materi
-    content text, -- Konten materi
-    created_at datetime DEFAULT CURRENT_TIMESTAMP,
-    updated_at datetime DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-    deleted_at datetime DEFAULT NULL,
-    PRIMARY KEY (material_id),
-    FOREIGN KEY (course_id) REFERENCES courses (course_id)
-);
+    -- Tabel untuk materi pembelajaran
+    CREATE TABLE materials (
+        material_id int NOT NULL AUTO_INCREMENT,
+        course_id int DEFAULT NULL, -- Mengacu ke kursus
+        title varchar(255) NOT NULL, -- Judul materi
+        type enum('video', 'text', 'quiz') NOT NULL, -- Jenis materi
+        content text, -- Konten materi
+        created_at datetime DEFAULT CURRENT_TIMESTAMP,
+        updated_at datetime DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+        deleted_at datetime DEFAULT NULL,
+        PRIMARY KEY (material_id),
+        FOREIGN KEY (course_id) REFERENCES courses (course_id)
+    );
 
 -- Tabel untuk mentoring
 CREATE TABLE mentorships (
