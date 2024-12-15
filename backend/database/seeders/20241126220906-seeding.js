@@ -447,7 +447,7 @@ module.exports = {
         course_id: 1,
         title: 'Course Syllabus',
         type: 'video',
-        content: 'https://example.com/videos/introduction.mp4',
+        content: 'https://youtu.be/d6xiqfpXAU8?si=HNXHKRfvqwxxAB42',
         created_at: new Date('2024-11-01T08:00:00Z'),
         updated_at: new Date('2024-11-01T08:00:00Z'),
         deleted_at: null,
@@ -875,7 +875,7 @@ module.exports = {
       deleted_at: null,
     }
   ]);
-  await queryInterface.bulkInsert('videocontents', [
+  await queryInterface.bulkInsert('VideoContents', [
     {
       id: 1,
       title: "Crafting a Resume That Stands Out",
@@ -950,7 +950,7 @@ module.exports = {
   }
 ]);
 
-await queryInterface.bulkInsert('articles', [
+await queryInterface.bulkInsert('Articles', [
   { 
     id: 1,
     title: "How to Create a Winning Resume", 
