@@ -48,25 +48,27 @@ const TrustedSection = () => {
   ];
 
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen bg-white px-8">
-      <h2 className="text-blue-700 font-bold text-lg text-center mb-8 pb-4">
-        Trusted by leading educational institutions and companies
-      </h2>
-      <div className="w-full max-w-6xl"> {/* Membatasi lebar slider */}
-        <Slider {...settings}>
-          {logos.map((logo, index) => (
-            <div
-              key={index}
-              className="flex justify-center items-center pb-10 h-20 w-20" // Set ukuran seragam
-            >
-              <img
-                src={logo.src}
-                alt={logo.alt}
-                className="h-full w-full object-contain" // Menjaga proporsi logo
-              />
-            </div>
-          ))}
-        </Slider>
+    <div className="bg-white py-16 font-poppins">
+      <div className="container mx-auto px-6 lg:px-16">
+        <h2 className="text-blue-800 font-bold text-2xl text-center mb-8">
+          Trusted by leading educational institutions and companies
+        </h2>
+        <div className="w-full max-w-6xl mx-auto mb-8"> {/* Membatasi lebar slider */}
+          <Slider {...settings}>
+            {logos.map((logo, index) => (
+              <div
+                key={index}
+                className="flex justify-center items-center py-6" // Set ukuran seragam
+              >
+                <img
+                  src={logo.src}
+                  alt={logo.alt}
+                  className="h-16 w-16 object-contain" // Menjaga proporsi logo
+                />
+              </div>
+            ))}
+          </Slider>
+        </div>
       </div>
     </div>
   );

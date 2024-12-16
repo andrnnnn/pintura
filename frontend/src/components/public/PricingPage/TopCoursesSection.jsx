@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 
 const courses = [
   {
@@ -29,31 +30,40 @@ const courses = [
 
 const TopCoursesSection = () => {
   return (
-    <div className="container mx-auto px-4 py-16">
-      <h1 className="text-4xl font-bold text-center text-blue-800 mb-4">
-        Top Courses to Elevate Your Expertise
-      </h1>
-      <p className="text-center text-gray-600 mb-12">
-        Discover targeted resources to help you achieve your goals in various areas:
-      </p>
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-        {courses.map((course) => (
-          <div key={course.id} className="bg-white shadow-md rounded-lg p-6">
-            <h2 className="text-sm font-bold text-blue-600 mb-2">{course.category}</h2>
-            <h3 className="text-xl font-bold text-blue-800 mb-4">{course.title}</h3>
-            <p className="text-gray-600 mb-6">{course.description}</p>
-            <div className="flex items-center justify-between">
-              <span className="text-2xl font-bold text-gray-400">
-                {course.id < 10 ? `0${course.id}` : course.id}
-              </span>
-              <button className="bg-blue-600 text-white rounded-full p-2">
-                <i className="fas fa-arrow-right"></i>
-              </button>
-            </div>
-          </div>
-        ))}
+    <section className="bg-white py-16">
+      <div className="container mx-auto px-4">
+        {/* Heading Section */}
+        <h1 className="text-4xl font-bold text-center text-blue-800 mb-4">
+          Top Courses to Elevate Your Expertise
+        </h1>
+        <p className="text-center text-gray-600 mb-12">
+          Discover targeted resources to help you achieve your goals in various areas:
+        </p>
+
+        {/* Courses Grid */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+          {courses.map((course) => (
+            <Link
+              to="/login"
+              key={course.id}
+              className="bg-white shadow-md rounded-lg p-6 transition-transform transform hover:scale-105 block"
+            >
+              <h2 className="text-sm font-bold text-blue-600 mb-2">{course.category}</h2>
+              <h3 className="text-xl font-bold text-blue-800 mb-4">{course.title}</h3>
+              <p className="text-gray-600 mb-6">{course.description}</p>
+              <div className="flex items-center justify-between">
+                <span className="text-2xl font-bold text-gray-400">
+                  {course.id < 10 ? `0${course.id}` : course.id}
+                </span>
+                <button className="bg-blue-600 text-white rounded-full p-3 hover:bg-blue-700">
+                  <i className="fas fa-arrow-right"></i>
+                </button>
+              </div>
+            </Link>
+          ))}
+        </div>
       </div>
-    </div>
+    </section>
   );
 };
 
