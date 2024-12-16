@@ -280,18 +280,23 @@ CREATE TABLE invoices (
 );
 
     -- Tabel untuk materi pembelajaran
-    CREATE TABLE materials (
-        material_id int NOT NULL AUTO_INCREMENT,
-        course_id int DEFAULT NULL, -- Mengacu ke kursus
-        title varchar(255) NOT NULL, -- Judul materi
-        type enum('video', 'text', 'quiz') NOT NULL, -- Jenis materi
-        content text, -- Konten materi
-        created_at datetime DEFAULT CURRENT_TIMESTAMP,
-        updated_at datetime DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-        deleted_at datetime DEFAULT NULL,
-        PRIMARY KEY (material_id),
-        FOREIGN KEY (course_id) REFERENCES courses (course_id)
-    );
+CREATE TABLE materials (
+    material_id INT NOT NULL AUTO_INCREMENT,
+    course_id INT DEFAULT NULL, -- Mengacu ke kursus
+    parent_material_id INT DEFAULT NULL, -- Mengacu ke materi induk untuk mendukung hierarki
+    title VARCHAR(255) NOT NULL, -- Judul materi
+    type ENUM('video', 'text', 'quiz','pdf') NOT NULL, -- Jenis materi
+    content TEXT, -- Konten materi
+    position INT DEFAULT 0, -- Urutan tampil materi
+    status ENUM('done', 'not_started') DEFAULT 'not_started', -- Status progres materi
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+    updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    deleted_at DATETIME DEFAULT NULL, -- Soft delete
+    PRIMARY KEY (material_id),
+    FOREIGN KEY (course_id) REFERENCES courses (course_id),
+    FOREIGN KEY (parent_material_id) REFERENCES materials (material_id) ON DELETE SET NULL
+);
+
 
 -- Tabel untuk mentoring
 CREATE TABLE mentorships (
