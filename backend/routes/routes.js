@@ -12,7 +12,7 @@ const careerController = require('../Controllers/careerController');
 const videocareerController = require('../Controllers/videocareerController'); 
 const { authenticate,  completeProfile, getProfile, getSocialMedia, completeSocialMedia, updateUserProfile } = require('../Controllers/userprofileController');
 const articledetailController = require("../Controllers/articledetailController");
-const { getMaterials, getMaterialById } = require('../Controllers/materialController');
+const { getMaterialsHierarchy, getMaterials, getMaterialById } = require('../Controllers/materialController');
 const router = express.Router();
 
 router.post('/register', (req, res, next) => {
@@ -57,6 +57,9 @@ router.get('/courses' , getCategoryName);
 
 router.get('/materials', getMaterials);
 router.get('/materials/:id', getMaterialById);
+
+router.get('/materials/hierarchy/:course_id', getMaterialsHierarchy);
+
 // router.post('/materials', materialController.createMaterial);
 // router.put('/materials/:id', materialController.updateMaterial);
 // router.delete('/materials/:id', materialController.deleteMaterial);
