@@ -33,17 +33,17 @@ const testimonials = [
 
 function TestimonialCard({ testimonial }) {
   return (
-    <div className="border rounded-lg p-4 shadow-md">
+    <div className="border rounded-lg shadow-md overflow-hidden transform transition-transform hover:scale-105">
       <img
         src={testimonial.image}
         alt={`Photo of ${testimonial.name}`}
-        className="w-full h-48 object-cover rounded-t-lg"
+        className="w-full h-48 object-cover"
       />
       <div className="p-4">
-        <p className="text-gray-700 mb-2">
+        <p className="text-gray-700 mb-4">
           "{testimonial.quote.split(testimonial.highlight)[0]}
-          <span className="font-bold">{testimonial.highlight}</span>
-          {testimonial.quote.split(testimonial.highlight)[1]}"
+          <span className="font-bold text-blue-600">{testimonial.highlight}</span>
+          {testimonial.quote.split(testimonial.highlight)[1]}."
         </p>
         <p className="font-bold text-gray-900">{testimonial.name}</p>
         <p className="text-gray-600">{testimonial.title}</p>
@@ -54,19 +54,21 @@ function TestimonialCard({ testimonial }) {
 
 const Learners = () => {
   return (
-    <div className="max-w-7xl mx-auto p-4">
-      <h1 className="text-3xl font-bold text-blue-700 text-center mb-2">
-        What Our Learners Say
-      </h1>
-      <p className="text-center text-gray-600 mb-8">
-        Read what our learners are saying about their experience with PINTURA:
-      </p>
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-        {testimonials.map((testimonial, index) => (
-          <TestimonialCard key={index} testimonial={testimonial} />
-        ))}
+    <section className="bg-white py-16">
+      <div className="max-w-7xl mx-auto px-4">
+        <h1 className="text-4xl font-bold text-blue-700 text-center mb-4">
+          What Our Learners Say
+        </h1>
+        <p className="text-center text-gray-600 mb-8">
+          Read what our learners are saying about their experience with PINTURA:
+        </p>
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+          {testimonials.map((testimonial, index) => (
+            <TestimonialCard key={index} testimonial={testimonial} />
+          ))}
+        </div>
       </div>
-    </div>
+    </section>
   );
 };
 
