@@ -7,16 +7,16 @@ const courses = [
     description: "Master the basics of data analysis with practical industry application",
     category: "Data & Analytics",
     university: "University of Indonesia",
-    imageUrl: "https://placehold.co/600x400?text=Data+Analysis+Fundamentals",
-    universityLogo: "https://placehold.co/50x50?text=UI",
+    imageUrl: "/courses/recently1.png",
+    universityLogo: "/logo-companies/ui.png",
   },
   {
     title: "Advance React Development",
     description: "The React Framework – created and maintained",
     category: "Web Development",
     university: "Telkom Indonesia",
-    imageUrl: "https://placehold.co/600x400?text=Advance+React+Development",
-    universityLogo: "https://placehold.co/50x50?text=Telkom",
+    imageUrl: "/courses/recently2.png",
+    universityLogo: "/logo-companies/telkomuniv.png",
   },
 ];
 
@@ -41,7 +41,7 @@ const CourseCard = ({ course }) => {
         </div>
         <div className="flex items-center mt-4">
           <img
-            className="w-8 h-8 rounded-full mr-2"
+            className="w-8 h-8 mr-2"
             src={course.universityLogo}
             alt={course.university}
           />

@@ -12,84 +12,84 @@ const StripV1 = () => {
             <img
               src="/logo-companies/telkom.png"
               alt="Telkom Indonesia logo"
-              className="max-w-full h-auto"
+              className="h-16 object-contain"
             />
           </div>
           <div className="flex items-center justify-center p-4 border rounded-lg">
             <img
               src="/logo-companies/microsoft.png"
               alt="Microsoft logo"
-              className="max-w-full h-auto"
+              className="h-16 object-contain"
             />
           </div>
           <div className="flex items-center justify-center p-4 border rounded-lg">
             <img
               src="/logo-companies/ui.png"
               alt="University logo"
-              className="max-w-full h-auto"
+              className="h-16 object-contain"
             />
           </div>
           <div className="flex items-center justify-center p-4 border rounded-lg">
             <img
               src="/logo-companies/google.png"
               alt="Google logo"
-              className="max-w-full h-auto"
+              className="h-16 object-contain"
             />
           </div>
           <div className="flex items-center justify-center p-4 border rounded-lg">
             <img
               src="/logo-companies/ugm.png"
               alt="Institution logo"
-              className="max-w-full h-auto"
+              className="h-16 object-contain"
             />
           </div>
           <div className="flex items-center justify-center p-4 border rounded-lg">
             <img
               src="/logo-companies/unilever.png"
               alt="Unilever logo"
-              className="max-w-full h-auto"
+              className="h-16 object-contain"
             />
           </div>
           <div className="flex items-center justify-center p-4 border rounded-lg">
             <img
               src="/logo-companies/accenture.png"
               alt="Accenture logo"
-              className="max-w-full h-auto"
+              className="h-16 object-contain"
             />
           </div>
           <div className="flex items-center justify-center p-4 border rounded-lg">
             <img
               src="/logo-companies/its.png"
               alt="Institution logo"
-              className="max-w-full h-auto"
+              className="h-16 object-contain"
             />
           </div>
           <div className="flex items-center justify-center p-4 border rounded-lg">
             <img
               src="/logo-companies/gojek.png"
               alt="Gojek logo"
-              className="max-w-full h-auto"
+              className="h-16 object-contain"
             />
           </div>
           <div className="flex items-center justify-center p-4 border rounded-lg">
             <img
               src="/logo-companies/itb.png"
               alt="Institution logo"
-              className="max-w-full h-auto"
+              className="h-16 object-contain"
             />
           </div>
           <div className="flex items-center justify-center p-4 border rounded-lg">
             <img
               src="/logo-companies/tokopedia.png"
               alt="Tokopedia logo"
-              className="max-w-full h-auto"
+              className="h-16 object-contain"
             />
           </div>
           <div className="flex items-center justify-center p-4 border rounded-lg">
             <img
               src="/logo-companies/mandiri.png"
               alt="Mandiri logo"
-              className="max-w-full h-auto"
+              className="h-16 object-contain"
             />
           </div>
         </div>
