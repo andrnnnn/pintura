@@ -1,81 +1,91 @@
-import { useState } from "react";
+import React from 'react';
 
 const MaterialDetail = ({ material }) => {
-  const [error, setError] = useState(null);
+  const { type, content } = material;
 
-  // Konversi Google Drive URL menjadi embed link
-  const getEmbedContent = (content) => {
-    console.log("Original content URL:", content);  // Debugging: Melihat URL asli
-    
-    const driveUrlPattern = /https:\/\/drive.google.com\/file\/d\/([a-zA-Z0-9_-]+)\/view/;
-    const match = content.match(driveUrlPattern);
-    
-    if (match) {
-      const fileId = match[1];
-      const embedUrl = `https://drive.google.com/file/d/${fileId}/preview`;
-      const downloadUrl = `https://drive.google.com/uc?id=${fileId}&export=download`; // URL unduhan
-      console.log("Matched Google Drive URL, embed URL:", embedUrl);  // Debugging: Melihat URL yang diubah
-      return { embedUrl, downloadUrl }; // Mengembalikan kedua URL
-    }
-
-    console.log("No match found, returning content as is:", content);  // Debugging: Jika URL bukan Google Drive
-    return { embedUrl: content, downloadUrl: content }; // Jika bukan link Google Drive, gunakan apa adanya
+  // Fungsi untuk menampilkan video YouTube
+  const renderVideo = (url) => {
+    const videoId = url.split('v=')[1].split('&')[0]; // Mendapatkan video ID dari URL YouTube
+    return (
+      <div className="aspect-w-16 aspect-h-9">
+        <iframe
+        width="100%"
+        height="300%"
+          src={`https://www.youtube.com/embed/${videoId}`}
+          title="YouTube video player"
+          frameBorder="0"
+          allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
+          allowFullScreen
+        ></iframe>
+      </div>
+    );
   };
 
-  const { embedUrl, downloadUrl } = getEmbedContent(material.content);
+  // Fungsi untuk menampilkan PDF
+  const renderPDF = (content) => {
+    // Mengambil ID file dari URL Google Drive
+    const fileId = content.split('/d/')[1].split('/')[0];
+    const driveFileUrl = `https://drive.google.com/file/d/${fileId}/preview`;
+  
+    return (
+      <div className="flex justify-center items-center w-full">
+        <iframe
+          src={driveFileUrl}
+          width="100%"
+          height="600"
+          title="Google Drive PDF Viewer"
+          frameBorder="0"
+        ></iframe>
+      </div>
+    );
+  };
+  
+  // Fungsi untuk menampilkan quiz (sederhana contoh)
+  const renderQuiz = (content) => {
+    return <div>{content}</div>;
+  };
+
+  // Fungsi untuk menampilkan text
+  const renderText = (content) => {
+    return <div>{content}</div>;
+  };
   const handleCommentClick = () => {
     navigate("/dashboard/mycourses/learningsectioncoment");
   };
+  
   return (
-
-    <main className="flex flex-1 p-4 gap-5">
-      <div className="flex flex-col w-full bg-white p-4 rounded-lg shadow mb-4 gap-5">
+<main className="flex flex-1 p-4 gap-5">
+<div className="flex flex-col w-full bg-white p-4 rounded-lg shadow mb-4 gap-5">
         <h2 className="text-2xl font-bold text-gray-800 mb-3 text-center">{material.title}</h2>
 
-        {/* Display Material Content */}
-        <div className="flex flex-col bg-white   p-4 rounded-lg shadow mb-4 gap-5">
-          {error ? (
-            <div className="text-red-500">{error}</div>
-          ) : material.type === "text" && embedUrl ? (
-            // Display PDF menggunakan iframe
-            <div className="h-90 bg-gray-100 rounded-lg overflow-hidden mb-4">
-              <iframe
-                src={embedUrl}
-                width="100%"
-                height="600px"
-                className="rounded-lg border border-gray-300"
-                title="PDF Viewer"
-                onError={() => {
-                  setError("Failed to load PDF.");
-                  console.error("Error loading PDF with URL:", embedUrl);
-                }}
-              />
-              </div>
-          ) : (
-            <div className="text-gray-500">No content available.</div>
-          )}
-        </div>
-        <div className="flex justify-between items-center mt-4">
-            <div className="flex items-center space-x-2">
-              <i className="fas fa-comment" onClick={handleCommentClick}></i>
-              <span>Comment 27</span>
-            </div>
-            <div className="flex items-center space-x-2">
-              <i className="fas fa-download"></i>
-              <span>Downloads 7</span>
-            </div>
-          </div>
+      {/* Render berdasarkan jenis materi */}
+      {type === 'pdf' && renderPDF(content)}
+      {type === 'video' && renderVideo(content)}
+      {type === 'quiz' && renderQuiz(content)}
+      {type === 'text' && renderText(content)}
+    {/* Comment Section - keep this at the bottom */}
+    <div className="flex justify-between items-center mt-auto">
+      <div className="flex items-center space-x-2">
+        <i className="fas fa-comment" onClick={handleCommentClick}></i>
+        <span>Comment 27</span>
       </div>
-              {/* Sidebar: Course Overview */}
-              <aside className="w-1/4 bg-white p-4 rounded-lg shadow">
+      <div className="flex items-center space-x-2">
+        <i className="fas fa-download"></i>
+        <span>Downloads 7</span>
+      </div>
+    </div>
+    </div>
+
+                  {/* Sidebar: Course Overview */}
+                  <aside className="w-1/4 bg-white p-4 rounded-lg shadow">
           <div className="mb-4">
           <button
           onClick={() => window.history.back()}
           className="mt-4 px-4 py-2 bg-blue-600 text-white rounded"
         >
-          Back to Materials
+          Back
         </button>
-
+        
             <div className="text-lg font-semibold mt-3">Overview</div>
             <div className="text-sm text-gray-500">
               Course by Dr. Andi Prasetyo, Ph.D. in collaboration with

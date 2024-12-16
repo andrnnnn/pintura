@@ -76,8 +76,8 @@ module.exports = {
         user_id: 3,
         google_id: null,
         name: "Sarah Student",
-        email: "student@pintura.com",
-        password: "password",
+        email: "yojare3278@pokeline.com",
+        password: "$2b$10$1Vz0oyk3MjyVU9149fBe4.bF21wf8jaAfdQ.C.r/bR7e2C747d37i",
         role_id: 3, // student
         email_verified: "1",
         email_verification_token: null,
@@ -120,6 +120,23 @@ module.exports = {
         updated_at: new Date(),
         deleted_at: null,
       },
+      {
+        user_id: 6,
+        google_id: null,
+        name: "Jane Doe",
+        email: "kotej48737@iminko.com",
+        password: "$2b$10$1Vz0oyk3MjyVU9149fBe4.bF21wf8jaAfdQ.C.r/bR7e2C747d37i",
+        role_id: 3, // student
+        email_verified: "1",
+        email_verification_token: null,
+        email_verification_token_expires: null,
+        reset_password_token: null,
+        reset_password_token_expires: null,
+        created_at: new Date(),
+        updated_at: new Date(),
+        deleted_at: null,
+        
+      }
     ]);
     await queryInterface.bulkInsert("categoriescourses", [
       {
