@@ -33,21 +33,7 @@ module.exports = (sequelize, DataTypes) => {
         allowNull: true,
         defaultValue: null, // Sesuai dengan skema database
       },
-      created_at: {
-        type: DataTypes.DATE,
-        allowNull: true,
-        defaultValue: sequelize.literal('CURRENT_TIMESTAMP'), // Default ke waktu saat ini
-      },
-      updated_at: {
-        type: DataTypes.DATE,
-        allowNull: true,
-        defaultValue: sequelize.literal('CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP'), // Update otomatis
-      },
-      deleted_at: {
-        type: DataTypes.DATE,
-        allowNull: true,
-        defaultValue: null, // Null by default
-      },
+
       email_verification_token: {
         type: DataTypes.STRING(6),
         allowNull: true
@@ -67,6 +53,21 @@ module.exports = (sequelize, DataTypes) => {
       reset_password_token_expires: {
         type: DataTypes.DATE,
         allowNull: true
+      },
+      created_at: {
+        type: DataTypes.DATE,
+        allowNull: true,
+        defaultValue: sequelize.literal('CURRENT_TIMESTAMP'), // Default ke waktu saat ini
+      },
+      updated_at: {
+        type: DataTypes.DATE,
+        allowNull: true,
+        defaultValue: sequelize.literal('CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP'), // Update otomatis
+      },
+      deleted_at: {
+        type: DataTypes.DATE,
+        allowNull: true,
+        defaultValue: null, // Null by default
       }
     },
     {

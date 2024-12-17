@@ -51,9 +51,22 @@ const getProfile = async (req, res) => {
     const userId = req.userId; // ID user dari token
 
     const [profile] = await sequelize.query(
-      `SELECT username, image_url, date_of_birth, gender, phone_number, city, education, company, role, bio 
-       FROM userprofiles 
-       WHERE user_id = :userId`,
+      `SELECT 
+      u.name,
+    up.username, 
+    up.image_url, 
+    up.date_of_birth, 
+    up.gender, 
+    up.phone_number, 
+    up.city, 
+    up.education,   
+    up.company, 
+    up.role, 
+    up.bio, 
+    u.email
+FROM userprofiles up
+JOIN users u ON up.user_id = u.user_id
+WHERE up.user_id = :userId;`,
       {
         replacements: { userId }, // Menggunakan parameter untuk mencegah SQL Injection
         type: sequelize.QueryTypes.SELECT, // Jenis query SELECT
@@ -132,44 +145,130 @@ const getSocialMedia = async (req, res) => {
     res.status(500).json({ message: "Gagal mendapatkan profil.", error });
   }
 };
-const updateUserProfile = async (req, res) => {
+const editProfile = async (req, res) => {
   try {
-    const userId = req.user.id; // ID pengguna dari middleware autentikasi
-    const { username, date_of_birth, ...otherFields } = req.body; // Data dari request body
+    const userId = req.userId; // ID user dari token
+    const {
+      username,
+      image_url,
+      date_of_birth,
+      gender,
+      phone_number,
+      city,
+      education,
+      company,
+      role,
+      bio,
+      name, // Untuk mengupdate nama di tabel 'users'
+      email, // Untuk mengupdate email di tabel 'users'
+    } = req.body; // Data dari request body
 
-    // Validasi data input
-    if (!username || !date_of_birth) {
-      return res.status(400).json({ message: 'Username dan tanggal lahir wajib diisi.' });
+    // Debugging userId dan request body
+    console.log("userId from token:", userId);
+    console.log("Request body:", req.body);
+
+    // Update tabel userprofiles
+    const [updateUserProfile] = await sequelize.query(
+      `UPDATE userprofiles 
+      SET 
+        username = :username,
+        image_url = :image_url,
+        date_of_birth = :date_of_birth,
+        gender = :gender,
+        phone_number = :phone_number,
+        city = :city,
+        education = :education,
+        company = :company,
+        role = :role,
+        bio = :bio
+      WHERE user_id = :userId;`,
+      {
+        replacements: {
+          username,
+          image_url,
+          date_of_birth,
+          gender,
+          phone_number,
+          city,
+          education,
+          company,
+          role,
+          bio,
+          userId,
+        },
+        type: sequelize.QueryTypes.UPDATE,
+      }
+    );
+
+    // Log hasil update userprofiles
+    console.log("Rows affected (userprofiles):", updateUserProfile);
+
+    // Update tabel users
+    const [updateUser] = await sequelize.query(
+      `UPDATE users 
+      SET 
+        name = :name,
+        email = :email
+      WHERE user_id = :userId;`,
+      {
+        replacements: {
+          name,
+          email,
+          userId,
+        },
+        type: sequelize.QueryTypes.UPDATE,
+      }
+    );
+
+    // Log hasil update users
+    console.log("Rows affected (users):", updateUser);
+
+    // Pastikan perubahan berhasil
+    if (updateUserProfile === 0 || updateUser === 0) {
+      return res.status(404).json({ message: "Profil tidak ditemukan atau tidak ada perubahan." });
     }
 
-    // Cari profil berdasarkan userId
-    const profile = await UserProfile.findOne({ userId: userId });
-
-    if (!profile) {
-      return res.status(404).json({ message: 'Profil tidak ditemukan.' });
-    }
-
-    // Perbarui data profil
-    profile.username = username;
-    profile.date_of_birth = date_of_birth;
-
-    // Tambahkan field lainnya jika ada
-    for (const [key, value] of Object.entries(otherFields)) {
-      profile[key] = value;
-    }
-
-    // Simpan perubahan ke database
-    const updatedProfile = await profile.save();
-
-    res.status(200).json({
-      message: 'Profil berhasil diperbarui.',
-      data: updatedProfile,
-    });
+    res.status(200).json({ message: "Profil berhasil diperbarui." });
   } catch (error) {
-    console.error('Error updating profile:', error);
-    res.status(500).json({ message: 'Terjadi kesalahan saat memperbarui profil.' });
+    console.error("Error updating profile:", error.message, error.stack);
+    res.status(500).json({ message: "Gagal memperbarui profil.", error: error.message });
   }
 };
 
+const addProfilePicture = async (req, res) => {
+  try {
+    const userId = req.userId; // ID user dari token
+    const { image_url } = req.body; // URL gambar dari body request
+
+    // Update tabel userprofiles
+    const [updateUserProfile] = await db.sequelize.query(
+      `UPDATE userprofiles 
+      SET 
+        image_url = :image_url
+      WHERE user_id = :userId;`,
+      {
+        replacements: {
+          image_url,
+          userId,
+        },
+        type: db.sequelize.QueryTypes.UPDATE,
+      }
+    );
+
+    // Log hasil update userprofiles
+    console.log("Rows affected (userprofiles):", updateUserProfile);
+
+    // Pastikan perubahan berhasil
+    if (updateUserProfile === 0) {
+      return res.status(404).json({ message: "Profil tidak ditemukan atau tidak ada perubahan." });
+    }
+
+    res.status(200).json({ message: "Foto profil berhasil diperbarui." });
+  } catch (error) {
+    console.error("Error updating profile picture:", error.message, error.stack);
+    res.status(500).json({ message: "Gagal memperbarui foto profil.", error: error.message });
+  }
+}
+
 // Ekspor fungsi agar bisa digunakan di file lain
-module.exports = { completeProfile, authenticate, getProfile, completeSocialMedia, getSocialMedia, updateUserProfile };
+module.exports = { completeProfile, authenticate, getProfile, completeSocialMedia, getSocialMedia, editProfile, addProfilePicture };

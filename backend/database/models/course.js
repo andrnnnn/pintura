@@ -19,12 +19,24 @@ module.exports = (sequelize, DataTypes) => {
       category_id: {
         type: DataTypes.INTEGER,
       },
+      rating: {
+        type: DataTypes.DECIMAL(2, 1),
+        allowNull: false,
+        defaultValue: 0,
+      },  
       price: {
         type: DataTypes.DECIMAL(10, 2),
         allowNull: false,
       },
       image_url: {
         type: DataTypes.STRING,
+      },
+      institution: {
+        type: DataTypes.STRING,
+      },
+      is_trending: {
+        type: DataTypes.BOOLEAN,
+        defaultValue: false,
       },
       created_at: {
         type: DataTypes.DATE,
@@ -46,7 +58,7 @@ module.exports = (sequelize, DataTypes) => {
     },
     {
       tableName: "courses",
-      timestamps: true,
+      timestamps: false,
       paranoid: true,
     }
   );

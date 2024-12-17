@@ -7,12 +7,13 @@ const emailController = require('../Controllers/emailController');
 const upload = require('../middleware/multerConfig');
 const { addCourse } = require('../Controllers/courseController');
 const { getAllStripeTransactions } = require('../Controllers/stripeController');
-const { getMyCourses, getMyCoursesComplete, authenticateToken, getCategoryName } = require('../Controllers/courseController');
+const { getMyCourses, getCompletedCourses, authenticateToken, getCategoryName } = require('../Controllers/courseController');
 const careerController = require('../Controllers/careerController'); 
 const videocareerController = require('../Controllers/videocareerController'); 
-const { authenticate,  completeProfile, getProfile, getSocialMedia, completeSocialMedia, updateUserProfile } = require('../Controllers/userprofileController');
+const { authenticate,  completeProfile, addProfilePicture,getProfile, getSocialMedia, completeSocialMedia, editProfile } = require('../Controllers/userprofileController');
 const articledetailController = require("../Controllers/articledetailController");
 const { getMaterialsHierarchy, getMaterials, getMaterialById } = require('../Controllers/materialController');
+const {getCertificate}  = require('../Controllers/certifiicateController');
 const router = express.Router();
 
 router.post('/register', (req, res, next) => {
@@ -35,11 +36,12 @@ router.get('/courses/trend', getAllCoursesTrend);
 // addCourse
 router.post('/courses', upload.single('image'), addCourse);
 
+router.post('/upload-profile-picture', upload.single('image'), addProfilePicture);
 // Route untuk mendapatkan kursus user
 router.get('/mycourses',authenticateToken, getMyCourses);
 
-// Route untuk mendapatkan kursus user
-router.get('/mycourses/:userId/completed', getMyCoursesComplete);
+// Route untuk mendapatkan kursus user yg sudah selesai
+router.get('/mycourses/completed', authenticateToken, getCompletedCourses);
 
 // Route untuk mendapatkan data user profil
 router.post('/userprofiles', authenticate, completeProfile);
@@ -51,7 +53,7 @@ router.put('/profile/social', authenticate, completeSocialMedia);
 
 router.get('/socialmedia', authenticate, getSocialMedia);
 
-router.put('profile', updateUserProfile);
+router.put('/profiles', authenticateToken, editProfile);
 
 router.get('/courses' , getCategoryName);
 
@@ -59,6 +61,9 @@ router.get('/materials', getMaterials);
 router.get('/materials/:id', getMaterialById);
 
 router.get('/materials/hierarchy/:course_id', getMaterialsHierarchy);
+
+// Rute untuk mengambil data sertifikat
+router.get('/certificate/:enrollmentId', getCertificate);
 
 // router.post('/materials', materialController.createMaterial);
 // router.put('/materials/:id', materialController.updateMaterial);
