@@ -127,7 +127,8 @@ app.use((req, res, next) => {
     res.status(404).json({ message: "Resource not found" });
 });
 
-
+// Membuat server HTTPS dan menyimpannya dalam variabel
+const server = https.createServer(app);
 
 // Middleware to handle OpaqueResponseBlocking errors
 app.use((req, res, next) => {
