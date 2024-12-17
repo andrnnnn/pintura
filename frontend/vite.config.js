@@ -12,7 +12,7 @@ export default defineConfig({
   server: {
     proxy: {
       '/api': {
-        target: 'https://pintura.decadev.tech', // URL backend Express.js
+        target: 'https://pintura.decadev.tech:5000', // URL backend Express.js
         changeOrigin: true,
         secure: false,
       },
