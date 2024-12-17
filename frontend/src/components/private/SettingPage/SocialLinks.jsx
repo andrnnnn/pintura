@@ -17,7 +17,7 @@ const SocialLinks = () => {
   const fetchSocialMediaData = async () => {
     try {
       const token = localStorage.getItem("token");
-      const response = await fetch("https://localhost:5000/api/auth/socialmedia", {
+      const response = await fetch("/api/auth/socialmedia", {
         headers: {
           "Content-Type": "application/json",
           Authorization: `Bearer ${token}`, // Sesuaikan token jika diperlukan
