@@ -45,7 +45,7 @@ const Trending = () => {
   const [courses, setCourses] = useState([]);
 
   useEffect(() => {
-    fetch("https://localhost:5000/api/auth/courses/trend")
+    fetch("/api/auth/courses/trend")
       .then((response) => response.json())
       .then((data) => setCourses(data.courses || []))
       .catch((error) => console.error(error));

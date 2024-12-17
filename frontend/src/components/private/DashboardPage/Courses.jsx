@@ -43,7 +43,7 @@ const Courses = () => {
   const [courses, setCourses] = useState([]);
 
   useEffect(() => {
-    fetch('https://localhost:5000/api/auth/courses') // Sesuaikan URL backend Anda
+    fetch('/api/auth/courses') // Sesuaikan URL backend Anda
       .then((response) => response.json())
       .then((data) => setCourses(data.courses || [])) // Pastikan `data.courses` sesuai struktur API
       .catch((error) => console.error(error));

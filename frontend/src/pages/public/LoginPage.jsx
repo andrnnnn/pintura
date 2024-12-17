@@ -38,7 +38,7 @@ const LoginPage = () => {
 
     try {
       console.log('Sending login request to server...');
-      const response = await fetch('https://localhost:5000/api/auth/login', {
+      const response = await fetch('/api/auth/login', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -55,7 +55,7 @@ const LoginPage = () => {
       } else {
         if (data.needsVerification) {
           localStorage.setItem('verificationEmail', email);
-          await fetch('https://localhost:5000/api/auth/send-verification', {
+          await fetch('/api/auth/send-verification', {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json',

@@ -36,7 +36,7 @@ const RegisterPage = () => {
     setLoading(true);
 
     try {
-      const response = await fetch('https://localhost:5000/api/auth/register', {
+      const response = await fetch('/api/auth/register', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -51,7 +51,7 @@ const RegisterPage = () => {
         localStorage.setItem('verificationEmail', email);
         
         // Send OTP code
-        await fetch('https://localhost:5000/api/auth/send-verification', {
+        await fetch('/api/auth/send-verification', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
