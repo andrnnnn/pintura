@@ -2,28 +2,28 @@ import React from 'react';
 
 const courses = [
   {
-    image: "https://placehold.co/600x400",
+    image: "/courses/personalized1.png",
     title: "SQL for Data Science",
     description: "Learn SQL fundamentals to query, analyze, and process data efficiently.",
     category: "IT & Software",
     university: "Bina Sarana Informatika University",
-    universityLogo: "https://placehold.co/20x20",
+    universityLogo: "/logo-companies/bina.png",
   },
   {
-    image: "https://placehold.co/600x400",
+    image: "/courses/personalized2.png",
     title: "Branding Essentials for Modern Business",
     description: "Discover essential branding techniques to elevate your business’s identity.",
     category: "Marketing",
     university: "Shopee Indonesia",
-    universityLogo: "https://placehold.co/20x20",
+    universityLogo: "/logo-companies/shopee.png",
   },
   {
-    image: "https://placehold.co/600x400",
+    image: "/courses/personalized3.png",
     title: "Basic Photography Skills",
     description: "Understand core photography concepts to capture stunning visuals with any camera.",
     category: "Photography",
     university: "Padjadjaran University",
-    universityLogo: "https://placehold.co/20x20",
+    universityLogo: "/logo-companies/pu.png",
   },
 ];
 

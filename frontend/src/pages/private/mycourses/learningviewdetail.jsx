@@ -1,9 +1,9 @@
-import Learningdetailquiz from "../../../components/private/mycourses/learningviewdetail";
+import LearningViewDetail from "../../../components/private/mycourses/learningviewdetail";
 
 const LearningViewQuizPage = () => {
   return (
     <div>
-      <Learningdetailquiz />
+      <LearningViewDetail />
     </div>
   );
 };

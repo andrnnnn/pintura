@@ -1,26 +1,24 @@
 import React, { useEffect, useState } from "react";
 import { useLocation, useParams } from "react-router-dom";
 import Logo from "/logo/logo.png";
+import MaterialDetail from "./MaterialDetail";
 
 const LearningViewDetail = () => {
   const location = useLocation();
-  const { course_id } = useParams(); // Dapatkan course_id dari URL
-  const course = location.state?.course; // Akses objek course dari state
-
-  if (!course_id) {
-    return <div className="text-red-500">Course ID is missing in the URL.</div>;
-  }
-  console.log("Course ID:", location.state); // Menampilkan course_id di console
+  const { course_id } = useParams();
+  const course = location.state?.course;
 
   const [materials, setMaterials] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [selectedMaterial, setSelectedMaterial] = useState(null);
 
   useEffect(() => {
     const fetchMaterials = async () => {
       try {
         const response = await fetch(
-          `/api/auth/materials/${course_id}`,
+
+          `/api/auth/materials/hierarchy/${course_id}`,
           {
             method: "GET",
             headers: {
@@ -32,19 +30,15 @@ const LearningViewDetail = () => {
 
         if (response.ok) {
           const data = await response.json();
-          console.log("Materials data:", data); // Menampilkan data materi di console
-          // Menyesuaikan dengan struktur data yang baru
-          setMaterials(data.material); // Menggunakan data.material yang berisi array
+          setMaterials(data.data || []);
           setError(null);
         } else {
           const errorData = await response.json();
-          console.error("Error data:", errorData); // Menampilkan error data di console
           throw new Error(errorData.message || "Failed to fetch materials.");
         }
       } catch (err) {
-        console.error("Error fetching materials:", err.message); // Menampilkan pesan error di console
-        setMaterials([]);
         setError(err.message);
+        setMaterials([]);
       } finally {
         setLoading(false);
       }
@@ -53,6 +47,26 @@ const LearningViewDetail = () => {
     fetchMaterials();
   }, [course_id]);
 
+  const renderMaterials = (parentId = null) => {
+    const filteredMaterials = materials.filter(
+      (material) => material.parent_material_id === parentId
+    );
+
+    return filteredMaterials.map((material) => (
+      <div key={material.material_id} className="mb-4">
+        <div
+          className={`p-4 border mb-2 shadow cursor-pointer ${
+            material.parent_material_id === null ? "bg-blue-600 text-white" : "bg-white"
+          }`}
+          onClick={() => setSelectedMaterial(material)}
+        >
+          <h3 className="text-lg font-semibold">{material.title}</h3>
+        </div>
+        <div className="pl-6">{renderMaterials(material.material_id)}</div>
+      </div>
+    ));
+  };
+
   if (loading) return <div>Loading...</div>;
   if (error) return <div className="text-red-500">{error}</div>;
 
@@ -60,49 +74,34 @@ const LearningViewDetail = () => {
     <div className="min-h-screen flex flex-col bg-gray-100">
       <header className="bg-white shadow p-4 flex flex-col items-center">
         <div className="flex justify-center w-full mb-4">
-          <img
-            src={Logo}
-            alt="PINTUR Logo"
-            className="h-16 w-16 object-contain"
-          />
+          <img src={Logo} alt="PINTUR Logo" className="h-16 w-16 object-contain" />
         </div>
         <div className="flex justify-between items-center w-full">
           <div className="text-sm text-gray-500">
-            Home &gt; My Courses &gt; {course?.course_title} &gt; Module 1 &gt; Quiz
+            Home &gt; My Courses &gt; {course?.course_title} &gt; Materials
           </div>
-          <nav className="flex space-x-4">
-            <a href="#" className="text-gray-500 hover:text-gray-700">
-              Previous
-            </a>
-            <a href="#" className="text-gray-500 hover:text-gray-700">
-              Next
-            </a>
-          </nav>
         </div>
       </header>
+
       <main className="flex flex-1">
         <aside className="w-1/4 bg-white p-4 shadow">
-        {materials.length > 0 ? (
-          materials.map((material, index) => (
-            <div>
-            <div
-              key={index}
-              className="bg-blue-600 text-white px-4 py-2 rounded mb-2"
-            >
-              {material.title}
-            </div>
-
-            </div>
-          ))
-        ) : (
-          <div className="text-red-500">No materials found.</div>
-        )}
-          {/* <div className="max-w-md mx-auto">
-            <div className="bg-blue-600 p-4 rounded-t-lg">
-              <h2 className="text-lg font-semibold text-white">Introduction</h2>
-            </div>
-          </div> */}
+          {materials.length > 0 ? renderMaterials() : <div>No materials found.</div>}
         </aside>
+
+        <section className="flex-1 bg-gray-50 p-4">
+          {selectedMaterial ? (
+            <MaterialDetail material={selectedMaterial} />
+          ) : (
+            <div>
+              <h1 className="text-xl font-semibold text-gray-800 mb-4">
+                {course?.course_title || "Course Materials"}
+              </h1>
+              <p className="text-gray-600">
+                Silakan pilih materi pembelajaran dari sidebar kiri.
+              </p>
+            </div>
+          )}
+        </section>
       </main>
     </div>
   );

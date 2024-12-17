@@ -91,7 +91,7 @@ const Profile = () => {
 
         <div className="flex flex-col md:flex-row items-center mb-6">
           <img
-            src={profile.image_url}
+            src={profile.image_url ? profile.image_url : "https://placehold.co/200x200?text=No+Image"}
             alt="Profile"
             className="rounded-full w-24 h-24 mr-4 mb-4 md:mb-0"
           />
