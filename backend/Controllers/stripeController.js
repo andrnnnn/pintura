@@ -67,8 +67,8 @@ const createCheckoutSession = async (req, res) => {
         },
       ],
       mode: 'subscription',
-      success_url: `${process.env.APP_URL}:${process.env.HTTPS_PORT}/dashboard/home?success=true&session_id={CHECKOUT_SESSION_ID}`,
-      cancel_url: `${process.env.APP_URL}:${process.env.HTTPS_PORT}?canceled=true`,
+      success_url: `${process.env.FRONTEND_URL}/dashboard/home?success=true&session_id={CHECKOUT_SESSION_ID}`,
+      cancel_url: `${process.env.FRONTEND_URL}?canceled=true`,
       metadata: {
         email,         // Menyimpan email pengguna
         phone,         // Menyimpan nomor telepon
@@ -97,7 +97,7 @@ const createCheckoutSession = async (req, res) => {
     await sendEmail(user.email, subject, text, html);
 
     // Redirect pengguna ke /dashboard/home
-    res.status(200).json({ url: `${process.env.APP_URL}:${process.env.HTTPS_PORT}/dashboard/home?success=true&session_id=${session.id}` });
+    res.status(200).json({ url: `${process.env.FRONTEND_URL}/dashboard/home?success=true&session_id=${session.id}` });
   } catch (err) {
     console.error('Error creating checkout session: ', err);
     res.status(500).send('Internal Server Error');
@@ -109,7 +109,7 @@ const createPortalSession = async (req, res) => {
   try {
     const { session_id } = req.body;
     const checkoutSession = await stripe.checkout.sessions.retrieve(session_id);
-    const returnUrl = `${process.env.APP_URL}:${process.env.HTTPS_PORT}`;
+    const returnUrl = `${process.env.FRONTEND_URL}`;
 
     const portalSession = await stripe.billingPortal.sessions.create({
       customer: checkoutSession.customer,
