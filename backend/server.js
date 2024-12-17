@@ -128,7 +128,7 @@ app.use((req, res, next) => {
 });
 
 // Membuat server HTTPS dan menyimpannya dalam variabel
-const server = https.createServer(app);
+const server = http.createServer(app);
 
 // Middleware to handle OpaqueResponseBlocking errors
 app.use((req, res, next) => {
