@@ -30,7 +30,7 @@ const VerificationCodePage = () => {
         setError('');
 
         try {
-            const response = await fetch('https://localhost:5000/api/auth/verify-code', {
+            const response = await fetch('/api/auth/verify-code', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -64,7 +64,7 @@ const VerificationCodePage = () => {
         setError('');
 
         try {
-            const response = await fetch('https://localhost:5000/api/auth/send-verification', {
+            const response = await fetch('/api/auth/send-verification', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

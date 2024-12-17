@@ -1,3 +1,4 @@
+
   import { useState, useEffect } from "react";
   import LayoutWithSidebar from "./LayoutWithSidebar";
 
@@ -17,24 +18,26 @@
 
     const [isEditing, setIsEditing] = useState(false); // State untuk mengatur mode edit
 
-    // Mengambil data profil dari server
-    useEffect(() => {
-      const fetchProfile = async () => {
-        try {
-          const token = localStorage.getItem("token"); // Ambil token dari localStorage
-          const response = await fetch(
-            "https://localhost:5000/api/auth/profile",
-            {
-              method: "GET",
-              headers: {
-                Authorization: `Bearer ${token}`,
-                "Content-Type": "application/json",
-              },
-            }
+
+  // Mengambil data profil dari server
+  useEffect(() => {
+    const fetchProfile = async () => {
+      try {
+        const token = localStorage.getItem("token"); // Ambil token dari localStorage
+        const response = await fetch(
+          "/api/auth/profile",
+          {
+            method: "GET",
+            headers: {
+              Authorization: `Bearer ${token}`,
+              "Content-Type": "application/json",
+            },
+             }
           );
 
           if (!response.ok) {
             throw new Error("Gagal mendapatkan data profil.");
+            
           }
 
           const data = await response.json();
@@ -80,6 +83,7 @@
         setIsEditing(false); // Matikan mode edit
       }
     };
+
     const handleUploadPhoto = async (e) => {
       const file = e.target.files[0]; // Ambil file dari input
       if (!file) return;
@@ -107,6 +111,7 @@
       } catch (error) {
         console.error("Error:", error);
         alert("Terjadi kesalahan saat mengunggah foto profil.");
+
       }
     };
 

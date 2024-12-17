@@ -51,7 +51,7 @@ const Trending = () => {
   const [visibleCourses, setVisibleCourses] = useState(3); // Mulai dengan 3 courses yang terlihat
 
   useEffect(() => {
-    fetch("https://localhost:5000/api/auth/courses/trend")
+    fetch("/api/auth/courses/trend")
       .then((response) => response.json())
       .then((data) => {
         const firstThreeCourses = data.courses ? data.courses : [];

@@ -17,7 +17,8 @@ const LearningViewDetail = () => {
     const fetchMaterials = async () => {
       try {
         const response = await fetch(
-          `https://localhost:5000/api/auth/materials/hierarchy/${course_id}`,
+
+          `/api/auth/materials/hierarchy/${course_id}`,
           {
             method: "GET",
             headers: {

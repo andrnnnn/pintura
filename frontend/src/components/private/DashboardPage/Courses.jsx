@@ -54,7 +54,8 @@ const Courses = () => {
   const coursesPerPage = 6;
 
   useEffect(() => {
-    fetch('https://localhost:5000/api/auth/courses')
+
+    fetch('/api/auth/courses')
       .then((res) => res.json())
       .then((data) => {
         console.log("Fetched data:", data); // Debugging log
