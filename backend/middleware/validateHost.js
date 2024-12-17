@@ -1,5 +1,5 @@
 const validateHostMiddleware = (req, res, next) => {
-    const allowedHosts = ['localhost', '127.0.0.1', 'yourdomain.com'];
+    const allowedHosts = ['localhost', '127.0.0.1', 'yourdomain.com', 'https://pintura.decadev.tech', 'pintura.decadev.tech'];
   
     if (!allowedHosts.includes(req.hostname)) {
       console.warn(`Blocked request with invalid Host header: ${req.hostname}`);
