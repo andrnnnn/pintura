@@ -943,6 +943,17 @@ module.exports = {
         content: "Praktek langsung mengenai user research.",
         position: 3,
       },
+      {
+        course_id: 1,
+        parent_material_id: null,
+        title: "Introduction to Programming",
+        type: "quiz",
+        content: null,
+        position: 2,
+        status: "not_started",
+        created_at: new Date(),
+        updated_at: new Date(),
+      },
     ]);
     await queryInterface.bulkInsert("notifications", [
       {
