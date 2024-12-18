@@ -1,10 +1,11 @@
 import { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import Img from '../../assets/public/imgActivationPage.svg';
+import Img from '../../assets/public/imgActivationPage.svg'; // Pastikan path gambar benar
 
 const ActivationPage = () => {
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const [setError] = useState('');
+  const [otp, setOtp] = useState(''); // Menyimpan OTP yang dimasukkan
+  const [error, setError] = useState(''); // Menyimpan pesan error
+  const [isSubmitting, setIsSubmitting] = useState(false); // Menyimpan status pengiriman form
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -17,7 +18,8 @@ const ActivationPage = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setIsLoggedIn(true);
+    setIsSubmitting(true);
+    setError('');
 
     try {
       // Kirim OTP ke server untuk validasi
@@ -33,7 +35,7 @@ const ActivationPage = () => {
 
       if (response.ok) {
         console.log('OTP validation successful:', data);
-        // Simpan token ke localStorage atau state global setelah berhasil validasi OTP
+        // Simpan token ke localStorage setelah validasi OTP berhasil
         localStorage.setItem('token', data.token);
         // Redirect ke halaman dashboard setelah OTP valid
         navigate('/dashboard/home'); // Arahkan ke dashboard setelah OTP valid
@@ -48,7 +50,6 @@ const ActivationPage = () => {
       setIsSubmitting(false);
     }
   };
-
 
   return (
     <div className="bg-white flex items-center justify-center min-h-screen font-poppins">
@@ -66,33 +67,40 @@ const ActivationPage = () => {
 
         {/* Bagian Konten */}
         <div className="w-full md:w-1/2 flex flex-col justify-center p-8">
-	<Link
+          <Link
             to="/"
             className="flex items-center bg-blue-600 text-white rounded hover:bg-blue-700 transition duration-300 px-4 py-2 text-[14px] w-20 mb-6"
           >
             <i className="fas fa-arrow-left mr-2"></i> Back
           </Link>
-          <h1 className="text-4xl font-bold text-blue-700 mb-2">Activation Success</h1>
-          <p className="text-gray-600 mb-6">
-            Congratulations! Your account has been successfully activated. You are now logged in and can access your dashboard.
+
+          <h1 className="text-4xl font-bold text-blue-700 mb-4">Activate Your Account</h1>
+          <p className="text-lg text-gray-600 mb-4">
+            Please enter the OTP we sent to your email to activate your account.
           </p>
-          
-          {/* Formulir dan tombol */}
-          {!isLoggedIn && (
-            <form onSubmit={handleSubmit} className="space-y-4">
-              <div className="bg-white p-6 rounded-lg shadow-md">
-                <button
-                  type="submit"
-                  className="w-full bg-blue-700 text-white py-2 rounded-lg hover:bg-blue-800"
-                >
-                  Go to Dashboard
-                </button>
-		<p className="text-center text-gray-600 mt-4">
-                Need help? <a href="#" className="text-blue-600">Contact Support</a>
-              </p>
-              </div>
-            </form>
-          )}
+
+          {/* Form Input OTP */}
+          <form onSubmit={handleSubmit} className="space-y-4">
+            <input
+              type="text"
+              placeholder="Enter OTP"
+              value={otp}
+              onChange={(e) => setOtp(e.target.value)}
+              className="w-full p-3 border border-gray-300 rounded-md"
+              maxLength="6" // Max 6 digits for OTP
+            />
+
+            {/* Error Message */}
+            {error && <p className="text-red-500 text-sm">{error}</p>}
+
+            <button
+              type="submit"
+              className={`w-full bg-blue-600 text-white py-3 rounded-md ${isSubmitting ? 'opacity-50 cursor-not-allowed' : ''}`}
+              disabled={isSubmitting}
+            >
+              {isSubmitting ? 'Submitting...' : 'Submit OTP'}
+            </button>
+          </form>
         </div>
       </div>
     </div>
