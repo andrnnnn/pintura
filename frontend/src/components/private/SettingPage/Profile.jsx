@@ -18,7 +18,6 @@
 
     const [isEditing, setIsEditing] = useState(false); // State untuk mengatur mode edit
 
-
   // Mengambil data profil dari server
   useEffect(() => {
     const fetchProfile = async () => {
