@@ -17,17 +17,26 @@ const ActivationPage = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    
-    // Make an API call to get the token
+   
     try {
-      const response = await fetch('/api/auth/activation'); // Replace with actual endpoint
-      if (!response.ok) {
-        throw new Error(`HTTP error! Status: ${response.status}`);
+      const response = await fetch('/api/auth/activation'); // Make sure this is the correct endpoint
+  
+      // Log the response for debugging
+      const textResponse = await response.text(); // Get raw response as text
+      console.log('Raw response:', textResponse);
+  
+      // Check if the response is JSON
+      let data;
+      try {
+        data = JSON.parse(textResponse); // Try to parse as JSON
+      } catch (jsonError) {
+        console.error('Failed to parse JSON:', jsonError);
+        return;
       }
-
-      const data = await response.json(); // Get response data
+  
+      // Handle the response
       if (data.token) {
-        localStorage.setItem('token', data.token); // Store token in localStorage
+        localStorage.setItem('token', data.token);
         navigate('/dashboard/home');
       } else {
         console.error('No token found in response');
@@ -36,6 +45,7 @@ const ActivationPage = () => {
       console.error('Error during the API call:', error);
     }
   };
+  
 
   return (
     <div className="bg-white flex items-center justify-center min-h-screen font-poppins">
