@@ -21,7 +21,7 @@ const CompletedCourses = () => {
 
       try {
         const response = await fetch(
-          `https://localhost:5000/api/auth/mycourses/completed`,
+          `/api/auth/mycourses/completed`,
           {
             method: "GET",
             headers: {
