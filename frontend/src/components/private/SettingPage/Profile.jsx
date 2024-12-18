@@ -16,13 +16,12 @@
       bio: "",
     });
 
-    const [isEditing, setIsEditing] = useState(false); // State untuk mengatur mode edit
+    const [isEditing, setIsEditing] = useState(false); 
 
-  // Mengambil data profil dari server
   useEffect(() => {
     const fetchProfile = async () => {
       try {
-        const token = localStorage.getItem("token"); // Ambil token dari localStorage
+        const token = localStorage.getItem("token"); 
         const response = await fetch(
           "/api/auth/profile",
           {
@@ -40,7 +39,7 @@
           }
 
           const data = await response.json();
-          setProfile(data); // Atur data ke state
+          setProfile(data); 
         } catch (error) {
           console.error("Error:", error);
         }
@@ -49,19 +48,17 @@
       fetchProfile();
     }, []);
 
-    // Menangani perubahan pada input form
     const handleInputChange = (e) => {
       const { name, value } = e.target;
       setProfile({ ...profile, [name]: value });
     };
 
-    // Menyimpan perubahan ke server
     const handleSubmit = async (e) => {
       e.preventDefault();
       try {
         const token = localStorage.getItem("token");
         const response = await fetch("/api/auth/profiles", {
-          method: "PUT", // Menggunakan PUT untuk memperbarui data
+          method: "PUT", 
           headers: {
             Authorization: `Bearer ${token}`,
             "Content-Type": "application/json",
@@ -74,17 +71,17 @@
         }
 
         const data = await response.json();
-        alert("Profil berhasil diperbarui!"); // Tampilkan pesan sukses
-        setIsEditing(false); // Matikan mode edit 
+        alert("Profil berhasil diperbarui!"); 
+        setIsEditing(false); 
       } catch (error) {
         console.error("Error:", error);
         alert("Terjadi kesalahan saat memperbarui profil.");
-        setIsEditing(false); // Matikan mode edit
+        setIsEditing(false); 
       }
     };
 
     const handleUploadPhoto = async (e) => {
-      const file = e.target.files[0]; // Ambil file dari input
+      const file = e.target.files[0]; 
       if (!file) return;
     
       const formData = new FormData();
@@ -105,7 +102,7 @@
         }
     
         const data = await response.json();
-        setProfile((prev) => ({ ...prev, image_url: data.imageUrl })); // Update URL gambar di state
+        setProfile((prev) => ({ ...prev, image_url: data.imageUrl })); 
         alert("Foto profil berhasil diperbarui!");
       } catch (error) {
         console.error("Error:", error);
@@ -136,7 +133,7 @@
       type="file"
       accept="image/*"
       className="hidden"
-      onChange={handleUploadPhoto} // Panggil fungsi handleUploadPhoto
+      onChange={handleUploadPhoto} 
     />
   </label>
             <div className="w-full md:w-auto">
@@ -156,7 +153,7 @@
             </div>
             <button
               className="ml-auto bg-blue-600 text-white px-4 py-2 rounded-lg flex items-center"
-              onClick={() => setIsEditing(!isEditing)} // Toggle mode edit
+              onClick={() => setIsEditing(!isEditing)} 
             >
               <i className={`fas fa-${isEditing ? "save" : "pen"} mr-2`}></i>
               {isEditing ? "Save" : "Edit"}
@@ -176,7 +173,7 @@
                 value={profile.name}
                 onChange={handleInputChange}
                 name="username"
-                disabled={!isEditing} // Menonaktifkan input jika mode edit tidak
+                disabled={!isEditing} 
                 required
               />
             </div>
@@ -192,7 +189,7 @@
                 value={profile.username}
                 onChange={handleInputChange}
                 name="username"
-                disabled={!isEditing} // Menonaktifkan input jika mode edit tidak
+                disabled={!isEditing} 
                 required
               />
               <p className="text-gray-500 text-sm mt-1">
@@ -229,9 +226,9 @@
                     type="date"
                     name="date_of_birth"
                     className="w-full border rounded-lg px-3 py-2"
-                    value={profile.date_of_birth} // Menampilkan nilai dari state
-                    onChange={handleInputChange} // Mengupdate state ketika nilai berubah
-                    disabled={!isEditing} // Menonaktifkan input jika mode edit tidak
+                    value={profile.date_of_birth} 
+                    onChange={handleInputChange} 
+                    disabled={!isEditing} 
                   />
                   <i className="fas fa-calendar-alt absolute right-3 top-3 text-gray-500"></i>
                 </div>
@@ -248,9 +245,9 @@
                       type="radio"
                       name="gender"
                       value="Male"
-                      checked={profile.gender === "Male"} // Menandai jika sesuai dengan state
-                      onChange={handleInputChange} // Mengupdate state ketika dipilih
-                      disabled={!isEditing} // Menonaktifkan input jika mode edit tidak
+                      checked={profile.gender === "Male"} 
+                      onChange={handleInputChange} 
+                      disabled={!isEditing} 
                       className="mr-2"
                     />
                     Male
@@ -260,10 +257,10 @@
                       type="radio"
                       name="gender"
                       value="Female"
-                      checked={profile.gender === "Female"} // Menandai jika sesuai dengan state
-                      onChange={handleInputChange} // Mengupdate state ketika dipilih
+                      checked={profile.gender === "Female"} 
+                      onChange={handleInputChange} 
                       className="mr-2"
-                      disabled={!isEditing} // Menonaktifkan input jika mode edit tidak
+                      disabled={!isEditing} 
                     />
                     Female
                   </label>
@@ -286,7 +283,7 @@
                   value={profile.phone_number}
                   onChange={handleInputChange}
                   name="phone_number"
-                  disabled={!isEditing} // Menonaktifkan input jika mode edit tidak
+                  disabled={!isEditing} 
                 />
               </div>
               <div className="flex items-center mt-2">
@@ -308,7 +305,7 @@
                 value={profile.city}
                 onChange={handleInputChange}
                 name="city"
-                disabled={!isEditing} // Menonaktifkan input jika mode edit tidak
+                disabled={!isEditing} 
               />
               <p className="text-gray-500 text-sm mt-1">
                 Fill in the city where you currently live.
@@ -336,7 +333,7 @@
                 value={profile.company}
                 onChange={handleInputChange}
                 name="company"
-                disabled={!isEditing} // Menonaktifkan input jika mode edit tidak
+                disabled={!isEditing} 
               />
               <p className="text-gray-500 text-sm mt-1">
                 You can write the name of the company or campus.
@@ -354,7 +351,7 @@
                 value={profile.role}
                 onChange={handleInputChange}
                 name="role"
-                disabled={!isEditing} // Menonaktifkan input jika mode edit tidak
+                disabled={!isEditing} 
               />
               <p className="text-gray-500 text-sm mt-1">
                 Can be filled with your main role or position.
@@ -372,7 +369,7 @@
                 value={profile.bio}
                 onChange={handleInputChange}
                 name="bio"
-                disabled={!isEditing} // Menonaktifkan input jika mode edit tidak
+                disabled={!isEditing} 
               ></textarea>
               <p className="text-gray-500 text-sm mt-1">{profile.bio}</p>
             </div>
@@ -389,7 +386,6 @@
               {/* Tombol di kanan */}
               <div className="flex space-x-4">
                 {" "}
-                {/* Gunakan `space-x-4` untuk jarak antar tombol */}
                 <button className="bg-red-600 text-white px-4 py-2 rounded-lg">
                   Delete Account
                 </button>

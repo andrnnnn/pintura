@@ -13,9 +13,8 @@ const LearningViewDetail = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [selectedMaterial, setSelectedMaterial] = useState(null);
-  const [isMaterialOpen, setIsMaterialOpen] = useState({}); // State untuk toggle
+  const [isMaterialOpen, setIsMaterialOpen] = useState({}); 
 
-  // Fetch materials
   useEffect(() => {
     const fetchMaterials = async () => {
       try {
@@ -49,7 +48,6 @@ const LearningViewDetail = () => {
     fetchMaterials();
   }, [course_id]);
 
-  // Toggle material open/close
   const toggleMaterial = (materialId) => {
     setIsMaterialOpen((prev) => ({
       ...prev,
@@ -57,8 +55,7 @@ const LearningViewDetail = () => {
     }));
   };
 
-  // Render materials recursively
-// Fungsi renderMaterials dengan navigasi ke halaman kuis
+
 const renderMaterials = (parentId = null) => {
   const filteredMaterials = materials.filter(
     (material) => material.parent_material_id === parentId
@@ -74,7 +71,6 @@ const renderMaterials = (parentId = null) => {
         }`}
         onClick={() => {
           if (material.type === "quiz") {
-            // Navigasi ke halaman kuis jika tipe material adalah "quiz"
             window.location.href = `/dashboard/mycourses/learningquiz/${material.material_id}`;
           } else {
             setSelectedMaterial(material);
@@ -87,7 +83,7 @@ const renderMaterials = (parentId = null) => {
           <button
             className="text-black"
             onClick={(e) => {
-              e.stopPropagation(); // Prevent parent click
+              e.stopPropagation(); 
               toggleMaterial(material.material_id);
             }}
           >

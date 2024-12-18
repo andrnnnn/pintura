@@ -11,10 +11,9 @@ const Learningquiz = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    // Fetch quiz data from backend
     const fetchQuizData = async () => {
       try {
-        const response = await fetch('/api/auth/quiz/1'); // Ganti dengan ID material yang sesuai
+        const response = await fetch('/api/auth/quiz/1'); 
         const data = await response.json();
         setQuizData(data);
       } catch (error) {

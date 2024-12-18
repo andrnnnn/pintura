@@ -3,9 +3,8 @@ import React from 'react';
 const MaterialDetail = ({ material }) => {
   const { type, content } = material;
 
-  // Fungsi untuk menampilkan video YouTube
   const renderVideo = (url) => {
-    const videoId = url.split('v=')[1].split('&')[0]; // Mendapatkan video ID dari URL YouTube
+    const videoId = url.split('v=')[1].split('&')[0]; 
     return (
       <div className="aspect-w-16 aspect-h-9">
         <iframe
@@ -21,9 +20,7 @@ const MaterialDetail = ({ material }) => {
     );
   };
 
-  // Fungsi untuk menampilkan PDF
   const renderPDF = (content) => {
-    // Mengambil ID file dari URL Google Drive
     const fileId = content.split('/d/')[1].split('/')[0];
     const driveFileUrl = `https://drive.google.com/file/d/${fileId}/preview`;
   
@@ -40,12 +37,12 @@ const MaterialDetail = ({ material }) => {
     );
   };
   
-  // Fungsi untuk menampilkan quiz (sederhana contoh)
+
   const renderQuiz = (content) => {
     return <div>{content}</div>;
   };
 
-  // Fungsi untuk menampilkan text
+
   const renderText = (content) => {
     return <div>{content}</div>;
   };
