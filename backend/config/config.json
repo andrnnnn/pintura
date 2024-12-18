@@ -1,23 +1,23 @@
 {
   "development": {
-    "username": "root",
-    "password": "",
+    "username": "pintura",
+    "password": "EjJDkqFCaKBABclK9xiM",
     "database": "pintura", 
     "host": "127.0.0.1",
     "dialect": "mysql",
     "logging": true 
   },
   "test": {
-    "username": "root",
-    "password": "",
+    "username": "pintura",
+    "password": "EjJDkqFCaKBABclK9xiM",
     "database": "pintura", 
     "host": "127.0.0.1",
     "dialect": "mysql",
     "logging": false 
   },
   "production": {
-    "username": "root",
-    "password": "",
+    "username": "pintura",
+    "password": "EjJDkqFCaKBABclK9xiM",
     "database": "pintura", 
     "host": "127.0.0.1",
     "dialect": "mysql",

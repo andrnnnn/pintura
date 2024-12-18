@@ -16,7 +16,7 @@ export default defineConfig({
   server: {
     proxy: {
       '/api': {
-        target: process.env.BACKEND_URL || 'http://localhost:5000', // URL backend dari .env atau fallback ke localhost
+        target: process.env.BACKEND_URL || 'https://pintura.decadev.tech:5000', // URL backend dari .env atau fallback ke localhost
         changeOrigin: true,
         secure: false,
       },
