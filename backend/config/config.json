@@ -2,31 +2,33 @@
   "development": {
     "username": "pintura",
     "password": "EjJDkqFCaKBABclK9xiM",
-    "database": "pintura", 
+    "database": "pintura",
     "host": "127.0.0.1",
     "dialect": "mysql",
-    "logging": true 
+    "logging": true
   },
   "test": {
     "username": "pintura",
     "password": "EjJDkqFCaKBABclK9xiM",
-    "database": "pintura", 
+    "database": "pintura",
     "host": "127.0.0.1",
     "dialect": "mysql",
-    "logging": false 
+    "logging": false
   },
   "production": {
     "username": "pintura",
     "password": "EjJDkqFCaKBABclK9xiM",
-    "database": "pintura", 
+    "database": "pintura",
     "host": "127.0.0.1",
     "dialect": "mysql",
-    "logging": false, 
-    "ssl": true, 
+    "logging": false,
     "dialectOptions": {
       "ssl": {
         "require": true,
-        "rejectUnauthorized": false 
+        "rejectUnauthorized": false,
+        "ca": "/path/to/server-ca.pem",
+        "key": "/path/to/client-key.pem",
+        "cert": "/path/to/client-cert.pem"
       }
     }
   }
