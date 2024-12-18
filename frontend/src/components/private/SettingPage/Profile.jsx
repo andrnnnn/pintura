@@ -61,7 +61,7 @@
       e.preventDefault();
       try {
         const token = localStorage.getItem("token");
-        const response = await fetch("https://localhost:5000/api/auth/profiles", {
+        const response = await fetch("/api/auth/profiles", {
           method: "PUT", // Menggunakan PUT untuk memperbarui data
           headers: {
             Authorization: `Bearer ${token}`,
@@ -93,7 +93,7 @@
     
       try {
         const token = localStorage.getItem("token");
-        const response = await fetch("https://localhost:5000/api/auth/upload-profile-picture", {
+        const response = await fetch("/api/auth/upload-profile-picture", {
           method: "POST",
           headers: {
             Authorization: `Bearer ${token}`,

@@ -25,7 +25,7 @@ const CertificateModal = () => {
     // Fetch data dari server
     const fetchCertificate = async () => {
       try {
-        const response = await fetch(`https://localhost:5000/api/auth/certificate/${enrollmentId}`);
+        const response = await fetch(`/api/auth/certificate/${enrollmentId}`);
         if (!response.ok) {
           throw new Error(`Error fetching data: ${response.statusText}`);
         }
