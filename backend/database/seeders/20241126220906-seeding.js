@@ -1563,6 +1563,168 @@ module.exports = {
         updated_at: new Date(),
       },
     ]);
+    await queryInterface.bulkInsert("questions", [
+      {
+        material_id: 1,
+        question_text: "What is the result of 3 * 3 in JavaScript?",
+        position: 3,
+        created_at: new Date(),
+        updated_at: new Date(),
+      },
+      {
+        material_id: 1,
+        question_text: "Which method is used to parse a JSON string in JavaScript?",
+        position: 4,
+        created_at: new Date(),
+        updated_at: new Date(),
+      },
+      {
+        material_id: 1,
+        question_text: "What is the correct syntax for creating a function in JavaScript?",
+        position: 5,
+        created_at: new Date(),
+        updated_at: new Date(),
+      },
+      {
+        material_id: 1,
+        question_text: "What is the value of `typeof null` in JavaScript?",
+        position: 6,
+        created_at: new Date(),
+        updated_at: new Date(),
+      },
+      {
+        material_id: 1,
+        question_text: "Which symbol is used for comments in JavaScript?",
+        position: 7,
+        created_at: new Date(),
+        updated_at: new Date(),
+      },
+      {
+        material_id: 1,
+        question_text: "What will `console.log(0.1 + 0.2)` output in JavaScript?",
+        position: 8,
+        created_at: new Date(),
+        updated_at: new Date(),
+      },
+      {
+        material_id: 1,
+        question_text: "Which function is used to display an alert box in JavaScript?",
+        position: 9,
+        created_at: new Date(),
+        updated_at: new Date(),
+      },
+      {
+        material_id: 1,
+        question_text: "What is the result of `NaN === NaN` in JavaScript?",
+        position: 10,
+        created_at: new Date(),
+        updated_at: new Date(),
+      },
+      {
+        material_id: 1,
+        question_text: "What is the correct way to write a conditional statement in JavaScript?",
+        position: 11,
+        created_at: new Date(),
+        updated_at: new Date(),
+      },
+      {
+        material_id: 1,
+        question_text: "Which operator is used for strict equality in JavaScript?",
+        position: 12,
+        created_at: new Date(),
+        updated_at: new Date(),
+      },
+      {
+        material_id: 1,
+        question_text: "What is the result of `5 + '5'` in JavaScript?",
+        position: 13,
+        created_at: new Date(),
+        updated_at: new Date(),
+      },
+      {
+        material_id: 1,
+        question_text: "Which method is used to add elements to the end of an array in JavaScript?",
+        position: 14,
+        created_at: new Date(),
+        updated_at: new Date(),
+      },
+      {
+        material_id: 1,
+        question_text: "What is the output of `console.log(typeof undefined)` in JavaScript?",
+        position: 15,
+        created_at: new Date(),
+        updated_at: new Date(),
+      }
+    ]);
+    await queryInterface.bulkInsert("options", [
+      // Options for Question 3
+      { question_id: 3, option_text: "6", is_correct: false },
+      { question_id: 3, option_text: "9", is_correct: true },
+      { question_id: 3, option_text: "12", is_correct: false },
+      { question_id: 3, option_text: "15", is_correct: false },
+
+      // Options for Question 4
+      { question_id: 4, option_text: "JSON.parse()", is_correct: true },
+      { question_id: 4, option_text: "JSON.stringify()", is_correct: false },
+      { question_id: 4, option_text: "parseJSON()", is_correct: false },
+      { question_id: 4, option_text: "stringifyJSON()", is_correct: false },
+
+      // Options for Question 5
+      { question_id: 5, option_text: "function = myFunction() {}", is_correct: false },
+      { question_id: 5, option_text: "function myFunction() {}", is_correct: true },
+      { question_id: 5, option_text: "let myFunction() {}", is_correct: false },
+      { question_id: 5, option_text: "def myFunction() {}", is_correct: false },
+
+      // Options for Question 6
+      { question_id: 6, option_text: "object", is_correct: true },
+      { question_id: 6, option_text: "null", is_correct: false },
+      { question_id: 6, option_text: "undefined", is_correct: false },
+      { question_id: 6, option_text: "string", is_correct: false },
+
+      // Options for Question 7
+      { question_id: 7, option_text: "// or /* */", is_correct: true },
+      { question_id: 7, option_text: "# or ##", is_correct: false },
+      { question_id: 7, option_text: "<!-- -->", is_correct: false },
+      { question_id: 7, option_text: "** or ***", is_correct: false },
+
+      // Options for Question 8
+      { question_id: 8, option_text: "0.3", is_correct: false },
+      { question_id: 8, option_text: "0.30000000000000004", is_correct: true },
+      { question_id: 8, option_text: "0.3000000000000004", is_correct: false },
+      { question_id: 8, option_text: "NaN", is_correct: false },
+
+      // Options for Question 9
+      { question_id: 9, option_text: "alert()", is_correct: true },
+      { question_id: 9, option_text: "prompt()", is_correct: false },
+      { question_id: 9, option_text: "confirm()", is_correct: false },
+      { question_id: 9, option_text: "message()", is_correct: false },
+
+      // Options for Question 10
+      { question_id: 10, option_text: "true", is_correct: false },
+      { question_id: 10, option_text: "false", is_correct: true },
+      { question_id: 10, option_text: "undefined", is_correct: false },
+      { question_id: 10, option_text: "NaN", is_correct: false },
+    ]);
+    await queryInterface.bulkInsert("quiz_attempts", [
+      {
+        user_id: 1, // ID pengguna
+        material_id: 1, // ID dari material quiz
+        score: 80,
+        completed_at: new Date(),
+        created_at: new Date(),
+      },
+    ]);
+    await queryInterface.bulkInsert("attempt_answers", [
+      { attempt_id: 1, question_id: 3, option_id: 2, is_correct: true },
+      { attempt_id: 1, question_id: 4, option_id: 1, is_correct: true },
+      { attempt_id: 1, question_id: 5, option_id: 2, is_correct: true },
+      { attempt_id: 1, question_id: 6, option_id: 1, is_correct: true },
+      { attempt_id: 1, question_id: 7, option_id: 1, is_correct: true },
+      { attempt_id: 1, question_id: 8, option_id: 2, is_correct: true },
+      { attempt_id: 1, question_id: 9, option_id: 1, is_correct: true },
+      { attempt_id: 1, question_id: 10, option_id: 2, is_correct: true },
+    ]);
+
   },
 
   down: async (queryInterface, Sequelize) => {
