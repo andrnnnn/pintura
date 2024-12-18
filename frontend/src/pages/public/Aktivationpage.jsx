@@ -7,26 +7,29 @@ const ActivationPage = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    // Cek apakah token sudah ada di localStorage, menandakan bahwa user sudah login
+    // Check if token already exists in localStorage, meaning user is already logged in
     const token = localStorage.getItem('token');
     if (token) {
       setIsLoggedIn(true);
-      navigate('/dashboard/home'); // Redirect ke dashboard jika sudah login
+      navigate('/dashboard/home'); // Redirect to dashboard if already logged in
     }
   }, [navigate]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     
-    // Here you should make an API call to get the token. Example:
+    // Make an API call to get the token
     try {
-      const response = await fetch('/api/auth/aktivation'); // replace with actual endpoint
-      const data = await response.json(); // get response data
+      const response = await fetch('/api/auth/activation'); // Replace with actual endpoint
+      if (!response.ok) {
+        throw new Error(`HTTP error! Status: ${response.status}`);
+      }
+
+      const data = await response.json(); // Get response data
       if (data.token) {
-        localStorage.setItem('token', data.token); // Set token in localStorage
+        localStorage.setItem('token', data.token); // Store token in localStorage
         navigate('/dashboard/home');
       } else {
-        // Handle case where no token is returned
         console.error('No token found in response');
       }
     } catch (error) {
@@ -37,7 +40,7 @@ const ActivationPage = () => {
   return (
     <div className="bg-white flex items-center justify-center min-h-screen font-poppins">
       <div className="flex w-full max-w-4xl">
-        {/* Bagian Gambar */}
+        {/* Image Section */}
         <div className="w-full md:w-1/2 flex justify-center">
           <img
             src={Img}
@@ -48,35 +51,27 @@ const ActivationPage = () => {
           />
         </div>
 
-        {/* Bagian Konten */}
+        {/* Content Section */}
         <div className="w-full md:w-1/2 flex flex-col justify-center p-8">
-	<Link
+          <Link
             to="/"
             className="flex items-center bg-blue-600 text-white rounded hover:bg-blue-700 transition duration-300 px-4 py-2 text-[14px] w-20 mb-6"
           >
             <i className="fas fa-arrow-left mr-2"></i> Back
           </Link>
-          <h1 className="text-4xl font-bold text-blue-700 mb-2">Activation Success</h1>
-          <p className="text-gray-600 mb-6">
-            Congratulations! Your account has been successfully activated. You are now logged in and can access your dashboard.
-          </p>
-          
-          {/* Formulir dan tombol */}
-          {!isLoggedIn && (
-            <form onSubmit={handleSubmit} className="space-y-4">
-              <div className="bg-white p-6 rounded-lg shadow-md">
-                <button
-                  type="submit"
-                  className="w-full bg-blue-700 text-white py-2 rounded-lg hover:bg-blue-800"
-                >
-                  Go to Dashboard
-                </button>
-		<p className="text-center text-gray-600 mt-4">
-                Need help? <a href="#" className="text-blue-600">Contact Support</a>
-              </p>
-              </div>
-            </form>
-          )}
+
+          <h1 className="text-4xl font-bold text-blue-700 mb-2">Activation Page</h1>
+          <p className="text-gray-700 mb-4">Please click below to activate your account.</p>
+
+          {/* Activation Form */}
+          <form onSubmit={handleSubmit}>
+            <button
+              type="submit"
+              className="bg-blue-600 text-white px-6 py-3 rounded-md hover:bg-blue-700 transition duration-300"
+            >
+              Activate Account
+            </button>
+          </form>
         </div>
       </div>
     </div>
