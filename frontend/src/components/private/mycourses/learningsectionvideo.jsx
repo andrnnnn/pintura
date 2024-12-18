@@ -5,11 +5,10 @@ import { useNavigate } from "react-router-dom";
 
 const LearningSectionVideo = () => {
   const location = useLocation();
-  const { course_id } = useParams(); // Ambil course_id dari URL jika menggunakan dynamic route
-  const course = location.state?.course; // Akses objek course dari state
+  const { course_id } = useParams(); 
+  const course = location.state?.course;
 
   const navigate = useNavigate();
-  // Cek jika course_id tidak ditemukan
 
   if (!course_id) {
     return <div className="text-red-500">Course ID is missing in the URL.</div>;
@@ -19,7 +18,6 @@ const LearningSectionVideo = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
-  // Fungsi untuk mengambil YouTube video ID dari URL
   const extractMaterialId = (url) => {
     const regex =
       /(?:youtube\.com\/(?:[^\/\n\s]+\/\S+\/|\S+?v=|(?:v|e(?:mbed)?)\/|\S*?[?&]v=)|youtu\.be\/)([a-zA-Z0-9_-]{11})/;
@@ -43,17 +41,16 @@ const LearningSectionVideo = () => {
 
         if (response.ok) {
           const data = await response.json();
-          console.log("Materials data:", data); // Menampilkan data materi di console
-          // Menyesuaikan dengan struktur data yang baru
-          setMaterials(data.material); // Menggunakan data.material yang berisi array
+          console.log("Materials data:", data); 
+          setMaterials(data.material); 
           setError(null);
         } else {
           const errorData = await response.json();
-          console.error("Error data:", errorData); // Menampilkan error data di console
+          console.error("Error data:", errorData); 
           throw new Error(errorData.message || "Failed to fetch materials.");
         }
       } catch (err) {
-        console.error("Error fetching materials:", err.message); // Menampilkan pesan error di console
+        console.error("Error fetching materials:", err.message);
         setMaterials([]);
         setError(err.message);
       } finally {

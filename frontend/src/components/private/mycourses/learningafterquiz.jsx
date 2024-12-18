@@ -1,18 +1,18 @@
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom'; // Impor useNavigate
+import { useNavigate } from 'react-router-dom'; 
 import Logo from '/logo/logo.png';
 
 const Learningafterquiz = () => {
-  const [isModuleOpen, setIsModuleOpen] = useState(Array(6).fill(false)); // Array untuk menyimpan status terbuka/tutup untuk setiap modul
-  const [selectedModule, setSelectedModule] = useState(null); // Menambahkan state untuk modul yang dipilih
-  const navigate = useNavigate(); // Gunakan useNavigate untuk navigasi
+  const [isModuleOpen, setIsModuleOpen] = useState(Array(6).fill(false)); 
+  const [selectedModule, setSelectedModule] = useState(null); 
+  const navigate = useNavigate(); 
 
   const toggleModule = (index) => {
     const updatedModuleStatus = [...isModuleOpen];
     updatedModuleStatus[index] = !updatedModuleStatus[index];
     setIsModuleOpen(updatedModuleStatus);
 
-    // Memastikan modul yang sama bisa dibuka dan ditutup
+   
     if (selectedModule === index) {
       setSelectedModule(null);
     } else {
@@ -21,12 +21,10 @@ const Learningafterquiz = () => {
   };
 
   const handleStartClick = () => {
-    // Arahkan pengguna ke halaman yang diinginkan setelah klik start
     navigate('/dashboard/mycourses/learningquiz');
   };
 
   const handleViewDetailClick = () => {
-    // Arahkan pengguna ke halaman detail setelah klik "View Detail"
     navigate('/dashboard/mycourses/learningviewdetail');
   };
 

@@ -20,7 +20,7 @@ const SocialLinks = () => {
       const response = await fetch("/api/auth/socialmedia", {
         headers: {
           "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`, // Sesuaikan token jika diperlukan
+          Authorization: `Bearer ${token}`, 
         },
       });
       if (!response.ok) {
