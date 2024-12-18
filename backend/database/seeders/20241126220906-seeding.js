@@ -1577,6 +1577,20 @@ module.exports = {
     await queryInterface.bulkInsert("questions", [
       {
         material_id: 1,
+        question_text: "What is the result of 3 + 6 in JavaScript?",
+        position: 1,
+        created_at: new Date(),
+        updated_at: new Date(),
+      },
+      {
+        material_id: 1,
+        question_text: "Which method is used to parse a JSON string in JavaScript?",
+        position: 2,
+        created_at: new Date(),
+        updated_at: new Date
+      },
+      {
+        material_id: 1,
         question_text: "What is the result of 3 * 3 in JavaScript?",
         position: 3,
         created_at: new Date(),
@@ -1630,44 +1644,19 @@ module.exports = {
         position: 10,
         created_at: new Date(),
         updated_at: new Date(),
-      },
-      {
-        material_id: 1,
-        question_text: "What is the correct way to write a conditional statement in JavaScript?",
-        position: 11,
-        created_at: new Date(),
-        updated_at: new Date(),
-      },
-      {
-        material_id: 1,
-        question_text: "Which operator is used for strict equality in JavaScript?",
-        position: 12,
-        created_at: new Date(),
-        updated_at: new Date(),
-      },
-      {
-        material_id: 1,
-        question_text: "What is the result of `5 + '5'` in JavaScript?",
-        position: 13,
-        created_at: new Date(),
-        updated_at: new Date(),
-      },
-      {
-        material_id: 1,
-        question_text: "Which method is used to add elements to the end of an array in JavaScript?",
-        position: 14,
-        created_at: new Date(),
-        updated_at: new Date(),
-      },
-      {
-        material_id: 1,
-        question_text: "What is the output of `console.log(typeof undefined)` in JavaScript?",
-        position: 15,
-        created_at: new Date(),
-        updated_at: new Date(),
       }
     ]);
     await queryInterface.bulkInsert("options", [
+      { question_id: 1, option_text: "3", is_correct: false },
+      { question_id: 1, option_text: "6", is_correct: false },
+      { question_id: 1, option_text: "9", is_correct: true },
+      { question_id: 1, option_text: "12", is_correct: false },
+
+      { question_id: 2, option_text: "JSON.parse()", is_correct: true },
+      { question_id: 2, option_text: "JSON.stringify()", is_correct: false },
+      { question_id: 2, option_text: "parseJSON()", is_correct: false },
+      { question_id: 2, option_text: "stringifyJSON()", is_correct: false },
+
       // Options for Question 3
       { question_id: 3, option_text: "6", is_correct: false },
       { question_id: 3, option_text: "9", is_correct: true },
