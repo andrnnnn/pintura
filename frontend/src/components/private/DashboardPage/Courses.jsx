@@ -33,7 +33,7 @@ const CourseCard = ({ course }) => {
         </div>
         <div className="flex items-center mt-2">
           <img
-            src={course.institutionLogo || "https://placehold.co/20x20?text=Logo"}
+            src={course.image_url || "https://placehold.co/20x20?text=Logo"}
             alt={course.institution || "Institution"}
             className="w-5 h-5 mr-2"
           />
@@ -49,27 +49,48 @@ const CourseCard = ({ course }) => {
 // Komponen utama Courses
 const Courses = () => {
   const [categories, setCategories] = useState([]);
+  const [activeCategory, setActiveCategory] = useState('All');
   const [currentPage, setCurrentPage] = useState(1);
   const coursesPerPage = 6;
 
   useEffect(() => {
-    fetch('https://localhost:5000/api/auth/courses') // Perbaiki URL jika menggunakan localhost
+
+    fetch('/api/auth/courses')
       .then((res) => res.json())
       .then((data) => {
-        setCategories(data.categories);
-      });
+        console.log("Fetched data:", data); // Debugging log
+        setCategories(data.categories || []); // Pastikan ada data.categories
+      })
+      .catch((error) => console.error("Error fetching courses:", error)); // Log error jika fetch gagal
   }, []);
 
-  const indexOfLastCategories = currentPage * coursesPerPage;
-  const indexOfFirstCategories = indexOfLastCategories - coursesPerPage;
-  const currentCourses = categories.slice(indexOfFirstCategories, indexOfLastCategories);
+  const handleCategoryClick = (category_name) => {
+    setActiveCategory(category_name);
+    setCurrentPage(1); // Reset ke halaman pertama saat kategori diubah
+  };
+
+  const filteredCourses = activeCategory === 'All'
+    ? categories
+    : categories.filter(course =>
+        course.category_name?.toLowerCase() === activeCategory.toLowerCase()
+      );
+
+  // Log jika tidak ada course ditemukan
+  if (filteredCourses.length === 0) {
+    console.log('No courses found for category_name:', activeCategory);
+    console.log('Available categories:', categories.map(course => course.category_name));
+  }
+
+  const indexOfLastCourses = currentPage * coursesPerPage;
+  const indexOfFirstCourses = indexOfLastCourses - coursesPerPage;
+  const currentCourses = filteredCourses.slice(indexOfFirstCourses, indexOfLastCourses);
 
   const handlePageChange = (pageNumber) => {
     setCurrentPage(pageNumber);
   };
 
   const handleNext = () => {
-    if (currentPage < Math.ceil(categories.length / coursesPerPage)) {
+    if (currentPage < Math.ceil(filteredCourses.length / coursesPerPage)) {
       setCurrentPage(currentPage + 1);
     }
   };
@@ -84,12 +105,19 @@ const Courses = () => {
     <div className="p-8 min-h-screen mb-6">
       <div className="flex justify-between items-center mb-6">
         <div className="flex space-x-4">
-          <button className="px-4 py-2 bg-blue-600 text-white rounded">All</button>
-          <button className="px-4 py-2 bg-white text-gray-700 rounded">Development</button>
-          <button className="px-4 py-2 bg-white text-gray-700 rounded">Business</button>
-          <button className="px-4 py-2 bg-white text-gray-700 rounded">Finance</button>
-          <button className="px-4 py-2 bg-white text-gray-700 rounded">IT & Software</button>
-          <button className="px-4 py-2 bg-white text-gray-700 rounded">Office Productivity</button>
+          {['All', 'Graphic Design','Programming', 'Web Development', 'Database Management', 'Data Science', 'Cybersecurity', 'Cloud Computing', 'Business Management  '].map(category_name => (
+            <button
+              key={category_name}
+              onClick={() => handleCategoryClick(category_name)}
+              className={`px-4 py-2 rounded ${
+                activeCategory === category_name
+                  ? 'bg-blue-600 text-white'
+                  : 'bg-white text-gray-700'
+              }`}
+            >
+              {category_name}
+            </button>
+          ))}
         </div>
       </div>
 
@@ -113,14 +141,14 @@ const Courses = () => {
         >
           <i className="fas fa-chevron-left"></i> Previous
         </button>
-        {[...Array(Math.ceil(categories.length / coursesPerPage)).keys()].map((page) => (
+        {[...Array(Math.ceil(filteredCourses.length / coursesPerPage)).keys()].map((page) => (
           <button
             key={page + 1}
             onClick={() => handlePageChange(page + 1)}
             className={`px-4 py-2 ${
               page + 1 === currentPage
-                ? "bg-blue-600 text-white"
-                : "bg-white text-blue-600"
+                ? 'bg-blue-600 text-white'
+                : 'bg-white text-blue-600'
             } border hover:bg-blue-600 hover:text-white rounded`}
           >
             {page + 1}
@@ -128,7 +156,7 @@ const Courses = () => {
         ))}
         <button
           onClick={handleNext}
-          disabled={currentPage === Math.ceil(categories.length / coursesPerPage)}
+          disabled={currentPage === Math.ceil(filteredCourses.length / coursesPerPage)}
           className="px-4 py-2 bg-blue-600 text-white rounded ml-2 disabled:opacity-50"
         >
           Next <i className="fas fa-chevron-right"></i>

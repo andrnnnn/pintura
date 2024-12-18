@@ -8,7 +8,7 @@ SET time_zone = "+00:00";
 -- Tabel untuk menyimpan peran pengguna (admin, instructor, dll)
 CREATE TABLE userroles (
     role_id int NOT NULL AUTO_INCREMENT,
-    role_name enum(
+    role_name enum( 
         'admin', -- Administrator sistem
         'instructor', -- Pengajar/guru
         'student', -- Pelajar/siswa
@@ -62,6 +62,7 @@ CREATE TABLE userprofiles (
     facebook_url VARCHAR(255) DEFAULT NULL, -- URL Facebook
     line_url VARCHAR(255) DEFAULT NULL, -- URL Line
     twitter_url VARCHAR(255) DEFAULT NULL, -- URL Twitter
+    credit int DEFAULT 100, -- Kredit untuk enroll courses
     created_at datetime DEFAULT CURRENT_TIMESTAMP,
     updated_at datetime DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     PRIMARY KEY (profile_id),
@@ -278,19 +279,24 @@ CREATE TABLE invoices (
     FOREIGN KEY (order_id) REFERENCES courseorders (order_id)
 );
 
--- Tabel untuk materi pembelajaran
+    -- Tabel untuk materi pembelajaran
 CREATE TABLE materials (
-    material_id int NOT NULL AUTO_INCREMENT,
-    course_id int DEFAULT NULL, -- Mengacu ke kursus
-    title varchar(255) NOT NULL, -- Judul materi
-    type enum('video', 'text', 'quiz') NOT NULL, -- Jenis materi
-    content text, -- Konten materi
-    created_at datetime DEFAULT CURRENT_TIMESTAMP,
-    updated_at datetime DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-    deleted_at datetime DEFAULT NULL,
+    material_id INT NOT NULL AUTO_INCREMENT,
+    course_id INT DEFAULT NULL, -- Mengacu ke kursus
+    parent_material_id INT DEFAULT NULL, -- Mengacu ke materi induk untuk mendukung hierarki
+    title VARCHAR(255) NOT NULL, -- Judul materi
+    type ENUM('video', 'text', 'quiz','pdf') NOT NULL, -- Jenis materi
+    content TEXT, -- Konten materi
+    position INT DEFAULT 0, -- Urutan tampil materi
+    status ENUM('done', 'not_started') DEFAULT 'not_started', -- Status progres materi
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+    updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    deleted_at DATETIME DEFAULT NULL, -- Soft delete
     PRIMARY KEY (material_id),
-    FOREIGN KEY (course_id) REFERENCES courses (course_id)
+    FOREIGN KEY (course_id) REFERENCES courses (course_id),
+    FOREIGN KEY (parent_material_id) REFERENCES materials (material_id) ON DELETE SET NULL
 );
+
 
 -- Tabel untuk mentoring
 CREATE TABLE mentorships (
@@ -410,4 +416,50 @@ CREATE TABLE article_authors (
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   FOREIGN KEY (article_id) REFERENCES Articles(id) ON DELETE CASCADE
+);
+
+CREATE TABLE questions (
+    question_id INT NOT NULL AUTO_INCREMENT,
+    material_id INT NOT NULL, -- Mengacu ke tabel materials
+    question_text TEXT NOT NULL, -- Pertanyaan
+    position INT DEFAULT 0, -- Urutan pertanyaan dalam quiz
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+    updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    deleted_at DATETIME DEFAULT NULL, -- Soft delete
+    PRIMARY KEY (question_id),
+    FOREIGN KEY (material_id) REFERENCES materials (material_id) ON DELETE CASCADE
+);
+
+CREATE TABLE options (
+    option_id INT NOT NULL AUTO_INCREMENT,
+    question_id INT NOT NULL, -- Mengacu ke tabel questions
+    option_text TEXT NOT NULL, -- Teks jawaban
+    is_correct BOOLEAN DEFAULT FALSE, -- Menandakan apakah jawaban ini benar
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+    updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    deleted_at DATETIME DEFAULT NULL, -- Soft delete
+    PRIMARY KEY (option_id),
+    FOREIGN KEY (question_id) REFERENCES questions (question_id) ON DELETE CASCADE
+);
+CREATE TABLE quiz_attempts (
+    attempt_id INT NOT NULL AUTO_INCREMENT,
+    user_id INT NOT NULL, -- ID pengguna yang mencoba quiz
+    material_id INT NOT NULL, -- Mengacu ke tabel materials
+    score INT DEFAULT 0, -- Skor pengguna pada quiz
+    completed_at DATETIME DEFAULT NULL, -- Waktu quiz selesai
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+    PRIMARY KEY (attempt_id),
+    FOREIGN KEY (user_id) REFERENCES users (user_id),
+    FOREIGN KEY (material_id) REFERENCES materials (material_id) ON DELETE CASCADE
+);
+
+CREATE TABLE attempt_answers (
+    attempt_id INT NOT NULL, -- Mengacu ke tabel quiz_attempts
+    question_id INT NOT NULL, -- Mengacu ke tabel questions
+    option_id INT DEFAULT NULL, -- Mengacu ke tabel options
+    is_correct BOOLEAN DEFAULT FALSE, -- Menandakan apakah jawaban benar
+    PRIMARY KEY (attempt_id, question_id),
+    FOREIGN KEY (attempt_id) REFERENCES quiz_attempts (attempt_id) ON DELETE CASCADE,
+    FOREIGN KEY (question_id) REFERENCES questions (question_id) ON DELETE CASCADE,
+    FOREIGN KEY (option_id) REFERENCES options (option_id) ON DELETE SET NULL
 );

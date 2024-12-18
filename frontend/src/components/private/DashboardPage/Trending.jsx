@@ -33,7 +33,7 @@ const CourseCard = ({ course }) => {
         </div>
         <div className="flex items-center mt-2">
           <img
-            src={course.institutionLogo || "https://placehold.co/20x20?text=Logo"}
+            src={course.image_url || "https://placehold.co/20x20?text=Logo"}
             alt={course.institution || "Institution"}
             className="w-5 h-5 mr-2"
           />
@@ -51,7 +51,7 @@ const Trending = () => {
   const [visibleCourses, setVisibleCourses] = useState(3); // Mulai dengan 3 courses yang terlihat
 
   useEffect(() => {
-    fetch("https://localhost:5000/api/auth/courses/trend")
+    fetch("/api/auth/courses/trend")
       .then((response) => response.json())
       .then((data) => {
         const firstThreeCourses = data.courses ? data.courses : [];

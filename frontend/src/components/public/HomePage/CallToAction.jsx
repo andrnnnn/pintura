@@ -1,5 +1,5 @@
 import React from 'react';
-import Img from '../../../assets/public/imgcalltoaction.svg';
+import Img from '../../../assets/public/imgcalltoaction.png';
 
 const CallToAction = () => {
   return (

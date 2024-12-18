@@ -3,7 +3,6 @@ import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import Img from '../../assets/public/imgloginpage.svg'
 
-
 const LoginPage = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -38,7 +37,7 @@ const LoginPage = () => {
 
     try {
       console.log('Sending login request to server...');
-      const response = await fetch('https://localhost:5000/api/auth/login', {
+      const response = await fetch('/api/auth/login', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -55,7 +54,7 @@ const LoginPage = () => {
       } else {
         if (data.needsVerification) {
           localStorage.setItem('verificationEmail', email);
-          await fetch('https://localhost:5000/api/auth/send-verification', {
+          await fetch('/api/auth/send-verification', {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json',
@@ -74,7 +73,6 @@ const LoginPage = () => {
       setLoading(false);
     }
   };
-
 
   return (
     <div className="bg-white flex items-center justify-center min-h-screen font-poppins">

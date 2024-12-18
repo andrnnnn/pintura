@@ -1,5 +1,5 @@
 import React from 'react';
-import img from '../../../assets/public/imghighlight.svg';
+import img from '../../../assets/public/imghighlight.png';
 
 const Highlight = () => {
   return (

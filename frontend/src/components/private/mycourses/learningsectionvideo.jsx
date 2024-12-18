@@ -31,7 +31,7 @@ const LearningSectionVideo = () => {
     const fetchMaterials = async () => {
       try {
         const response = await fetch(
-          `https://localhost:5000/api/auth/materials/${course_id}`,
+          `/api/auth/materials/${course_id}`,
           {
             method: "GET",
             headers: {

@@ -6,7 +6,7 @@ const Courses = () => {
     const coursesPerPage = 6; // Jumlah kursus per halaman
 
     useEffect(() => {
-        fetch("https://localhost:5000/api/auth/courses") // Pastikan endpoint sesuai
+        fetch("/api/auth/courses") // Pastikan endpoint sesuai
             .then((res) => res.json())
             .then((data) => {
                 setCategories(data.categories); // Simpan semua data

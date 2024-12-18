@@ -1,7 +1,8 @@
-import React from "react";
+import React, { useState } from "react";
 import LayoutWithSidebar from "./LayoutWithSidebar";
 
 const Notifications = () => {
+  // Fungsi untuk render setiap bagian
   const renderSection = (title, itemCount) => (
     <div>
       <h2 className="text-lg font-bold text-blue-600 mb-2">{title}</h2>
@@ -21,14 +22,8 @@ const Notifications = () => {
                 </a>.
               </p>
             </div>
-            <div className="flex space-x-2">
-              <button className="text-red-600">
-                <i className="fas fa-times"></i>
-              </button>
-              <button className="text-blue-600">
-                <i className="fas fa-check"></i>
-              </button>
-            </div>
+            {/* Semua switch otomatis aktif */}
+            <ToggleSwitch defaultChecked />
           </div>
         ))}
       </div>
@@ -50,6 +45,30 @@ const Notifications = () => {
         {renderSection("Channel & Promotion Updates", 5)}
       </div>
     </LayoutWithSidebar>
+  );
+};
+
+// Komponen ToggleSwitch dengan kondisi default aktif
+const ToggleSwitch = ({ defaultChecked = false }) => {
+  const [isActive, setIsActive] = useState(defaultChecked);
+
+  const toggleSwitch = () => {
+    setIsActive(!isActive);
+  };
+
+  return (
+    <button
+      onClick={toggleSwitch}
+      className={`relative inline-flex h-6 w-12 rounded-full border-2 
+        ${isActive ? "bg-blue-600 border-blue-600" : "bg-red-600 border-red-600"} 
+        transition duration-300`}
+    >
+      <span
+        className={`absolute top-0.5 left-0.5 h-5 w-5 rounded-full bg-white shadow-md transform 
+          ${isActive ? "translate-x-6" : "translate-x-0"} 
+          transition duration-300`}
+      />
+    </button>
   );
 };
 

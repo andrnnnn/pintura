@@ -18,7 +18,7 @@ const PricingSection = () => {
 
   return (
     <div className="text-center p-6">
-      <h1 className="text-3xl font-bold text-blue-700 mb-2">Friendly pricing plans</h1>
+      <h1 className="text-3xl font-bold text-blue-800 mb-2">Friendly pricing plans</h1>
       <p className="text-gray-600 mb-6">
         Explore affordable plans tailored to support your learning and career growth. Choose the best option for your needs and unlock a world of knowledge.
       </p>
@@ -40,7 +40,7 @@ const PricingSection = () => {
       {/* Pricing Cards */}
       <div className="flex flex-col md:flex-row justify-center items-center space-y-6 md:space-y-0 md:space-x-6">
         {/* Basic Plan */}
-        <div className="border border-gray-300 rounded-lg p-6 w-80">
+        <div className="border border-gray-300 rounded-lg p-6 w-80 transform transition-transform hover:scale-105">
           <h2 className="text-xl font-bold mb-4">Basic</h2>
           <p className="text-4xl font-bold text-gray-800 mb-2">
             {isAnnual ? (
@@ -74,7 +74,7 @@ const PricingSection = () => {
         </div>
 
         {/* Pro Plan */}
-        <div className="border border-blue-600 bg-blue-600 text-white rounded-lg p-6 w-80">
+        <div className="border border-blue-600 bg-blue-600 text-white rounded-lg p-6 w-80 transform transition-transform hover:scale-105">
           <h2 className="text-xl font-bold mb-4">Pro</h2>
           <p className="text-4xl font-bold mb-2">
             {isAnnual ? (

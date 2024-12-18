@@ -25,7 +25,7 @@ const VerificationCodeResetPassPage = () => {
         setError("");
 
         try {
-            const response = await fetch("https://localhost:5000/api/auth/verify-reset-code", {
+            const response = await fetch("/api/auth/verify-reset-code", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
@@ -54,7 +54,7 @@ const VerificationCodeResetPassPage = () => {
 
     const handleSendNewCode = async () => {
         try {
-            const response = await fetch("https://localhost:5000/api/auth/forgot-password", {
+            const response = await fetch("/api/auth/forgot-password", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",

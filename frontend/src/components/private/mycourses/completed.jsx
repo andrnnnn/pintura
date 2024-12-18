@@ -1,70 +1,93 @@
-import React, { useState } from 'react';
-import { NavLink, useNavigate } from 'react-router-dom';
+import React, { useEffect, useState } from "react";
+import { NavLink, useNavigate } from "react-router-dom";
 
 const CompletedCourses = () => {
+  const [courses, setCourses] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
   const navigate = useNavigate();
-  const [selectedCourse, setSelectedCourse] = useState(null);
 
-  const courses = [
-    {
-      id: 1,
-      image: "https://placehold.co/100x100",
-      institution: "Bank Rakyat Indonesia Academy",
-      title: "Excel Essentials for Business Analysis",
-      date: "October 12, 2024",
-    },
-    {
-      id: 2,
-      image: "https://placehold.co/100x100",
-      institution: "Jakarta State University",
-      title: "Introduction to Python Programming",
-      date: "June 18, 2024",
-    },
-    {
-      id: 3,
-      image: "https://placehold.co/100x100",
-      institution: "Padjadjaran University",
-      title: "Data Analytics Basics with Excel",
-      date: "April 15, 2024",
-    },
-    {
-      id: 4,
-      image: "https://placehold.co/100x100",
-      institution: "Microsoft Indonesia",
-      title: "HTML & CSS for Beginners",
-      date: "February 29, 2024",
-    },
-    {
-      id: 5,
-      image: "https://placehold.co/100x100",
-      institution: "Shopee Indonesia",
-      title: "SQL for Data Exploration",
-      date: "January 23, 2024",
-    },
-  ];
+  useEffect(() => {
+    const fetchCourses = async () => {
+      const token = localStorage.getItem("token"); // Ambil token dari localStorage
 
-  const handleViewCertificate = (course) => {
-    setSelectedCourse(course);
-    navigate('/dashboard/mycourses/certificate');
-  };
+      console.log("Token from localStorage:", token);
+
+      if (!token) {
+        console.log("Token not found. Redirecting to login...");
+        navigate("/login");
+        return;
+      }
+
+      try {
+        const response = await fetch(
+          `/api/auth/mycourses/completed`,
+          {
+            method: "GET",
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
+
+        console.log("API Response:", response);
+
+        if (response.ok) {
+          const data = await response.json();
+          console.log("Data from API:", data);
+          const courseArray = Array.isArray(data.courses) ? data.courses : [];
+          setCourses(courseArray);
+          setError(null);
+        } else {
+          const errorData = await response.json();
+          console.error("Error from API:", errorData.message);
+          throw new Error(errorData.message || "Failed to fetch courses.");
+        }
+      } catch (err) {
+        console.error("Error fetching courses:", err.message);
+        setCourses([]);
+        setError(err.message);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchCourses();
+  }, [navigate]);
+
+  if (loading) return <div>Loading...</div>;
+  if (error) return <div className="text-red-500">{error}</div>;
+
+  // const handleViewCertificate = (course) => {
+  //   setSelectedCourse(course);
+  //   navigate('/dashboard/mycourses/certificate');
+  // };
 
   const CourseCard = ({ course }) => {
     return (
-      <div className="flex items-center space-x-4 p-4 border-b">
-        <img src={course.image} alt={course.title} className="w-24 h-24 rounded" />
-        <div className="flex-1">
-          <h3 className="text-gray-600">{course.institution}</h3>
-          <h2 className="text-xl font-bold text-blue-600">{course.title}</h2>
-          <p className="text-gray-500">Completion Date: {course.date}</p>
+      <div className="bg-white shadow rounded-lg p-6 flex items-center">
+        <img src={course.image_url} alt={course.course_title}                   
+        className="h-24 w-32 rounded-lg object-cover" />
+        <div className="ml-6 flex-1">
+        <div className="text-gray-500 font-semibold">
+                    {course.description || "No description available"}
+                  </div>
+          <h2 className="text-xl font-bold text-blue-600">{course.course_title}</h2>
+          <p className="text-gray-500">Completion Date: {course.completion_date}</p>
         </div>
         <div className="flex space-x-2">
           <button className="px-4 py-2 bg-gray-200 rounded">View Details</button>
           <button
-            className="px-4 py-2 bg-blue-600 text-white rounded"
-            onClick={() => handleViewCertificate(course)}
-          >
-            View Certificate
-          </button>
+          className="px-4 py-2 bg-blue-600 text-white rounded"
+          onClick={() =>
+            navigate(`/dashboard/mycourses/certificate`, {
+              state: { enrollmentId: course.enrollment_id },
+            })
+          }
+        >
+          View Certificate
+        </button>
         </div>
       </div>
     );
