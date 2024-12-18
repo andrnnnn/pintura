@@ -42,9 +42,9 @@ const Hero = () => {
   return (
 <div class="flex flex-col md:flex-row items-center justify-center p-4 bg-gray-100">
                     <div class="md:w-1/2 p-4">
-                        <img src={course.image_url} alt={course.title} class="rounded-lg shadow-lg w-full"/>
+                        <img src={course.image_url} alt={course.title} class="rounded-lg shadow-lg w-auto"/>
                     </div>
-                    <div class="md:w-1/2 p-4">
+                    <div class="md:w-auto p-4">
                         <div class="bg-white p-6 rounded-lg shadow-lg">
                             <div class="flex items-center mb-4">
                                 <img src={course.image_url} alt="University of Indonesia logo" class="w-10 h-10 rounded-full mr-2"/>
