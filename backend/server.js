@@ -1,7 +1,7 @@
 const dotenv = require("dotenv"); // Memuat variabel lingkungan dari file .env
 const session = require("express-session"); // Import express-session
 const passport = require("passport"); // Import passport
-const https = require("https"); // Membuat server HTTPS
+const http = require("http");
 const fs = require("fs"); // Mengakses file sistem
 const path = require("path"); // Mengelola path file/direktori
 const { constants } = require("crypto"); // Menggunakan 'constants' untuk SSL/TLS konfigurasi
@@ -31,7 +31,7 @@ app.use(passport.session()); // Inisialisasi sesi passport
 app.use(authenticateToken);
 
 // Validasi variabel lingkungan penting
-const requiredEnvVars = ["APP_URL", "HTTPS_PORT", "SSL_KEY_PATH", "SSL_CERT_PATH", "JWT_SECRET",];
+const requiredEnvVars = ["APP_URL", "HTTP_PORT", "SSL_KEY_PATH", "SSL_CERT_PATH", "JWT_SECRET",];
 const missingVars = requiredEnvVars.filter((key) => !process.env[key]);
 
 if (missingVars.length > 0) {
@@ -40,10 +40,10 @@ if (missingVars.length > 0) {
 }
 
 // Mendapatkan port dan URL dari variabel lingkungan
-const HTTPS_PORT = process.env.HTTPS_PORT || 5000; // Default ke 5000 jika HTTPS_PORT tidak diatur
+const HTTP_PORT = process.env.HTTP_PORT || 5000; // Default ke 5000 jika HTTP_PORT tidak diatur
 const APP_URL = process.env.APP_URL;
 
-// Konfigurasi SSL/TLS untuk server HTTPS
+// Konfigurasi SSL/TLS untuk server HTTP
 const sslOptions = {
     key: fs.readFileSync(path.resolve(process.env.SSL_KEY_PATH)), // Membaca file private key SSL
     cert: fs.readFileSync(path.resolve(process.env.SSL_CERT_PATH)), // Membaca file sertifikat SSL
@@ -128,8 +128,8 @@ app.use((req, res, next) => {
     res.status(404).json({ message: "Resource not found" });
 });
 
-// Membuat server HTTPS dan menyimpannya dalam variabel
-const server = https.createServer(sslOptions, app);
+// Membuat server HTTP dan menyimpannya dalam variabel
+const server = http.createServer(app);
 
 // Middleware to handle OpaqueResponseBlocking errors
 app.use((req, res, next) => {
@@ -147,14 +147,14 @@ app.use((req, res, next) => {
     next();
 });
 
-// Menjalankan server HTTPS
-server.listen(HTTPS_PORT, () => {
-    console.log(`✅ Server aman berjalan di ${APP_URL}:${HTTPS_PORT}`);
+// Menjalankan server HTTP
+server.listen(HTTP_PORT, () => {
+    console.log(`✅ Server aman berjalan di ${APP_URL}:${HTTP_PORT}`);
 });
 
 server.on("error", (err) => {
     if (err.code === "EADDRINUSE") {
-        console.error(`Port ${HTTPS_PORT} is already in use.`);
+        console.error(`Port ${HTTP_PORT} is already in use.`);
         process.exit(1); // Exit the process if the port is already in use
     } else {
         console.error("Server error:", err);
