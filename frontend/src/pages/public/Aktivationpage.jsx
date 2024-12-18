@@ -25,12 +25,17 @@ const ActivationPage = () => {
         throw new Error(`Error: ${response.status} - ${response.statusText}`);
       }
 
-      const data = await response.json(); // Get response data
-      if (data.token) {
-        localStorage.setItem('token', data.token); // Store token in localStorage
-        navigate('/dashboard/home');
+      const contentType = response.headers.get('content-type');
+      if (contentType && contentType.includes('application/json')) {
+        const data = await response.json(); // Get response data
+        if (data.token) {
+          localStorage.setItem('token', data.token); // Store token in localStorage
+          navigate('/dashboard/home');
+        } else {
+          console.error('No token found in response');
+        }
       } else {
-        console.error('No token found in response');
+        console.error('Response is not in JSON format');
       }
     } catch (error) {
       console.error('Error during the API call:', error);
