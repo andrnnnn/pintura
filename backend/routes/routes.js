@@ -15,6 +15,7 @@ const articledetailController = require("../Controllers/articledetailController"
 const { getMaterialsHierarchy, getMaterials, getMaterialById } = require('../Controllers/materialController');
 const {getCertificate}  = require('../Controllers/certifiicateController');
 const { getQuizByMaterialId } = require('../Controllers/quizController');
+const { enrollCourse } = require('../Controllers/enrollmentController');
 const router = express.Router();
 
 router.post('/register', (req, res, next) => {
@@ -67,6 +68,8 @@ router.get('/materials/hierarchy/:course_id', getMaterialsHierarchy);
 router.get('/certificate/:enrollmentId', getCertificate);
 
 router.get('/quiz/:materialId', getQuizByMaterialId);
+
+router.post('/enroll', authenticateToken, enrollCourse);
 
 // router.post('/materials', materialController.createMaterial);
 // router.put('/materials/:id', materialController.updateMaterial);
