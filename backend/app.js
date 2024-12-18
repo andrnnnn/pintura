@@ -55,7 +55,7 @@ app.disable('x-powered-by');
 
 
 // Middleware untuk melayani file statis dari folder 'dist'
-app.use(express.static(path.join(__dirname, 'dist')));
+app.use(express.static(path.join(__dirname, 'frontend/dist')));
 
 // API endpoint umum
 app.get('/api/hello', (req, res) => {
@@ -73,7 +73,7 @@ app.use(routes);
 
 // Route fallback untuk SPA (Single Page Application)
 app.get('*', (req, res) => {
-  res.sendFile(path.join(__dirname, 'dist', 'index.html'));
+  res.sendFile(path.join(__dirname, 'frontend/dist/index.html'));
 });
 
 // Middleware to handle 404 errors
