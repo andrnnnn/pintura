@@ -3,7 +3,6 @@ import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import Img from '../../assets/public/imgloginpage.svg'
 
-
 const LoginPage = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -74,7 +73,6 @@ const LoginPage = () => {
       setLoading(false);
     }
   };
-
 
   return (
     <div className="bg-white flex items-center justify-center min-h-screen font-poppins">
