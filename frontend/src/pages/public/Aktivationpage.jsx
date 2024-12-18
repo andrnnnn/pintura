@@ -4,23 +4,51 @@ import Img from '../../assets/public/imgActivationPage.svg';
 
 const ActivationPage = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [setError] = useState('');
   const navigate = useNavigate();
 
   useEffect(() => {
-    // Cek apakah token sudah ada di localStorage, menandakan bahwa user sudah login
+    // Periksa apakah token ada di localStorage, jika tidak, arahkan ke halaman login
     const token = localStorage.getItem('token');
-    if (token) {
-      setIsLoggedIn(true);
-      navigate('/dashboard/home'); // Redirect ke dashboard jika sudah login
+    if (!token) {
+      navigate('/login'); // Jika token tidak ada, arahkan ke halaman login
     }
   }, [navigate]);
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    // Di frontend, kita sudah harusnya memiliki token, jadi kita langsung set token di localStorage
-    localStorage.setItem('token', `${process.env.JWT_SECRET}`); // Simulasikan token yang diterima dari backend
-    navigate('/dashboard/home');
+    setIsLoggedIn(true);
+
+    try {
+      // Kirim OTP ke server untuk validasi
+      const response = await fetch('/api/auth/validate-otp', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ otp }),
+      });
+
+      const data = await response.json();
+
+      if (response.ok) {
+        console.log('OTP validation successful:', data);
+        // Simpan token ke localStorage atau state global setelah berhasil validasi OTP
+        localStorage.setItem('token', data.token);
+        // Redirect ke halaman dashboard setelah OTP valid
+        navigate('/dashboard/home'); // Arahkan ke dashboard setelah OTP valid
+      } else {
+        // Tampilkan pesan error jika validasi OTP gagal
+        setError(data.message || 'Failed to validate OTP. Please try again.');
+      }
+    } catch (error) {
+      console.error('Error validating OTP:', error);
+      setError('An unexpected error occurred. Please try again.');
+    } finally {
+      setIsSubmitting(false);
+    }
   };
+
 
   return (
     <div className="bg-white flex items-center justify-center min-h-screen font-poppins">
