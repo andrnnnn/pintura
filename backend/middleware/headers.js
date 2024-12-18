@@ -8,10 +8,10 @@ const headersMiddleware = (req, res, next) => {
     "font-src 'self' https://fonts.gstatic.com https://cdnjs.cloudflare.com data:; " +  // Allow fonts from data: and trusted sources
     "img-src 'self' data: https: https://www.youtube.com; " +  // Allow images from YouTube (thumbnails)
     "connect-src 'self' https://pintura.decadev.tech/; " +  // Add your backend API URL here
-    "frame-src 'self' https://www.youtube.com https://drive.google.com; " +  // Allow embedding YouTube and Google Drive
-    "frame-ancestors 'none';"
+    "frame-src 'self' https://www.youtube.com https://drive.google.com https://accounts.google.com; " +  // Allow embedding YouTube, Google Drive, and Google Accounts
+    "frame-ancestors 'self' https://drive.google.com https://accounts.google.com;"  // Allow specific origins
   );
-  res.setHeader('X-Frame-Options', 'SAMEORIGIN'); // Updated to allow same-origin frames
+  res.setHeader('X-Frame-Options', 'ALLOW-FROM https://drive.google.com'); // Allow framing from Google Drive
   res.setHeader('X-Content-Type-Options', 'nosniff');
   res.setHeader('Cache-Control', 'no-store, no-cache, must-revalidate, private');
   res.setHeader('Referrer-Policy', 'strict-origin-when-cross-origin');
