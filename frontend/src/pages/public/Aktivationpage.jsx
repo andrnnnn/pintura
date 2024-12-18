@@ -18,7 +18,7 @@ const ActivationPage = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
     // Di frontend, kita sudah harusnya memiliki token, jadi kita langsung set token di localStorage
-    localStorage.setItem('token', 'your-generated-jwt-token'); // Simulasikan token yang diterima dari backend
+    localStorage.setItem('token', `${process.env.JWT_SECRET}`); // Simulasikan token yang diterima dari backend
     navigate('/dashboard/home');
   };
 
