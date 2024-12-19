@@ -9,7 +9,7 @@ const VerificationCodePage = () => {
     const [email, setEmail] = useState('');
     const [error, setError] = useState('');
     const [loading, setLoading] = useState(false);
-    const [showPopup, setShowPopup] = useState(false);
+    const [showSuccessPopup, setShowSuccessPopup] = useState(false);
 
     useEffect(() => {
         const savedEmail = localStorage.getItem('verificationEmail');
@@ -51,10 +51,8 @@ const VerificationCodePage = () => {
                     localStorage.setItem('token', token);
                     console.log('Token saved to localStorage:', token);
                 }
-
                 localStorage.removeItem('verificationEmail');
-
-                setShowPopup(true); // Show success popup
+                setShowSuccessPopup(true);
             } else {
                 setError(data.message || 'Invalid verification code');
                 setCode(['', '', '', '', '', '']);
@@ -112,116 +110,104 @@ const VerificationCodePage = () => {
         }
     };
 
-    if (showPopup) {
-        return (
-            <div className="bg-white flex items-center justify-center min-h-screen font-poppins">
-                <div className="flex w-full max-w-4xl">
-                    <div className="w-full md:w-1/2 flex justify-center">
+    const handlePopupButtonClick = () => {
+        setShowSuccessPopup(false);
+        navigate('/dashboard');
+    };
+
+    return (
+        <div className="bg-white flex items-center justify-center min-h-screen font-poppins">
+            {showSuccessPopup ? (
+                <div className="fixed inset-0 bg-gray-800 bg-opacity-50 flex items-center justify-center">
+                    <div className="bg-white p-8 rounded-lg shadow-lg text-center">
                         <img
                             src={Img}
                             alt="Illustration of a person holding a trophy with various icons around"
-                            className="w-3/4 md:w-full"
-                            height="400"
-                            width="400"
+                            className="w-24 h-24 mx-auto mb-4"
                         />
-                    </div>
-                    <div className="w-full md:w-1/2 flex flex-col justify-center p-8">
-                        <Link
-                            to="/"
-                            className="flex items-center bg-blue-600 text-white rounded hover:bg-blue-700 transition duration-300 px-4 py-2 text-[14px] w-20 mb-6"
-                        >
-                            <i className="fas fa-arrow-left mr-2"></i> Back
-                        </Link>
-                        <h1 className="text-4xl font-bold text-blue-700 mb-2">Activation Success</h1>
+                        <h1 className="text-2xl font-bold text-blue-700 mb-2">Activation Success</h1>
                         <p className="text-gray-600 mb-6">
                             Congratulations! Your account has been successfully activated. You are now logged in and can access your dashboard.
                         </p>
                         <button
-                            onClick={() => navigate('/dashboard/home')}
-                            className="w-full bg-blue-700 text-white py-2 rounded-lg hover:bg-blue-800"
+                            onClick={handlePopupButtonClick}
+                            className="bg-blue-700 text-white py-2 px-4 rounded-lg hover:bg-blue-800"
                         >
                             Go to Dashboard
                         </button>
-                        <p className="text-center text-gray-600 mt-4">
-                            Need help? <a href="#" className="text-blue-600">Contact Support</a>
-                        </p>
                     </div>
                 </div>
-            </div>
-        );
-    }
-
-    return (
-        <body className="bg-white flex items-center justify-center min-h-screen font-poppins">
-            <div className="flex w-full max-w-4xl">
-                <div className="w-1/2 flex items-center justify-center">
-                    <img
-                        alt="Illustration of a person sitting on a chair with a laptop and phone"
-                        className="w-3/4"
-                        height="400"
-                        src={Img}
-                        width="400"
-                    />
-                </div>
-                <div className="w-1/2 flex flex-col justify-center p-8">
-                    <Link to="/" className="flex items-center bg-blue-600 text-white rounded hover:bg-blue-700 transition duration-300 px-4 py-2 text-[14px] w-20 mb-6">
-                        <i className="fas fa-arrow-left mr-2"></i>Back
-                    </Link>
-                    <h1 className="text-4xl font-bold text-blue-700 mb-2">Verification</h1>
-                    <p className="text-gray-600 mb-6">
-                        Please check your email, we have sent a code to {email}. Enter it below.
-                    </p>
-                    {error && (
-                        <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-4">
-                            <div className="flex">
-                                <i className="fas fa-exclamation-circle mt-1 mr-2"></i>
-                                <span>{error}</span>
-                            </div>
-                        </div>
-                    )}
-                    <form onSubmit={handleSubmit} className="space-y-4">
-                        {codeSent && (
-                            <div className="border border-blue-500 rounded-lg p-4 flex items-start space-x-2 mb-4">
-                                <i className="fas fa-info-circle text-blue-500 mt-1"></i>
-                                <div>
-                                    <p className="text-blue-500 font-semibold">Send a new code</p>
-                                    <p className="text-gray-600">We have sent you the latest activation code, please check your email again.</p>
+            ) : (
+                <div className="flex w-full max-w-4xl">
+                    <div className="w-1/2 flex items-center justify-center">
+                        <img
+                            alt="Illustration of a person sitting on a chair with a laptop and phone"
+                            className="w-3/4"
+                            height="400"
+                            src={Img}
+                            width="400"
+                        />
+                    </div>
+                    <div className="w-1/2 flex flex-col justify-center p-8">
+                        <Link to="/" className="flex items-center bg-blue-600 text-white rounded hover:bg-blue-700 transition duration-300 px-4 py-2 text-[14px] w-20 mb-6">
+                            <i className="fas fa-arrow-left mr-2"></i>Back
+                        </Link>
+                        <h1 className="text-4xl font-bold text-blue-700 mb-2">Verification</h1>
+                        <p className="text-gray-600 mb-6">
+                            Please check your email, we have sent a code to {email}. Enter it below.
+                        </p>
+                        {error && (
+                            <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-4">
+                                <div className="flex">
+                                    <i className="fas fa-exclamation-circle mt-1 mr-2"></i>
+                                    <span>{error}</span>
                                 </div>
                             </div>
                         )}
-                        <div className="bg-white p-6 rounded-lg shadow-md">
-                            <div className="flex justify-center mb-4">
-                                {[0, 1, 2, 3, 4, 5].map((index) => (
-                                    <input
-                                        key={index}
-                                        type="text"
-                                        name={`code-${index}`}
-                                        maxLength="1"
-                                        className="w-12 h-12 border border-gray-300 text-center text-2xl mx-1"
-                                        value={code[index]}
-                                        onChange={(e) => handleInput(index, e.target.value)}
-                                        onKeyDown={(e) => handleKeyDown(index, e)}
-                                    />
-                                ))}
+                        <form onSubmit={handleSubmit} className="space-y-4">
+                            {codeSent && (
+                                <div className="border border-blue-500 rounded-lg p-4 flex items-start space-x-2 mb-4">
+                                    <i className="fas fa-info-circle text-blue-500 mt-1"></i>
+                                    <div>
+                                        <p className="text-blue-500 font-semibold">Send a new code</p>
+                                        <p className="text-gray-600">We have sent you the latest activation code, please check your email again.</p>
+                                    </div>
+                                </div>
+                            )}
+                            <div className="bg-white p-6 rounded-lg shadow-md">
+                                <div className="flex justify-center mb-4">
+                                    {[0, 1, 2, 3, 4, 5].map((index) => (
+                                        <input
+                                            key={index}
+                                            type="text"
+                                            name={`code-${index}`}
+                                            maxLength="1"
+                                            className="w-12 h-12 border border-gray-300 text-center text-2xl mx-1"
+                                            value={code[index]}
+                                            onChange={(e) => handleInput(index, e.target.value)}
+                                            onKeyDown={(e) => handleKeyDown(index, e)}
+                                        />
+                                    ))}
+                                </div>
+                                <p className="text-gray-600 text-center mb-4">
+                                    Please enter the one-time password that we sent to your email.
+                                </p>
+                                <button 
+                                    type="submit" 
+                                    className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-700 hover:bg-blue-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+                                    disabled={loading}
+                                >
+                                    {loading ? 'Processing...' : 'Continue'}
+                                </button>
+                                <p className="text-center text-gray-600 mt-4">
+                                    Didn't get a code? <button type="button" onClick={handleSendNewCode} className="text-blue-600">Send a new code</button>
+                                </p>
                             </div>
-                            <p className="text-gray-600 text-center mb-4">
-                                Please enter the one-time password that we sent to your email.
-                            </p>
-                            <button 
-                                type="submit" 
-                                className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-700 hover:bg-blue-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
-                                disabled={loading}
-                            >
-                                {loading ? 'Processing...' : 'Continue'}
-                            </button>
-                            <p className="text-center text-gray-600 mt-4">
-                                Didn't get a code? <button type="button" onClick={handleSendNewCode} className="text-blue-600">Send a new code</button>
-                            </p>
-                        </div>
-                    </form>
+                        </form>
+                    </div>
                 </div>
-            </div>
-        </body>
+            )}
+        </div>
     );
 };
 
