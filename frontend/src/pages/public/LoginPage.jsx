@@ -1,4 +1,4 @@
-import CryptoJS from 'crypto-js'; // Import crypto
+import bcrypt from 'bcryptjs'; // Import bcryptjs
 import DOMPurify from 'dompurify';
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
@@ -18,8 +18,11 @@ const LoginPage = () => {
     setValue(sanitizedValue);
   };
 
-  const hashData = (data) => {
-    return CryptoJS.SHA256(data).toString(CryptoJS.enc.Hex);
+  // Hash data with bcryptjs
+  const hashDataFrontend = async (data) => {
+    const salt = await bcrypt.genSalt(10); // Generate salt
+    const hashedData = await bcrypt.hash(data, salt); // Hash data
+    return hashedData;
   };
 
   // Handle form submission
@@ -34,14 +37,18 @@ const LoginPage = () => {
     setLoading(true);
     setErrorMessage('');
 
-    const userData = {
-      email: hashData(email), // Hash email
-      password: hashData(password), // Hash password
-      rememberMe,
-    };
-
     try {
-      console.log('Sending login request to server...');
+      // Hash password in the frontend
+      const hashedPassword = await hashDataFrontend(password);
+
+      const userData = {
+        email, // Send plain email
+        password: hashedPassword, // Send hashed password
+        rememberMe,
+      };
+
+      console.log('Sending login request to server...', userData);
+
       const response = await fetch('/api/auth/login', {
         method: 'POST',
         headers: {

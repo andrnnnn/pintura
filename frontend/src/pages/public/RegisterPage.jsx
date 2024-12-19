@@ -1,4 +1,4 @@
-import CryptoJS from 'crypto-js'; // Import crypto
+import bcrypt from 'bcryptjs'; // Import bcryptjs
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom'; // Import useNavigate
 import Img from '../../assets/public/imgregisterpage.svg';
@@ -13,8 +13,11 @@ const RegisterPage = () => {
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate(); // Initialize useNavigate
 
-  const hashData = (data) => {
-    return CryptoJS.SHA256(data).toString(CryptoJS.enc.Hex);
+  // Hash data using bcryptjs
+  const hashData = async (data) => {
+    const salt = await bcrypt.genSalt(10); // Generate salt
+    const hashedData = await bcrypt.hash(data, salt); // Hash data
+    return hashedData;
   };
 
   const handleSubmit = async (e) => {
@@ -29,17 +32,21 @@ const RegisterPage = () => {
       return;
     }
 
-    const userData = {
-      firstName,
-      lastName,
-      name: `${firstName} ${lastName}`,
-      email: hashData(email), // Hash email
-      password: hashData(password), // Hash password
-    };
-
     setLoading(true);
 
     try {
+      // Hash email and password
+      const hashedEmail = await hashData(email);
+      const hashedPassword = await hashData(password);
+
+      const userData = {
+        firstName,
+        lastName,
+        name: `${firstName} ${lastName}`,
+        email: hashedEmail, // Send hashed email
+        password: hashedPassword, // Send hashed password
+      };
+
       const response = await fetch('/api/auth/register', {
         method: 'POST',
         headers: {
@@ -73,7 +80,6 @@ const RegisterPage = () => {
       setLoading(false);
     }
   };
-
 
   return (
     <body className="bg-white flex items-center justify-center min-h-screen font-poppins">
