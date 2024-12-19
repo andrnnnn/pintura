@@ -6,16 +6,16 @@ const ActivationPage = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
-  const [code, setCode] = useState(['', '', '', '', '', '']); // Assuming you're handling the verification code
+  const [code, setCode] = useState(['', '', '', '', '', '']);
   const navigate = useNavigate();
   const email = localStorage.getItem('verificationEmail'); // Assuming email is stored in localStorage
 
   useEffect(() => {
-    // Cek apakah token sudah ada di localStorage, menandakan bahwa user sudah login
+    // Check if token already exists in localStorage
     const token = localStorage.getItem('token');
     if (token) {
       setIsLoggedIn(true);
-      navigate('/dashboard/home'); // Redirect ke dashboard jika sudah login
+      navigate('/dashboard/home'); // Redirect to dashboard if already logged in
     }
   }, [navigate]);
 
@@ -24,7 +24,6 @@ const ActivationPage = () => {
     const verificationCode = code.join('');
     console.log('Submitting code for email:', email);
 
-    // Check if email exists in localStorage
     if (!email) {
       setError('Email not found. Please try again.');
       return;
@@ -49,17 +48,12 @@ const ActivationPage = () => {
       console.log('Verification response:', data);
 
       if (response.ok) {
-        // Menyimpan token JWT setelah verifikasi
         const { token } = data;
         if (token) {
-          localStorage.setItem('token', token); // Menyimpan token ke localStorage
-          console.log('Token saved to localStorage:', token); // Debugging: pastikan token tersimpan
+          localStorage.setItem('token', token); // Store token in localStorage
         }
 
-        // Hapus email dari localStorage setelah verifikasi
-        localStorage.removeItem('verificationEmail');
-
-        // Set isLoggedIn to true and navigate to the dashboard
+        localStorage.removeItem('verificationEmail'); // Remove email from localStorage
         setIsLoggedIn(true);
         navigate('/dashboard/home');
       } else {
@@ -94,31 +88,52 @@ const ActivationPage = () => {
             to="/"
             className="flex items-center bg-blue-600 text-white rounded hover:bg-blue-700 transition duration-300 px-4 py-2 text-[14px] w-20 mb-6"
           >
-            <i className="fas fa-arrow-left mr-2"></i> Back
+            <i className="fas fa-arrow-left mr-2"></i>Back
           </Link>
-          <h1 className="text-4xl font-bold text-blue-700 mb-2">Activation Success</h1>
+
+          <h1 className="text-4xl font-bold text-blue-700 mb-2">Activate Account</h1>
           <p className="text-gray-600 mb-6">
-            Congratulations! Your account has been successfully activated. You are now logged in and can access your dashboard.
+            Please enter the activation code we sent to {email}.
           </p>
 
-          {/* Formulir dan tombol */}
-          {!isLoggedIn && (
-            <form onSubmit={handleSubmit} className="space-y-4">
-              <div className="bg-white p-6 rounded-lg shadow-md">
-                <button
-                  type="submit"
-                  className="w-full bg-blue-700 text-white py-2 rounded-lg hover:bg-blue-800"
-                  disabled={loading} // Disable button during loading
-                >
-                  {loading ? 'Loading...' : 'Go to Dashboard'}
-                </button>
-                <p className="text-center text-gray-600 mt-4">
-                  Need help? <a href="#" className="text-blue-600">Contact Support</a>
-                </p>
-                {error && <p className="text-red-500 text-center mt-4">{error}</p>}
+          {error && (
+            <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-4">
+              <div className="flex">
+                <i className="fas fa-exclamation-circle mt-1 mr-2"></i>
+                <span>{error}</span>
               </div>
-            </form>
+            </div>
           )}
+
+          <form onSubmit={handleSubmit} className="space-y-4">
+            <div className="bg-white p-6 rounded-lg shadow-md">
+              <div className="flex justify-center mb-4">
+                {[0, 1, 2, 3, 4, 5].map((index) => (
+                  <input
+                    key={index}
+                    type="text"
+                    name={`code-${index}`}
+                    maxLength="1"
+                    className="w-12 h-12 border border-gray-300 text-center text-2xl mx-1"
+                    value={code[index]}
+                    onChange={(e) => handleInput(index, e.target.value)}
+                    onKeyDown={(e) => handleKeyDown(index, e)}
+                  />
+                ))}
+              </div>
+
+              <p className="text-gray-600 text-center mb-4">
+                Please enter the activation code sent to your email.
+              </p>
+              <button
+                type="submit"
+                className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-700 hover:bg-blue-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+                disabled={loading}
+              >
+                {loading ? 'Processing...' : 'Activate Account'}
+              </button>
+            </div>
+          </form>
         </div>
       </div>
     </div>
