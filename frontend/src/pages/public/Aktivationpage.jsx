@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import Img from '../../assets/public/imgActivationPage.svg';
+import jwt from 'jsonwebtoken';
 
 const ActivationPage = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -17,6 +18,14 @@ const ActivationPage = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    // Generate JWT token
+    const token = jwt.sign(
+      { userId: user.user_id, email: user.email },
+      process.env.JWT_SECRET || 'defaultsecret',
+      { expiresIn: '1h' }
+    );
+    // Set token in localStorage
+    localStorage.setItem('token', token);
     navigate('/dashboard/home');
   };
 

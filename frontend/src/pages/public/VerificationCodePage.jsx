@@ -28,7 +28,7 @@ const VerificationCodePage = () => {
         
         setLoading(true);
         setError('');
-    
+
         try {
             const response = await fetch('/api/auth/verify-code', {
                 method: 'POST',
@@ -40,15 +40,13 @@ const VerificationCodePage = () => {
                     code: verificationCode
                 }),
             });
-    
+
             const data = await response.json();
             console.log('Verification response:', data);
-    
+
             if (response.ok) {
-                // Simpan token yang diterima ke localStorage
-                localStorage.setItem('token', data.token);
-                localStorage.removeItem('verificationEmail'); // Hapus email setelah verifikasi
-                navigate('/AktivationPage'); // Arahkan ke halaman ActivationPage
+                localStorage.removeItem('verificationEmail');
+                navigate('/AktivationPage');
             } else {
                 setError(data.message || 'Invalid verification code');
                 setCode(['', '', '', '', '', '']);
@@ -60,7 +58,6 @@ const VerificationCodePage = () => {
             setLoading(false);
         }
     };
-    
 
     const handleSendNewCode = async () => {
         setLoading(true);
