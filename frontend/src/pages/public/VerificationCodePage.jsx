@@ -119,13 +119,13 @@ const VerificationCodePage = () => {
     return (
         <div className="bg-white flex items-center justify-center min-h-screen font-poppins">
     {showSuccessPopup ? (
-        <div className="flex justify-center items-center w-full">
+        <div className="fixed inset-0 bg-gray-800 bg-opacity-50 flex items-center justify-center">
             <div
                 className="bg-white w-[700px] h-[500px] shadow-2xl rounded-lg overflow-hidden flex"
                 style={{ boxShadow: "0 10px 20px rgba(0, 0, 0, 0.5)" }} // Shadow gelap
             >
                 {/* Bagian kiri: Gambar */}
-                <div className="w-1/2 flex justify-center items-center bg-gray-100">
+                <div className="w-full md:w-1/2 flex justify-center">
                     <img
                         src={Img2}
                         alt="Illustration of a person holding a trophy with various icons around"
