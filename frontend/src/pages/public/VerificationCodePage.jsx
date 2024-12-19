@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Link, useNavigate, useLocation } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import Img from '../../assets/public/imgVerificationCode2.svg';
 
 const VerificationCodePage = () => {
@@ -7,20 +7,14 @@ const VerificationCodePage = () => {
     const location = useLocation();
     const [codeSent, setCodeSent] = useState(false);
     const [code, setCode] = useState(['', '', '', '', '', '']);
-    const [email, setEmail] = useState(location.state?.email || ''); // Retrieve email from state or fallback
+    const [email, setEmail] = useState(location.state?.email || localStorage.getItem('email') || ''); // Retrieve email from state or localStorage
     const [error, setError] = useState('');
     const [loading, setLoading] = useState(false);
 
     useEffect(() => {
         if (!email) {
-            // If email is missing, try to get it from localStorage
-            const savedEmail = localStorage.getItem('verificationEmail');
-            if (savedEmail) {
-                setEmail(savedEmail);
-            } else {
-                console.log('No email found in state or localStorage');
-                navigate('/register'); // Redirect to the register page if no email is found
-            }
+            console.log('No email found, redirecting to register page');
+            navigate('/register');
         }
     }, [email, navigate]);
 
@@ -48,8 +42,8 @@ const VerificationCodePage = () => {
             console.log('Verification response:', data);
 
             if (response.ok) {
-                localStorage.removeItem('verificationEmail');
-                navigate('/activation'); // Proceed to the activation page
+                localStorage.removeItem('email'); // Clean up localStorage after successful verification
+                navigate('/AktivationPage'); // Redirect to activation page
             } else {
                 setError(data.message || 'Invalid verification code');
                 setCode(['', '', '', '', '', '']);
