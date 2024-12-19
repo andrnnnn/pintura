@@ -25,10 +25,10 @@ const VerificationCodePage = () => {
         e.preventDefault();
         const verificationCode = code.join('');
         console.log('Submitting code for email:', email);
-    
+        
         setLoading(true);
         setError('');
-    
+
         try {
             const response = await fetch('/api/auth/verify-code', {
                 method: 'POST',
@@ -40,10 +40,10 @@ const VerificationCodePage = () => {
                     code: verificationCode
                 }),
             });
-    
+
             const data = await response.json();
             console.log('Verification response:', data);
-    
+
             if (response.ok) {
                 // Menyimpan token JWT setelah verifikasi
                 const { token } = data;
@@ -55,7 +55,7 @@ const VerificationCodePage = () => {
                 // Hapus email dari localStorage setelah verifikasi
                 localStorage.removeItem('verificationEmail');
     
-                // Arahkan pengguna ke dashboard
+                localStorage.removeItem('verificationEmail');
                 navigate('/AktivationPage');
             } else {
                 setError(data.message || 'Invalid verification code');
@@ -68,7 +68,6 @@ const VerificationCodePage = () => {
             setLoading(false);
         }
     };
-    
 
     const handleSendNewCode = async () => {
         setLoading(true);
