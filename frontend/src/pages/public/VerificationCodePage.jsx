@@ -118,40 +118,41 @@ const VerificationCodePage = () => {
 
     return (
         <div className="bg-white flex items-center justify-center min-h-screen font-poppins">
-        {showSuccessPopup ? (
-              <div className="flex w-full max-w-4xl">
-              <div className="bg-white w-[600px] h-[500px] shadow-lg flex">
-                  {/* Bagian kiri: Gambar */}
-                  <div className="w-full md:w-1/2 flex justify-center">
-                      <img
-                          src={Img2}
-                          alt="Illustration of a person holding a trophy with various icons around"
-                          className="w-3/4 md:w-full"
-                          height="400"
-                          width="400"
-                      />
-                  </div>
-                  {/* Bagian kanan: Teks dan Tombol */}
-                  <div className="w-1/2 p-8 flex flex-col justify-center items-start">
-                      <Link
-                          to="/"
-                          className="flex items-center bg-blue-600 text-white rounded hover:bg-blue-700 transition duration-300 px-4 py-2 text-[14px] w-20 mb-6"
-                      >
-                          <i className="fas fa-arrow-left mr-2"></i> Back
-                      </Link>
-                      <h1 className="text-4xl font-bold text-blue-700 mb-2">Activation Success</h1>
-                      <p className="text-gray-600 mb-6">
-                          Congratulations! Your account has been successfully activated. You are now logged in and can access your dashboard.
-                      </p>
-                      <button
-                          onClick={handlePopupButtonClick}
-                          className="w-full bg-blue-700 text-white py-2 rounded-lg hover:bg-blue-800"
-                      >
-                          Go to Dashboard
-                      </button>
-                  </div>
-              </div>
-          </div>
+    {showSuccessPopup ? (
+        <div className="flex justify-center items-center w-full">
+            <div
+                className="bg-white w-[700px] h-[500px] shadow-2xl rounded-lg overflow-hidden flex"
+                style={{ boxShadow: "0 10px 20px rgba(0, 0, 0, 0.5)" }} // Shadow gelap
+            >
+                {/* Bagian kiri: Gambar */}
+                <div className="w-1/2 flex justify-center items-center bg-gray-100">
+                    <img
+                        src={Img2}
+                        alt="Illustration of a person holding a trophy with various icons around"
+                        className="w-3/4 h-auto"
+                    />
+                </div>
+                {/* Bagian kanan: Teks dan Tombol */}
+                <div className="w-1/2 p-8 flex flex-col justify-center">
+                    <Link
+                        to="/"
+                        className="flex items-center bg-blue-600 text-white rounded hover:bg-blue-700 transition duration-300 px-4 py-2 text-[14px] w-20 mb-6"
+                    >
+                        <i className="fas fa-arrow-left mr-2"></i> Back
+                    </Link>
+                    <h1 className="text-3xl font-bold text-blue-700 mb-2">Activation Success</h1>
+                    <p className="text-gray-600 mb-6">
+                        Congratulations! Your account has been successfully activated. You are now logged in and can access your dashboard.
+                    </p>
+                    <button
+                        onClick={handlePopupButtonClick}
+                        className="w-full bg-blue-700 text-white py-2 rounded-lg hover:bg-blue-800"
+                    >
+                        Go to Dashboard
+                    </button>
+                </div>
+            </div>
+        </div>
         ) : (
             <div className="flex w-full max-w-4xl">
                 <div className="w-1/2 flex items-center justify-center">
