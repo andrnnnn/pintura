@@ -95,30 +95,43 @@ const sendVerificationCode = async (req, res) => {
 const verifyCode = async (req, res) => {
     try {
         const { email, code } = req.body;
+        
+        // Find the user by email
         const user = await User.findOne({ where: { email } });
 
+        // Check if user exists
         if (!user) {
             return res.status(404).json({ message: "Email not found" });
         }
 
+        // Validate the verification code
         if (user.email_verification_token !== code) {
             return res.status(400).json({ message: "Invalid verification code" });
         }
 
-        if (new Date() > user.email_verification_token_expires) {
+        // Check if the verification code has expired
+        if (new Date() > new Date(user.email_verification_token_expires)) {
             return res.status(400).json({ message: "Verification code has expired" });
         }
 
+        // Update the user's verification status
         await User.update(
             {
-                email_verified: "1",
-                email_verification_token: null,
-                email_verification_token_expires: null,
+                email_verified: "1",  // Mark email as verified
+                email_verification_token: null,  // Clear the verification token
+                email_verification_token_expires: null,  // Clear the expiration time
             },
             { where: { email } }
         );
 
-        res.status(200).json({ message: "Verification successful" });
+        // Generate JWT token for the user (No need to log in again)
+        const token = jwt.sign({ id: user.id, email: user.email }, process.env.JWT_SECRET || 'defaultsecret', { expiresIn: '1h' });
+
+        // Send response with the JWT token
+        res.status(200).json({
+            message: "Verification successful",
+            token: token  // Return JWT token to be used for authenticated actions
+        });
     } catch (error) {
         console.error("Error verifying code:", error);
         res.status(500).json({ 
@@ -127,6 +140,7 @@ const verifyCode = async (req, res) => {
         });
     }
 };
+
 
 // Controller untuk mengirim kode reset password
 const forgotPassword = async (req, res) => {
