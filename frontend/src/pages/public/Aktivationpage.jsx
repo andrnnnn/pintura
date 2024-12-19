@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 const ActivationPage = () => {
@@ -6,49 +6,62 @@ const ActivationPage = () => {
   const [errorMessage, setErrorMessage] = useState('');
   const navigate = useNavigate();
 
+  const activationToken = localStorage.getItem('activationToken'); // Get token (if required)
+
+  useEffect(() => {
+    // Check if the user is properly redirected from the verification page
+    if (!localStorage.getItem('verificationEmail')) {
+      navigate('/verification'); // If no email is found, redirect back to verification
+    }
+  }, [navigate]);
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     setIsLoading(true);
     setErrorMessage('');
 
+    const email = localStorage.getItem('verificationEmail'); // Get the email
+
+    if (!email) {
+      setErrorMessage('Email is missing');
+      setIsLoading(false);
+      return;
+    }
+
     try {
-      // Simulasi pemanggilan API
       const response = await fetch('/api/auth/activate', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({
-          // tambahkan data lain jika diperlukan
-        }),
+        body: JSON.stringify({ email }),
       });
 
-      if (!response.ok) {
-        throw new Error('Aktivasi gagal, silakan coba lagi.');
-      }
-
       const data = await response.json();
-      console.log('Activation successful:', data);
 
-      // Arahkan pengguna ke halaman berikutnya
-      navigate('/dashboard/home'); // Ganti dengan rute tujuan
+      if (response.ok) {
+        // Clear the email from localStorage after successful activation
+        localStorage.removeItem('verificationEmail');
+        navigate('/dashboard/home'); // Redirect to Dashboard after successful activation
+      } else {
+        setErrorMessage(data.message || 'Activation failed');
+      }
     } catch (error) {
-      console.error('Error during activation:', error);
-      setErrorMessage(error.message || 'Terjadi kesalahan.');
+      setErrorMessage('Error occurred during activation');
     } finally {
       setIsLoading(false);
     }
   };
 
   return (
-    <div className="activation-page">
-      <h1>Aktivasi Akun</h1>
+    <div>
+      <h1>Account Activation</h1>
       <form onSubmit={handleSubmit}>
         <button type="submit" disabled={isLoading}>
-          {isLoading ? 'Loading...' : 'Aktivasi'}
+          {isLoading ? 'Activating...' : 'Activate Account'}
         </button>
       </form>
-      {errorMessage && <p className="error-message">{errorMessage}</p>}
+      {errorMessage && <p>{errorMessage}</p>}
     </div>
   );
 };
