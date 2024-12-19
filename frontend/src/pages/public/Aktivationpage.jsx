@@ -8,23 +8,16 @@ const ActivationPage = () => {
   const [error, setError] = useState('');
   const [code, setCode] = useState(['', '', '', '', '', '']); // Assuming you're handling the verification code
   const navigate = useNavigate();
-  
-  // Get email from localStorage (it should be stored during registration)
-  const email = localStorage.getItem('verificationEmail'); 
+  const email = localStorage.getItem('verificationEmail'); // Assuming email is stored in localStorage
 
   useEffect(() => {
-    // Check if the token is already in localStorage, meaning the user is logged in
+    // Cek apakah token sudah ada di localStorage, menandakan bahwa user sudah login
     const token = localStorage.getItem('token');
     if (token) {
       setIsLoggedIn(true);
-      navigate('/dashboard/home'); // Redirect to dashboard if already logged in
-    } else {
-      if (!email) {
-        // If no email is found, redirect to registration page
-        navigate('/register');
-      }
+      navigate('/dashboard/home'); // Redirect ke dashboard jika sudah login
     }
-  }, [email, navigate]);
+  }, [navigate]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -56,14 +49,14 @@ const ActivationPage = () => {
       console.log('Verification response:', data);
 
       if (response.ok) {
-        // Store the token JWT after verification
+        // Menyimpan token JWT setelah verifikasi
         const { token } = data;
         if (token) {
-          localStorage.setItem('token', token); // Save token to localStorage
-          console.log('Token saved to localStorage:', token);
+          localStorage.setItem('token', token); // Menyimpan token ke localStorage
+          console.log('Token saved to localStorage:', token); // Debugging: pastikan token tersimpan
         }
 
-        // Remove email from localStorage after verification
+        // Hapus email dari localStorage setelah verifikasi
         localStorage.removeItem('verificationEmail');
 
         // Set isLoggedIn to true and navigate to the dashboard
@@ -84,7 +77,7 @@ const ActivationPage = () => {
   return (
     <div className="bg-white flex items-center justify-center min-h-screen font-poppins">
       <div className="flex w-full max-w-4xl">
-        {/* Image Section */}
+        {/* Bagian Gambar */}
         <div className="w-full md:w-1/2 flex justify-center">
           <img
             src={Img}
@@ -95,7 +88,7 @@ const ActivationPage = () => {
           />
         </div>
 
-        {/* Content Section */}
+        {/* Bagian Konten */}
         <div className="w-full md:w-1/2 flex flex-col justify-center p-8">
           <Link
             to="/"
@@ -108,7 +101,7 @@ const ActivationPage = () => {
             Congratulations! Your account has been successfully activated. You are now logged in and can access your dashboard.
           </p>
 
-          {/* Form and button */}
+          {/* Formulir dan tombol */}
           {!isLoggedIn && (
             <form onSubmit={handleSubmit} className="space-y-4">
               <div className="bg-white p-6 rounded-lg shadow-md">
