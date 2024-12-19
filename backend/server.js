@@ -118,7 +118,11 @@ app.post("/api/auth/register", async (req, res) => {
     }
 });
 
-
+app.post('/api/auth/activate', (req, res) => {
+    // Handle activation logic here
+    res.json({ message: 'Activation successful' });
+  });
+  
 
 
 
