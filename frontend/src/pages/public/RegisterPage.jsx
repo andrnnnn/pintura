@@ -1,7 +1,13 @@
-import bcrypt from 'bcryptjs'; // Import bcryptjs
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom'; // Import useNavigate
 import Img from '../../assets/public/imgregisterpage.svg';
+
+// Utility function for password strength validation
+const validatePassword = (password) => {
+  // Password must be at least 8 characters long, contain at least one number, one uppercase letter, and one special character
+  const passwordRegex = /^(?=.*[A-Za-z])(?=.*\d)(?=.*[!@#$%^&*])[A-Za-z\d@$!%*?&]{8,}$/;
+  return passwordRegex.test(password);
+};
 
 const RegisterPage = () => {
   const [firstName, setFirstName] = useState('');
@@ -13,40 +19,42 @@ const RegisterPage = () => {
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate(); // Initialize useNavigate
 
-  // Hash data using bcryptjs
-  const hashData = async (data) => {
-    const salt = await bcrypt.genSalt(10); // Generate salt
-    const hashedData = await bcrypt.hash(data, salt); // Hash data
-    return hashedData;
-  };
-
   const handleSubmit = async (e) => {
     e.preventDefault();
     
     // Reset error message
     setError('');
 
-    // Validate password
+    // Validate password strength
+    if (!validatePassword(password)) {
+      setError('Password must be at least 8 characters long, contain a number, an uppercase letter, and a special character.');
+      return;
+    }
+
+    // Validate if passwords match
     if (password !== confirmPassword) {
       setError('Passwords do not match.');
       return;
     }
 
+    // Validate email format
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(email)) {
+      setError('Please enter a valid email address.');
+      return;
+    }
+
+    const userData = {
+      firstName,
+      lastName,
+      name: `${firstName} ${lastName}`,
+      email,
+      password,
+    };
+
     setLoading(true);
 
     try {
-      // Hash email and password
-      const hashedEmail = await hashData(email);
-      const hashedPassword = await hashData(password);
-
-      const userData = {
-        firstName,
-        lastName,
-        name: `${firstName} ${lastName}`,
-        email: hashedEmail, // Send hashed email
-        password: hashedPassword, // Send hashed password
-      };
-
       const response = await fetch('/api/auth/register', {
         method: 'POST',
         headers: {

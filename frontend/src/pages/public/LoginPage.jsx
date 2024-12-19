@@ -1,4 +1,3 @@
-import bcrypt from 'bcryptjs'; // Import bcryptjs
 import DOMPurify from 'dompurify';
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
@@ -18,11 +17,10 @@ const LoginPage = () => {
     setValue(sanitizedValue);
   };
 
-  // Hash data with bcryptjs
-  const hashDataFrontend = async (data) => {
-    const salt = await bcrypt.genSalt(10); // Generate salt
-    const hashedData = await bcrypt.hash(data, salt); // Hash data
-    return hashedData;
+  // Validate Email Format
+  const validateEmail = (email) => {
+    const emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+    return emailPattern.test(email);
   };
 
   // Handle form submission
@@ -34,21 +32,22 @@ const LoginPage = () => {
       return;
     }
 
+    if (!validateEmail(email)) {
+      setErrorMessage('Invalid email format');
+      return;
+    }
+
     setLoading(true);
     setErrorMessage('');
 
+    const userData = {
+      email,
+      password,
+      rememberMe,
+    };
+
     try {
-      // Hash password in the frontend
-      const hashedPassword = await hashDataFrontend(password);
-
-      const userData = {
-        email, // Send plain email
-        password: hashedPassword, // Send hashed password
-        rememberMe,
-      };
-
-      console.log('Sending login request to server...', userData);
-
+      console.log('Sending login request to server...');
       const response = await fetch('/api/auth/login', {
         method: 'POST',
         headers: {
@@ -61,7 +60,10 @@ const LoginPage = () => {
 
       if (response.ok) {
         console.log('Login successful:', data);
-        localStorage.setItem('token', data.token);
+
+        // Store token securely in HTTP-only cookie (not localStorage)
+        document.cookie = `token=${data.token}; path=/; secure; HttpOnly`;
+
         navigate('/dashboard/home');
       } else {
         if (data.needsVerification) {
@@ -183,7 +185,7 @@ const LoginPage = () => {
                 <span className="px-2 bg-white text-gray-500">Or</span>
               </div>
             </div>
-      
+
             <p className="mt-2 text-center text-sm text-gray-600">
               Don't have an account?{' '}
               <Link className="font-medium text-blue-600 hover:text-blue-500" to="/register">
