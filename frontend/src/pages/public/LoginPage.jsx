@@ -1,7 +1,7 @@
 import DOMPurify from 'dompurify';
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import Img from '../../assets/public/imgloginpage.svg';
+import Img from '../../assets/public/imgloginpage.svg'
 
 const LoginPage = () => {
   const [email, setEmail] = useState('');
@@ -9,7 +9,6 @@ const LoginPage = () => {
   const [errorMessage, setErrorMessage] = useState('');
   const [rememberMe, setRememberMe] = useState(false);
   const [loading, setLoading] = useState(false);
-  const [showPassword, setShowPassword] = useState(false);  // For toggling password visibility
   const navigate = useNavigate();
 
   // Sanitize input values
@@ -18,20 +17,12 @@ const LoginPage = () => {
     setValue(sanitizedValue);
   };
 
-  // Validate email format
-  const isValidEmail = (email) => /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/.test(email);
-
   // Handle form submission
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    // Basic validation
     if (!email || !password) {
       setErrorMessage('Email and password are required');
-      return;
-    }
-    if (!isValidEmail(email)) {
-      setErrorMessage('Please enter a valid email address');
       return;
     }
 
@@ -139,17 +130,10 @@ const LoginPage = () => {
                 <input
                   className="block w-full pl-10 pr-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
                   placeholder="Password"
-                  type={showPassword ? 'text' : 'password'}
+                  type="password"
                   value={password}
                   onChange={(e) => handleInputChange(e, setPassword)}
                 />
-                <button
-                  type="button"
-                  className="absolute right-3 top-3 text-gray-500"
-                  onClick={() => setShowPassword((prev) => !prev)}
-                >
-                  {showPassword ? 'Hide' : 'Show'}
-                </button>
               </div>
             </div>
 
@@ -176,11 +160,7 @@ const LoginPage = () => {
                 type="submit"
                 disabled={loading}
               >
-                {loading ? (
-                  <div className="animate-spin rounded-full h-5 w-5 border-t-2 border-b-2 border-white"></div>
-                ) : (
-                  'Login'
-                )}
+                {loading ? 'Logging in...' : 'Login'}
               </button>
             </div>
             <div className="relative my-4">
