@@ -31,7 +31,7 @@ const ActivationPage = () => {
       console.log('Activation successful:', data);
 
       // Arahkan pengguna ke halaman berikutnya
-      navigate('/welcome'); // Ganti dengan rute tujuan
+      navigate('/dashboard/home'); // Ganti dengan rute tujuan
     } catch (error) {
       console.error('Error during activation:', error);
       setErrorMessage(error.message || 'Terjadi kesalahan.');
