@@ -45,7 +45,12 @@ const VerificationCodePage = () => {
             console.log('Verification response:', data);
 
             if (response.ok) {
-                localStorage.removeItem('verificationEmail');
+                // Menyimpan token JWT setelah verifikasi
+                const { token } = data;
+                if (token) {
+                    localStorage.setItem('token', token);  // Menyimpan token ke localStorage
+                    console.log('Token saved to localStorage:', token); // Debugging: pastikan token tersimpan
+                }
                 navigate('/AktivationPage');
             } else {
                 setError(data.message || 'Invalid verification code');
