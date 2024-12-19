@@ -4,7 +4,11 @@ import Img from '../../assets/public/imgActivationPage.svg';
 
 const ActivationPage = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState('');
+  const [code, setCode] = useState(['', '', '', '', '', '']); // Assuming you're handling the verification code
   const navigate = useNavigate();
+  const email = localStorage.getItem('verificationEmail'); // Assuming email is stored in localStorage
 
   useEffect(() => {
     // Cek apakah token sudah ada di localStorage, menandakan bahwa user sudah login
@@ -24,44 +28,45 @@ const ActivationPage = () => {
     setError('');
 
     try {
-        const response = await fetch('/api/auth/activation', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-                email: email,
-                code: verificationCode
-            }),
-        });
+      const response = await fetch('/api/auth/activation', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          email: email,
+          code: verificationCode,
+        }),
+      });
 
-        const data = await response.json();
-        console.log('Verification response:', data);
+      const data = await response.json();
+      console.log('Verification response:', data);
 
-        if (response.ok) {
-            // Menyimpan token JWT setelah verifikasi
-            const { token } = data;
-            if (token) {
-                localStorage.setItem('token', token);  // Menyimpan token ke localStorage
-                console.log('Token saved to localStorage:', token); // Debugging: pastikan token tersimpan
-            }
-
-            // Hapus email dari localStorage setelah verifikasi
-            localStorage.removeItem('verificationEmail');
-
-            // Arahkan pengguna ke dashboard
-            navigate('/dashboard/home');
-        } else {
-            setError(data.message || 'Invalid verification code');
-            setCode(['', '', '', '', '', '']);
+      if (response.ok) {
+        // Menyimpan token JWT setelah verifikasi
+        const { token } = data;
+        if (token) {
+          localStorage.setItem('token', token); // Menyimpan token ke localStorage
+          console.log('Token saved to localStorage:', token); // Debugging: pastikan token tersimpan
         }
+
+        // Hapus email dari localStorage setelah verifikasi
+        localStorage.removeItem('verificationEmail');
+
+        // Set isLoggedIn to true and navigate to the dashboard
+        setIsLoggedIn(true);
+        navigate('/dashboard/home');
+      } else {
+        setError(data.message || 'Invalid verification code');
+        setCode(['', '', '', '', '', '']);
+      }
     } catch (error) {
-        console.error('Verification error:', error);
-        setError('An error occurred during verification');
+      console.error('Verification error:', error);
+      setError('An error occurred during verification');
     } finally {
-        setLoading(false);
+      setLoading(false);
     }
-};
+  };
 
   return (
     <div className="bg-white flex items-center justify-center min-h-screen font-poppins">
@@ -79,7 +84,7 @@ const ActivationPage = () => {
 
         {/* Bagian Konten */}
         <div className="w-full md:w-1/2 flex flex-col justify-center p-8">
-	<Link
+          <Link
             to="/"
             className="flex items-center bg-blue-600 text-white rounded hover:bg-blue-700 transition duration-300 px-4 py-2 text-[14px] w-20 mb-6"
           >
@@ -89,7 +94,7 @@ const ActivationPage = () => {
           <p className="text-gray-600 mb-6">
             Congratulations! Your account has been successfully activated. You are now logged in and can access your dashboard.
           </p>
-          
+
           {/* Formulir dan tombol */}
           {!isLoggedIn && (
             <form onSubmit={handleSubmit} className="space-y-4">
@@ -97,12 +102,14 @@ const ActivationPage = () => {
                 <button
                   type="submit"
                   className="w-full bg-blue-700 text-white py-2 rounded-lg hover:bg-blue-800"
+                  disabled={loading} // Disable button during loading
                 >
-                  Go to Dashboard
+                  {loading ? 'Loading...' : 'Go to Dashboard'}
                 </button>
-		<p className="text-center text-gray-600 mt-4">
-                Need help? <a href="#" className="text-blue-600">Contact Support</a>
-              </p>
+                <p className="text-center text-gray-600 mt-4">
+                  Need help? <a href="#" className="text-blue-600">Contact Support</a>
+                </p>
+                {error && <p className="text-red-500 text-center mt-4">{error}</p>}
               </div>
             </form>
           )}
