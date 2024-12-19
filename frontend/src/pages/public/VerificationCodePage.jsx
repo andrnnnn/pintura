@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { useNavigate, useLocation } from 'react-router-dom';
+import { useNavigate,Link, useLocation } from 'react-router-dom';
 import Img from '../../assets/public/imgVerificationCode2.svg';
 
 const VerificationCodePage = () => {
