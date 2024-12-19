@@ -8,9 +8,8 @@ const ActivationPage = () => {
 
   useEffect(() => {
     // Cek apakah token sudah ada di localStorage, menandakan bahwa user sudah login
-    const token = localStorage.getItem('authToken');
+    const token = localStorage.getItem('token');
     if (token) {
-      // Jika token ada, artinya user sudah login
       setIsLoggedIn(true);
       navigate('/dashboard/home'); // Redirect ke dashboard jika sudah login
     }
@@ -19,11 +18,9 @@ const ActivationPage = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
     // Di frontend, kita sudah harusnya memiliki token, jadi kita langsung set token di localStorage
-    const simulatedToken = 'your-generated-jwt-token'; // Simulasikan token yang diterima dari backend
-    localStorage.setItem('authToken', simulatedToken); // Simpan token ke localStorage
-    navigate('/dashboard/home'); // Arahkan pengguna ke halaman dashboard
+    localStorage.setItem('token', 'your-generated-jwt-token'); // Simulasikan token yang diterima dari backend
+    navigate('/dashboard/home');
   };
-
 
   return (
     <div className="bg-white flex items-center justify-center min-h-screen font-poppins">
