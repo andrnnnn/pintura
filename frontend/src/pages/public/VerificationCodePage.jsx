@@ -7,14 +7,20 @@ const VerificationCodePage = () => {
     const location = useLocation();
     const [codeSent, setCodeSent] = useState(false);
     const [code, setCode] = useState(['', '', '', '', '', '']);
-    const [email, setEmail] = useState(location.state?.email || ''); // Retrieve email from state
+    const [email, setEmail] = useState(location.state?.email || ''); // Retrieve email from state or fallback
     const [error, setError] = useState('');
     const [loading, setLoading] = useState(false);
 
     useEffect(() => {
         if (!email) {
-            console.log('No email found, redirecting to register page');
-            navigate('/register');
+            // If email is missing, try to get it from localStorage
+            const savedEmail = localStorage.getItem('verificationEmail');
+            if (savedEmail) {
+                setEmail(savedEmail);
+            } else {
+                console.log('No email found in state or localStorage');
+                navigate('/register'); // Redirect to the register page if no email is found
+            }
         }
     }, [email, navigate]);
 
@@ -42,7 +48,8 @@ const VerificationCodePage = () => {
             console.log('Verification response:', data);
 
             if (response.ok) {
-                navigate('/AktivationPage'); // Redirect to activation page
+                localStorage.removeItem('verificationEmail');
+                navigate('/activation'); // Proceed to the activation page
             } else {
                 setError(data.message || 'Invalid verification code');
                 setCode(['', '', '', '', '', '']);
