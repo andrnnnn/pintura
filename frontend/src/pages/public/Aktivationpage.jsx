@@ -1,54 +1,47 @@
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 const ActivationPage = () => {
-  const [isLoading, setIsLoading] = useState(false);
-  const [errorMessage, setErrorMessage] = useState('');
   const navigate = useNavigate();
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    setIsLoading(true);
-    setErrorMessage('');
+  useEffect(() => {
+    const activateAccount = async () => {
+      try {
+        // Simulate API call for account activation
+        const response = await fetch('/api/activate', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ action: 'activate' }), // Example payload
+        });
 
-    try {
-      // Simulasi pemanggilan API
-      const response = await fetch('/api/activate', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          // tambahkan data lain jika diperlukan
-        }),
-      });
+        if (!response.ok) {
+          throw new Error(`Activation failed: ${response.statusText}`);
+        }
 
-      if (!response.ok) {
-        throw new Error('Aktivasi gagal, silakan coba lagi.');
+        const data = await response.json();
+
+        if (data.success) {
+          // Redirect to dashboard or login page after successful activation
+          navigate('/dashboard');
+        } else {
+          throw new Error(data.message || 'Activation unsuccessful');
+        }
+      } catch (error) {
+        console.error('Error during account activation:', error);
+        // Optionally, redirect to an error page or show a message
+        navigate('/error');
       }
+    };
 
-      const data = await response.json();
-      console.log('Activation successful:', data);
-
-      // Arahkan pengguna ke halaman berikutnya
-      navigate('/dashboard/home'); // Ganti dengan rute tujuan
-    } catch (error) {
-      console.error('Error during activation:', error);
-      setErrorMessage(error.message || 'Terjadi kesalahan.');
-    } finally {
-      setIsLoading(false);
-    }
-  };
+    activateAccount();
+  }, [navigate]);
 
   return (
-    <div className="activation-page">
-      <h1>Aktivasi Akun</h1>
-      <form onSubmit={handleSubmit}>
-        <button type="submit" disabled={isLoading}>
-          {isLoading ? 'Loading...' : 'Aktivasi'}
-        </button>
-      </form>
-      {errorMessage && <p className="error-message">{errorMessage}</p>}
+    <div>
+      <h1>Activating your account...</h1>
+      <p>Please wait a moment while we complete the process.</p>
     </div>
   );
 };
