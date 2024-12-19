@@ -45,13 +45,10 @@ const VerificationCodePage = () => {
             console.log('Verification response:', data);
     
             if (response.ok) {
-                // Menyimpan token yang diterima dari response
-                const { token } = data;
-                if (token) {
-                    localStorage.setItem('token', token);  // Menyimpan token
-                }
-                localStorage.removeItem('verificationEmail');
-                navigate('/AktivationPage');
+                // Simpan token yang diterima ke localStorage
+                localStorage.setItem('token', data.token);
+                localStorage.removeItem('verificationEmail'); // Hapus email setelah verifikasi
+                navigate('/AktivationPage'); // Arahkan ke halaman ActivationPage
             } else {
                 setError(data.message || 'Invalid verification code');
                 setCode(['', '', '', '', '', '']);
