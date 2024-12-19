@@ -141,6 +141,36 @@ const verifyCode = async (req, res) => {
     }
 };
 
+const activateAccount = (req, res) => {
+    const { userId, email } = req.body; // Ambil data pengguna dari request body
+  
+    // Validasi jika userId atau email tidak ada
+    if (!userId || !email) {
+      return res.status(400).json({ message: 'User ID and email are required' });
+    }
+  
+    try {
+      // Generate JWT token
+      const token = jwt.sign(
+        { userId, email },
+        process.env.JWT_SECRET || 'defaultsecret', // Menggunakan secret yang aman (bisa diganti dengan environment variable)
+        { expiresIn: '1h' } // Token berlaku selama 1 jam
+      );
+  
+      // Kirimkan token di response
+      return res.status(200).json({
+        message: 'Account activated successfully!',
+        token: token, // Mengirimkan token JWT ke frontend
+      });
+    } catch (error) {
+      // Jika ada error saat pembuatan token
+      console.error('Error generating token:', error);
+      return res.status(500).json({ message: 'Internal Server Error' });
+    }
+  };
+  
+
+
 
 // Controller untuk mengirim kode reset password
 const forgotPassword = async (req, res) => {
@@ -257,4 +287,5 @@ module.exports = {
     resetPassword,
     sendVerificationEmail,
     verifyResetCode,
+    activateAccount,
 };
