@@ -13,7 +13,7 @@ const ActivationPage = () => {
 
     try {
       // Simulasi pemanggilan API
-      const response = await fetch('/api/activate', {
+      const response = await fetch('/api/auth/activate', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
