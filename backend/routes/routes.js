@@ -195,7 +195,7 @@ router.use((err, req, res, next) => {
 // Verifikasi email routes
 router.post('/api/auth/send-verification', emailController.sendVerificationCode);
 router.post('/api/auth/verify-code', emailController.verifyCode);
-
+router.post('/api/auth/activation', emailController.verifyCode);
 
 // Forgot password routes
 router.post('/api/auth/forgot-password', emailController.forgotPassword);

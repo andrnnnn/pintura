@@ -15,12 +15,53 @@ const ActivationPage = () => {
     }
   }, [navigate]);
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    // Di frontend, kita sudah harusnya memiliki token, jadi kita langsung set token di localStorage
-    localStorage.setItem('token', 'your-generated-jwt-token'); // Simulasikan token yang diterima dari backend
-    navigate('/dashboard/home');
-  };
+    const verificationCode = code.join('');
+    console.log('Submitting code for email:', email);
+
+    setLoading(true);
+    setError('');
+
+    try {
+        const response = await fetch('/api/auth/activation', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                email: email,
+                code: verificationCode
+            }),
+        });
+
+        const data = await response.json();
+        console.log('Verification response:', data);
+
+        if (response.ok) {
+            // Menyimpan token JWT setelah verifikasi
+            const { token } = data;
+            if (token) {
+                localStorage.setItem('token', token);  // Menyimpan token ke localStorage
+                console.log('Token saved to localStorage:', token); // Debugging: pastikan token tersimpan
+            }
+
+            // Hapus email dari localStorage setelah verifikasi
+            localStorage.removeItem('verificationEmail');
+
+            // Arahkan pengguna ke dashboard
+            navigate('/dashboard/home');
+        } else {
+            setError(data.message || 'Invalid verification code');
+            setCode(['', '', '', '', '', '']);
+        }
+    } catch (error) {
+        console.error('Verification error:', error);
+        setError('An error occurred during verification');
+    } finally {
+        setLoading(false);
+    }
+};
 
   return (
     <div className="bg-white flex items-center justify-center min-h-screen font-poppins">
