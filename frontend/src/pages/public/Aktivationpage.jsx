@@ -3,24 +3,67 @@ import { Link, useNavigate } from 'react-router-dom';
 import Img from '../../assets/public/imgActivationPage.svg';
 
 const ActivationPage = () => {
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [isLoggedIn, ] = useState(false);
   const navigate = useNavigate();
 
   useEffect(() => {
-    // Cek apakah token sudah ada di localStorage, menandakan bahwa user sudah login
-    const token = localStorage.getItem('token');
-    if (token) {
-      setIsLoggedIn(true);
-      navigate('/dashboard/home'); // Redirect ke dashboard jika sudah login
+    const savedEmail = localStorage.getItem('verificationEmail');
+    if (savedEmail) {
+        setEmail(savedEmail);
+        console.log('Email from localStorage:', savedEmail);
+    } else {
+        console.log('No email found in localStorage');
+        navigate('/register');
     }
-  }, [navigate]);
+}, [navigate]);
 
-  const handleSubmit = (e) => {
+const handleSubmit = async (e) => {
     e.preventDefault();
-    // Di frontend, kita sudah harusnya memiliki token, jadi kita langsung set token di localStorage
-    localStorage.setItem('token', 'your-generated-jwt-token'); // Simulasikan token yang diterima dari backend
-    navigate('/dashboard/home');
-  };
+    const verificationCode = code.join('');
+    console.log('Submitting code for email:', email);
+
+    setLoading(true);
+    setError('');
+
+    try {
+        const response = await fetch('/api/auth/verify-code', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                email: email,
+                code: verificationCode
+            }),
+        });
+
+        const data = await response.json();
+        console.log('Verification response:', data);
+
+        if (response.ok) {
+            // Menyimpan token JWT setelah verifikasi
+            const { token } = data;
+            if (token) {
+                localStorage.setItem('token', token);  // Menyimpan token ke localStorage
+                console.log('Token saved to localStorage:', token); // Debugging: pastikan token tersimpan
+            }
+
+            // Hapus email dari localStorage setelah verifikasi
+            localStorage.removeItem('verificationEmail');
+
+            // Arahkan pengguna ke dashboard
+            navigate('/dashboard/home');
+        } else {
+            setError(data.message || 'Invalid verification code');
+            setCode(['', '', '', '', '', '']);
+        }
+    } catch (error) {
+        console.error('Verification error:', error);
+        setError('An error occurred during verification');
+    } finally {
+        setLoading(false);
+    }
+};
 
   return (
     <div className="bg-white flex items-center justify-center min-h-screen font-poppins">
