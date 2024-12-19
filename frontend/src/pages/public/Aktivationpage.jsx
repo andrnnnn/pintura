@@ -4,62 +4,66 @@ import Img from '../../assets/public/imgActivationPage.svg';
 
 const ActivationPage = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState('');
   const navigate = useNavigate();
-  const email = localStorage.getItem('verificationEmail'); // Assuming email is stored in localStorage
 
   useEffect(() => {
-    // Check if token already exists in localStorage
-    const token = localStorage.getItem('token');
-    if (token) {
-      setIsLoggedIn(true);
-      navigate('/dashboard/home'); // Redirect to dashboard if already logged in
-    } else if (email) {
-      // If no token but email exists, attempt activation
-      handleActivation();
-    } else {
-      navigate('/register'); // Redirect to registration page if no email is found
-    }
-  }, [email, navigate]);
+    const savedEmail = localStorage.getItem('verificationEmail');
+        if (savedEmail) {
+          setIsLoggedIn(savedEmail);
+            console.log('Email from localStorage:', savedEmail);
+        } else {
+            console.log('No email found in localStorage');
+            navigate('/register');
+        }
+    }, [navigate]);
 
-  const handleActivation = async () => {
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    const verificationCode = code.join('');
+    console.log('Submitting code for email:', email);
+
     setLoading(true);
     setError('');
 
     try {
-      const response = await fetch('/api/auth/activation', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          email: email, // Use the email stored in localStorage
-        }),
-      });
+        const response = await fetch('/api/auth/activation', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                email: email,
+                code: verificationCode
+            }),
+        });
 
-      const data = await response.json();
-      console.log('Activation response:', data);
+        const data = await response.json();
+        console.log('Verification response:', data);
 
-      if (response.ok) {
-        const { token } = data;
-        if (token) {
-          localStorage.setItem('token', token); // Store token in localStorage
+        if (response.ok) {
+            // Menyimpan token JWT setelah verifikasi
+            const { token } = data;
+            if (token) {
+                localStorage.setItem('token', token);  // Menyimpan token ke localStorage
+                console.log('Token saved to localStorage:', token); // Debugging: pastikan token tersimpan
+            }
+
+            // Hapus email dari localStorage setelah verifikasi
+            localStorage.removeItem('verificationEmail');
+
+            // Arahkan pengguna ke dashboard
+            navigate('/dashboard/home');
+        } else {
+            setError(data.message || 'Invalid verification code');
+            setCode(['', '', '', '', '', '']);
         }
-
-        localStorage.removeItem('verificationEmail'); // Clean up the email from localStorage
-        setIsLoggedIn(true);
-        navigate('/dashboard/home'); // Redirect to dashboard
-      } else {
-        setError(data.message || 'Failed to activate account');
-      }
     } catch (error) {
-      console.error('Activation error:', error);
-      setError('An error occurred during account activation');
+        console.error('Verification error:', error);
+        setError('An error occurred during verification');
     } finally {
-      setLoading(false);
+        setLoading(false);
     }
-  };
+};
 
   return (
     <div className="bg-white flex items-center justify-center min-h-screen font-poppins">
@@ -77,38 +81,33 @@ const ActivationPage = () => {
 
         {/* Bagian Konten */}
         <div className="w-full md:w-1/2 flex flex-col justify-center p-8">
-          <Link
+	<Link
             to="/"
             className="flex items-center bg-blue-600 text-white rounded hover:bg-blue-700 transition duration-300 px-4 py-2 text-[14px] w-20 mb-6"
           >
-            <i className="fas fa-arrow-left mr-2"></i>Back
+            <i className="fas fa-arrow-left mr-2"></i> Back
           </Link>
-
-          <h1 className="text-4xl font-bold text-blue-700 mb-2">Activate Account</h1>
+          <h1 className="text-4xl font-bold text-blue-700 mb-2">Activation Success</h1>
           <p className="text-gray-600 mb-6">
-            We are activating your account for {email}.
+            Congratulations! Your account has been successfully activated. You are now logged in and can access your dashboard.
           </p>
-
-          {error && (
-            <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-4">
-              <div className="flex">
-                <i className="fas fa-exclamation-circle mt-1 mr-2"></i>
-                <span>{error}</span>
+          
+          {/* Formulir dan tombol */}
+          {!isLoggedIn && (
+            <form onSubmit={handleSubmit} className="space-y-4">
+              <div className="bg-white p-6 rounded-lg shadow-md">
+                <button
+                  type="submit"
+                  className="w-full bg-blue-700 text-white py-2 rounded-lg hover:bg-blue-800"
+                >
+                  Go to Dashboard
+                </button>
+		<p className="text-center text-gray-600 mt-4">
+                Need help? <a href="#" className="text-blue-600">Contact Support</a>
+              </p>
               </div>
-            </div>
+            </form>
           )}
-
-          <div className="bg-white p-6 rounded-lg shadow-md">
-            <p className="text-gray-600 text-center mb-4">
-              Your account is being activated, please wait...
-            </p>
-            <button
-              className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-700 hover:bg-blue-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
-              disabled={loading}
-            >
-              {loading ? 'Processing...' : 'Activate Account'}
-            </button>
-          </div>
         </div>
       </div>
     </div>
