@@ -1,67 +1,61 @@
-import { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useEffect, useState } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
+import Img from '../../assets/public/imgActivationPage.svg';
 
 const ActivationPage = () => {
-  const [isLoading, setIsLoading] = useState(false);
-  const [errorMessage, setErrorMessage] = useState('');
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
   const navigate = useNavigate();
 
-  const activationToken = localStorage.getItem('activationToken'); // Get token (if required)
-
   useEffect(() => {
-    // Check if the user is properly redirected from the verification page
-    if (!localStorage.getItem('verificationEmail')) {
-      navigate('/verification'); // If no email is found, redirect back to verification
+    // Mengecek apakah token sudah ada di localStorage, yang menandakan bahwa pengguna sudah login
+    const token = localStorage.getItem('token');
+    if (token) {
+      setIsLoggedIn(true);
+      navigate('/dashboard/home'); // Arahkan ke dashboard jika sudah login
     }
   }, [navigate]);
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = (e) => {
     e.preventDefault();
-    setIsLoading(true);
-    setErrorMessage('');
-
-    const email = localStorage.getItem('verificationEmail'); // Get the email
-
-    if (!email) {
-      setErrorMessage('Email is missing');
-      setIsLoading(false);
-      return;
-    }
-
-    try {
-      const response = await fetch('/api/auth/activate', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ email }),
-      });
-
-      const data = await response.json();
-
-      if (response.ok) {
-        // Clear the email from localStorage after successful activation
-        localStorage.removeItem('verificationEmail');
-        navigate('/dashboard/home'); // Redirect to Dashboard after successful activation
-      } else {
-        setErrorMessage(data.message || 'Activation failed');
-      }
-    } catch (error) {
-      setErrorMessage('Error occurred during activation');
-    } finally {
-      setIsLoading(false);
-    }
+    // Di frontend, token seharusnya sudah ada, jadi kita simulasikan penyimpanan token ke localStorage
+    localStorage.setItem('token', 'j2h4k2j4h2k4h32k4h32k4h32k4h32k4h32k'); // Simulasi token yang diterima dari backend
+    navigate('/dashboard/home');
   };
 
   return (
-    <div>
-      <h1>Account Activation</h1>
-      <form onSubmit={handleSubmit}>
-        <button type="submit" disabled={isLoading}>
-          {isLoading ? 'Activating...' : 'Activate Account'}
-        </button>
-      </form>
-      {errorMessage && <p>{errorMessage}</p>}
+    <div className="bg-white flex items-center justify-center min-h-screen font-poppins">
+      <div className="flex w-full max-w-4xl">
+        {/* Bagian Gambar */}
+        <div className="w-full md:w-1/2 flex justify-center">
+          <img
+            src={Img}
+            alt="Ilustrasi seseorang memegang trofi dengan berbagai ikon di sekitarnya"
+            className="w-3/4 md:w-full"
+            height="400"
+            width="400"
+          />
+        </div>
+
+        {/* Bagian Konten */}
+        <div className="w-full md:w-1/2 flex flex-col justify-center p-8">
+          <Link
+            to="/"
+            className="flex items-center bg-blue-600 text-white rounded hover:bg-blue-700 transition duration-300 px-4 py-2 text-[14px] w-20 mb-6"
+          >
+            <i className="fas fa-arrow-left mr-2"></i> Kembali
+          </Link>
+          <h1 className="text-4xl font-bold text-blue-700 mb-2">Aktivasi Berhasil</h1>
+          <p className="text-lg text-gray-600 mb-6">Akun Anda telah berhasil diaktifkan. Anda sekarang dapat melanjutkan ke dashboard.</p>
+          <form onSubmit={handleSubmit}>
+            <button
+              type="submit"
+              className="bg-blue-600 text-white py-2 px-6 rounded-full hover:bg-blue-700 transition duration-300"
+            >
+              Ke Dashboard
+            </button>
+          </form>
+        </div>
+      </div>
     </div>
   );
 };
