@@ -120,24 +120,28 @@ const VerificationCodePage = () => {
         <div className="bg-white flex items-center justify-center min-h-screen font-poppins">
         {showSuccessPopup ? (
             <div className="fixed inset-0 bg-gray-800 bg-opacity-50 flex items-center justify-center">
-                <div 
-                    className="bg-white w-80 h-80 shadow-lg text-center flex flex-col justify-center items-center"
-                >
-                    <img
-                        src={Img2}
-                        alt="Illustration of a person holding a trophy with various icons around"
-                        className="w-20 h-20 mb-4"
-                    />
-                    <h1 className="text-lg font-bold text-blue-700 mb-2">Activation Success</h1>
-                    <p className="text-gray-600 mb-6 text-sm px-4">
-                        Congratulations! Your account has been successfully activated. You are now logged in and can access your dashboard.
-                    </p>
-                    <button
-                        onClick={handlePopupButtonClick}
-                        className="bg-blue-700 text-white py-2 px-4 hover:bg-blue-800"
-                    >
-                        Go to Dashboard
-                    </button>
+                <div className="bg-white w-[500px] h-[500px] shadow-lg flex">
+                    {/* Bagian kiri: Gambar */}
+                    <div className="w-1/2 bg-blue-50 flex items-center justify-center">
+                        <img
+                            src={Img2}
+                            alt="Illustration of a person holding a trophy with various icons around"
+                            className="w-32 h-32"
+                        />
+                    </div>
+                    {/* Bagian kanan: Teks dan Tombol */}
+                    <div className="w-1/2 p-8 flex flex-col justify-center items-start">
+                        <h1 className="text-2xl font-bold text-blue-700 mb-4">Activation Success</h1>
+                        <p className="text-gray-600 mb-6 text-sm">
+                            Congratulations! Your account has been successfully activated. Please log in using your registered email and password to start using our services.
+                        </p>
+                        <button
+                            onClick={handlePopupButtonClick}
+                            className="bg-blue-700 text-white py-2 px-6 rounded-lg hover:bg-blue-800"
+                        >
+                            Go to Dashboard
+                        </button>
+                    </div>
                 </div>
             </div>
         ) : (
@@ -221,6 +225,7 @@ const VerificationCodePage = () => {
             </div>
         )}
     </div>
+    
     
 
     );
