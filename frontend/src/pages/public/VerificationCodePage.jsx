@@ -28,7 +28,7 @@ const VerificationCodePage = () => {
         
         setLoading(true);
         setError('');
-
+    
         try {
             const response = await fetch('/api/auth/verify-code', {
                 method: 'POST',
@@ -40,21 +40,16 @@ const VerificationCodePage = () => {
                     code: verificationCode
                 }),
             });
-
+    
             const data = await response.json();
             console.log('Verification response:', data);
-
+    
             if (response.ok) {
-                // Menyimpan token JWT setelah verifikasi
+                // Menyimpan token yang diterima dari response
                 const { token } = data;
                 if (token) {
-                    localStorage.setItem('token', token);  // Menyimpan token ke localStorage
-                    console.log('Token saved to localStorage:', token); // Debugging: pastikan token tersimpan
+                    localStorage.setItem('token', token);  // Menyimpan token
                 }
-    
-                // Hapus email dari localStorage setelah verifikasi
-                localStorage.removeItem('verificationEmail');
-    
                 localStorage.removeItem('verificationEmail');
                 navigate('/AktivationPage');
             } else {
@@ -68,6 +63,7 @@ const VerificationCodePage = () => {
             setLoading(false);
         }
     };
+    
 
     const handleSendNewCode = async () => {
         setLoading(true);
