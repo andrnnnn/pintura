@@ -6,7 +6,6 @@ const ActivationPage = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
-  const [code, setCode] = useState(['', '', '', '', '', '']);
   const navigate = useNavigate();
   const email = localStorage.getItem('verificationEmail'); // Assuming email is stored in localStorage
 
@@ -16,19 +15,15 @@ const ActivationPage = () => {
     if (token) {
       setIsLoggedIn(true);
       navigate('/dashboard/home'); // Redirect to dashboard if already logged in
+    } else if (email) {
+      // If no token but email exists, attempt activation
+      handleActivation();
+    } else {
+      navigate('/register'); // Redirect to registration page if no email is found
     }
-  }, [navigate]);
+  }, [email, navigate]);
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    const verificationCode = code.join('');
-    console.log('Submitting code for email:', email);
-
-    if (!email) {
-      setError('Email not found. Please try again.');
-      return;
-    }
-
+  const handleActivation = async () => {
     setLoading(true);
     setError('');
 
@@ -39,13 +34,12 @@ const ActivationPage = () => {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          email: email,
-          code: verificationCode,
+          email: email, // Use the email stored in localStorage
         }),
       });
 
       const data = await response.json();
-      console.log('Verification response:', data);
+      console.log('Activation response:', data);
 
       if (response.ok) {
         const { token } = data;
@@ -53,16 +47,15 @@ const ActivationPage = () => {
           localStorage.setItem('token', token); // Store token in localStorage
         }
 
-        localStorage.removeItem('verificationEmail'); // Remove email from localStorage
+        localStorage.removeItem('verificationEmail'); // Clean up the email from localStorage
         setIsLoggedIn(true);
-        navigate('/dashboard/home');
+        navigate('/dashboard/home'); // Redirect to dashboard
       } else {
-        setError(data.message || 'Invalid verification code');
-        setCode(['', '', '', '', '', '']);
+        setError(data.message || 'Failed to activate account');
       }
     } catch (error) {
-      console.error('Verification error:', error);
-      setError('An error occurred during verification');
+      console.error('Activation error:', error);
+      setError('An error occurred during account activation');
     } finally {
       setLoading(false);
     }
@@ -93,7 +86,7 @@ const ActivationPage = () => {
 
           <h1 className="text-4xl font-bold text-blue-700 mb-2">Activate Account</h1>
           <p className="text-gray-600 mb-6">
-            Please enter the activation code we sent to {email}.
+            We are activating your account for {email}.
           </p>
 
           {error && (
@@ -105,35 +98,17 @@ const ActivationPage = () => {
             </div>
           )}
 
-          <form onSubmit={handleSubmit} className="space-y-4">
-            <div className="bg-white p-6 rounded-lg shadow-md">
-              <div className="flex justify-center mb-4">
-                {[0, 1, 2, 3, 4, 5].map((index) => (
-                  <input
-                    key={index}
-                    type="text"
-                    name={`code-${index}`}
-                    maxLength="1"
-                    className="w-12 h-12 border border-gray-300 text-center text-2xl mx-1"
-                    value={code[index]}
-                    onChange={(e) => handleInput(index, e.target.value)}
-                    onKeyDown={(e) => handleKeyDown(index, e)}
-                  />
-                ))}
-              </div>
-
-              <p className="text-gray-600 text-center mb-4">
-                Please enter the activation code sent to your email.
-              </p>
-              <button
-                type="submit"
-                className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-700 hover:bg-blue-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
-                disabled={loading}
-              >
-                {loading ? 'Processing...' : 'Activate Account'}
-              </button>
-            </div>
-          </form>
+          <div className="bg-white p-6 rounded-lg shadow-md">
+            <p className="text-gray-600 text-center mb-4">
+              Your account is being activated, please wait...
+            </p>
+            <button
+              className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-700 hover:bg-blue-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+              disabled={loading}
+            >
+              {loading ? 'Processing...' : 'Activate Account'}
+            </button>
+          </div>
         </div>
       </div>
     </div>
