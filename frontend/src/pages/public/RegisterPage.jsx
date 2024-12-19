@@ -48,7 +48,7 @@ const RegisterPage = () => {
       lastName,
       name: `${firstName} ${lastName}`,
       email,
-      password,
+      password : password,
     };
 
     setLoading(true);

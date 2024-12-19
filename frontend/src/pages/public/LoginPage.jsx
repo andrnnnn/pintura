@@ -40,7 +40,7 @@ const LoginPage = () => {
 
     const userData = {
       email,
-      password,
+      password : password,
       rememberMe,
     };
 
