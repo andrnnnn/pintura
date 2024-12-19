@@ -45,25 +45,8 @@ const VerificationCodePage = () => {
             console.log('Verification response:', data);
 
             if (response.ok) {
-                // Mengirimkan request aktivasi akun setelah kode diverifikasi
-                const activationResponse = await fetch('/api/auth/activation', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify({
-                        email: email,
-                    }),
-                });
-
-                const activationData = await activationResponse.json();
-                if (activationResponse.ok) {
-                    // Hapus email dari localStorage setelah berhasil mengaktifkan akun
-                    localStorage.removeItem('verificationEmail');
-                    navigate('/AktivationPage'); // Redirect ke halaman aktivasi setelah berhasil
-                } else {
-                    setError(activationData.message || 'Account activation failed');
-                }
+                localStorage.removeItem('verificationEmail');
+                navigate('/AktivationPage');
             } else {
                 setError(data.message || 'Invalid verification code');
                 setCode(['', '', '', '', '', '']);
