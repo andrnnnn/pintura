@@ -125,7 +125,7 @@ const verifyCode = async (req, res) => {
         );
 
         // Generate JWT token for the user (No need to log in again)
-        /* const token = jwt.sign({ userId: user.user_id, email: user.email }, process.env.JWT_SECRET || 'defaultsecret', { expiresIn: '1h' }); */
+        const token = jwt.sign({ userId: user.user_id, email: user.email }, process.env.JWT_SECRET || 'defaultsecret', { expiresIn: '1h' });
 
         // Send response with the JWT token
         res.status(200).json({

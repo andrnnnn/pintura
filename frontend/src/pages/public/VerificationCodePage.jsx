@@ -25,10 +25,10 @@ const VerificationCodePage = () => {
         e.preventDefault();
         const verificationCode = code.join('');
         console.log('Submitting code for email:', email);
-        
+    
         setLoading(true);
         setError('');
-
+    
         try {
             const response = await fetch('/api/auth/verify-code', {
                 method: 'POST',
@@ -40,12 +40,15 @@ const VerificationCodePage = () => {
                     code: verificationCode
                 }),
             });
-
+    
             const data = await response.json();
             console.log('Verification response:', data);
-
+    
             if (response.ok) {
-                localStorage.removeItem('verificationEmail');
+                // Menyimpan token ke localStorage
+                localStorage.setItem('authToken', data.token); 
+    
+                // Arahkan ke halaman AktivationPage
                 navigate('/AktivationPage');
             } else {
                 setError(data.message || 'Invalid verification code');
@@ -58,6 +61,7 @@ const VerificationCodePage = () => {
             setLoading(false);
         }
     };
+    
 
     const handleSendNewCode = async () => {
         setLoading(true);
