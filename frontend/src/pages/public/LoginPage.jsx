@@ -1,4 +1,4 @@
-import crypto from 'crypto'; // Import crypto
+import CryptoJS from 'crypto-js'; // Import crypto
 import DOMPurify from 'dompurify';
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
@@ -19,7 +19,7 @@ const LoginPage = () => {
   };
 
   const hashData = (data) => {
-    return crypto.createHash('sha256').update(data).digest('hex');
+    return CryptoJS.SHA256(data).toString(CryptoJS.enc.Hex);
   };
 
   // Handle form submission

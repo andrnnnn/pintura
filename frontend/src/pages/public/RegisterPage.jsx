@@ -1,4 +1,4 @@
-import crypto from 'crypto'; // Import crypto
+import CryptoJS from 'crypto-js'; // Import crypto
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom'; // Import useNavigate
 import Img from '../../assets/public/imgregisterpage.svg';
@@ -14,7 +14,7 @@ const RegisterPage = () => {
   const navigate = useNavigate(); // Initialize useNavigate
 
   const hashData = (data) => {
-    return crypto.createHash('sha256').update(data).digest('hex');
+    return CryptoJS.SHA256(data).toString(CryptoJS.enc.Hex);
   };
 
   const handleSubmit = async (e) => {
