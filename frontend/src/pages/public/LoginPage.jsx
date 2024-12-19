@@ -1,7 +1,7 @@
 import DOMPurify from 'dompurify';
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import Img from '../../assets/public/imgloginpage.svg';
+import Img from '../../assets/public/imgloginpage.svg'
 
 const LoginPage = () => {
   const [email, setEmail] = useState('');
@@ -16,7 +16,6 @@ const LoginPage = () => {
     const sanitizedValue = DOMPurify.sanitize(e.target.value);
     setValue(sanitizedValue);
   };
-
   // Validate Email Format
   const validateEmail = (email) => {
     const emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
@@ -31,7 +30,6 @@ const LoginPage = () => {
       setErrorMessage('Email and password are required');
       return;
     }
-
     if (!validateEmail(email)) {
       setErrorMessage('Invalid email format');
       return;
@@ -60,10 +58,7 @@ const LoginPage = () => {
 
       if (response.ok) {
         console.log('Login successful:', data);
-
-        // Store token securely in HTTP-only cookie (not localStorage)
-        document.cookie = `token=${data.token}; path=/; secure; HttpOnly`;
-
+        localStorage.setItem('token', data.token);
         navigate('/dashboard/home');
       } else {
         if (data.needsVerification) {
@@ -185,7 +180,7 @@ const LoginPage = () => {
                 <span className="px-2 bg-white text-gray-500">Or</span>
               </div>
             </div>
-
+      
             <p className="mt-2 text-center text-sm text-gray-600">
               Don't have an account?{' '}
               <Link className="font-medium text-blue-600 hover:text-blue-500" to="/register">

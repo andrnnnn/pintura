@@ -36,7 +36,6 @@ const RegisterPage = () => {
       setError('Passwords do not match.');
       return;
     }
-
     // Validate email format
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!emailRegex.test(email)) {
@@ -88,6 +87,7 @@ const RegisterPage = () => {
       setLoading(false);
     }
   };
+
 
   return (
     <body className="bg-white flex items-center justify-center min-h-screen font-poppins">
