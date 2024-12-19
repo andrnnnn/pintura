@@ -1,7 +1,7 @@
+import crypto from 'crypto'; // Import crypto
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom'; // Import useNavigate
 import Img from '../../assets/public/imgregisterpage.svg';
-
 
 const RegisterPage = () => {
   const [firstName, setFirstName] = useState('');
@@ -12,6 +12,10 @@ const RegisterPage = () => {
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate(); // Initialize useNavigate
+
+  const hashData = (data) => {
+    return crypto.createHash('sha256').update(data).digest('hex');
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -29,8 +33,8 @@ const RegisterPage = () => {
       firstName,
       lastName,
       name: `${firstName} ${lastName}`,
-      email,
-      password,
+      email: hashData(email), // Hash email
+      password: hashData(password), // Hash password
     };
 
     setLoading(true);

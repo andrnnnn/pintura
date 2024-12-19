@@ -1,7 +1,8 @@
+import crypto from 'crypto'; // Import crypto
 import DOMPurify from 'dompurify';
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import Img from '../../assets/public/imgloginpage.svg'
+import Img from '../../assets/public/imgloginpage.svg';
 
 const LoginPage = () => {
   const [email, setEmail] = useState('');
@@ -17,6 +18,10 @@ const LoginPage = () => {
     setValue(sanitizedValue);
   };
 
+  const hashData = (data) => {
+    return crypto.createHash('sha256').update(data).digest('hex');
+  };
+
   // Handle form submission
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -30,8 +35,8 @@ const LoginPage = () => {
     setErrorMessage('');
 
     const userData = {
-      email,
-      password,
+      email: hashData(email), // Hash email
+      password: hashData(password), // Hash password
       rememberMe,
     };
 
