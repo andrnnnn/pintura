@@ -12,7 +12,6 @@ const SocialLinks = () => {
   ]);
 
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
 
   const fetchSocialMediaData = async () => {
     try {
@@ -20,22 +19,21 @@ const SocialLinks = () => {
       const response = await fetch("/api/auth/socialmedia", {
         headers: {
           "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`, 
+          Authorization: `Bearer ${token}`,
         },
       });
-      if (!response.ok) {
-        throw new Error("Failed to fetch social media data");
+      if (response.ok) {
+        const data = await response.json();
+        setSocialMedia((prevSocialMedia) =>
+          prevSocialMedia.map((item) => ({
+            ...item,
+            link: data[item.key] || "",
+          }))
+        );
       }
-      const data = await response.json();
-  
-      setSocialMedia((prevSocialMedia) =>
-        prevSocialMedia.map((item) => ({
-          ...item,
-          link: data[item.key] || "",
-        }))
-      );
     } catch (err) {
-      setError(err.message);
+      console.error("Failed to fetch social media data:", err);
+      // Keep the social media links empty if there's an error
     } finally {
       setLoading(false);
     }
@@ -46,7 +44,6 @@ const SocialLinks = () => {
   }, []);
 
   if (loading) return <p>Loading...</p>;
-  if (error) return <p>Error: {error}</p>;
 
   return (
     <LayoutWithSidebar>
@@ -69,6 +66,7 @@ const SocialLinks = () => {
                   type="text"
                   className="flex-1 p-2 border rounded"
                   value={social.link}
+                  placeholder="Enter your link"
                   readOnly
                 />
               </div>

@@ -2,9 +2,10 @@ const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken'); // Import jwt
 const db = require('../database/models'); // Correct path to your models
 
-const { User } = db;
+const { User, Sequelize} = db;
 
 // Register function
+
 const register = async (req, res) => {
   try {
     const { firstName, lastName, email, password } = req.body;
@@ -23,7 +24,11 @@ const register = async (req, res) => {
     }
 
     // Check if the email is already registered
-    const existingUser = await User.findOne({ where: { email } });
+    const [existingUser] = await db.sequelize.query(
+      `SELECT user_id FROM users WHERE email = :email`,
+      { replacements: { email }, type: Sequelize.QueryTypes.SELECT }
+    );
+
     if (existingUser) {
       console.error('Error: Email is already registered', email);
       return res.status(400).json({ message: 'Email is already registered.' });
@@ -32,20 +37,37 @@ const register = async (req, res) => {
     // Hash password
     const hashedPassword = await bcrypt.hash(password, 10);
 
-    // Save user to the database
-    const newUser = await User.create({
-      firstName,
-      lastName,
-      name: `${firstName} ${lastName}`, // Combine firstName and lastName to create name
-      email,
-      password: hashedPassword,
-      role_id: null,  // If this is optional, you can pass null
-      created_at: new Date(),
-      updated_at: new Date(),  // Set created_at explicitly if necessary
-      deleted_at: null, // Explicitly set deleted_at to null
-    });
+    // Save user to the database using raw query
+    const [result] = await db.sequelize.query(
+      `INSERT INTO users (name, email, password, role_id, created_at, updated_at, deleted_at)
+       VALUES (:name, :email, :password, NULL, NOW(), NOW(), NULL)`,
+      {
+        replacements: {
+          name: `${firstName} ${lastName}`, // Menggabungkan firstName dan lastName
+          email,
+          password: hashedPassword,
+        },
+      }
+    );
+    
+    // Get the new user's ID
+    const [newUser] = await db.sequelize.query(
+      `SELECT LAST_INSERT_ID() AS profile_id`,
+      { type: Sequelize.QueryTypes.SELECT }
+    );
 
-    console.log('User registered successfully:', newUser.email);
+    // Automatically create a user profile with default values using raw query
+    await db.sequelize.query(
+      `INSERT INTO userprofiles (user_id,username, image_url, date_of_birth, gender, phone_number, allow_phone_notifications, city, education, company, role, bio, linkedin_url, youtube_url, instagram_url, facebook_url, line_url, twitter_url, credit, created_at, updated_at)
+       VALUES (:user_id, NULL, NULL, NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL, NULL,NULL, NOW(), NOW())`,
+      {
+        replacements: {
+          user_id: newUser.profile_id,
+        },
+      }
+    );
+
+    console.log('User registered successfully:', email);
     return res.status(201).json({ message: 'User registered successfully!' });
   } catch (error) {
     console.error('Error during registration:', error); // Log error for debugging
