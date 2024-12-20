@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from "react";
-import { useLocation, useParams } from "react-router-dom";
-import axios from "axios";
+import { useLocation, useParams, useNavigate } from "react-router-dom"; // Import useNavigate
 import Logo from "/logo/logo.png";
 import MaterialDetail from "./MaterialDetail";
+import LearningQuizPage from '../mycourses/learningquiz';
 
 const LearningViewDetail = () => {
   const location = useLocation();
+  const navigate = useNavigate(); // Initialize navigate
   const { course_id } = useParams();
   const course = location.state?.course;
 
@@ -13,7 +14,8 @@ const LearningViewDetail = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [selectedMaterial, setSelectedMaterial] = useState(null);
-  const [isMaterialOpen, setIsMaterialOpen] = useState({}); 
+  const [isMaterialOpen, setIsMaterialOpen] = useState({});
+  const [isQuizPage, setIsQuizPage] = useState(false);
 
   useEffect(() => {
     const fetchMaterials = async () => {
@@ -55,52 +57,56 @@ const LearningViewDetail = () => {
     }));
   };
 
+  const renderMaterials = (parentId = null) => {
+    const filteredMaterials = materials.filter(
+      (material) => material.parent_material_id === parentId
+    );
 
-const renderMaterials = (parentId = null) => {
-  const filteredMaterials = materials.filter(
-    (material) => material.parent_material_id === parentId
-  );
+    return filteredMaterials.map((material) => (
+      <div key={material.material_id} className="mb-4">
+        <div
+          className={`p-4 border-b border-gray-300 mb-2 shadow cursor-pointer ${
+            selectedMaterial?.material_id === material.material_id
+              ? "bg-blue-100"
+              : "bg-white"
+          }`}
 
-  return filteredMaterials.map((material) => (
-    <div key={material.material_id} className="mb-4">
-      <div
-        className={`p-4 border-b border-gray-300 mb-2 shadow cursor-pointer ${
-          selectedMaterial?.material_id === material.material_id
-            ? "bg-blue-100"
-            : "bg-white"
-        }`}
-        onClick={() => {
-          if (material.type === "quiz") {
-            window.location.href = `/dashboard/mycourses/learningquiz/${material.material_id}`;
-          } else {
-            setSelectedMaterial(material);
-            toggleMaterial(material.material_id);
-          }
-        }}
-      >
-        <div className="flex justify-between items-center">
-          <h3 className="text-lg font-semibold text-black">{material.title}</h3>
-          <button
-            className="text-black"
-            onClick={(e) => {
-              e.stopPropagation(); 
+          // Logika onClick
+          onClick={() => {
+            if (material.type === "quiz") {
+              setSelectedMaterial(material);
+              setIsQuizPage(true);
+            } else {
+              setSelectedMaterial(material);
               toggleMaterial(material.material_id);
-            }}
-          >
-            {isMaterialOpen[material.material_id] ? (
-              <i className="fas fa-chevron-down"></i>
-            ) : (
-              <i className="fas fa-chevron-right"></i>
-            )}
-          </button>
+            }
+          }}
+        >
+          <div className="flex justify-between items-center">
+            <h3 className="text-lg font-semibold text-black">
+              {material.title}
+            </h3>
+            <button
+              className="text-black"
+              onClick={(e) => {
+                e.stopPropagation();
+                toggleMaterial(material.material_id);
+              }}
+            >
+              {isMaterialOpen[material.material_id] ? (
+                <i className="fas fa-chevron-down"></i>
+              ) : (
+                <i className="fas fa-chevron-right"></i>
+              )}
+            </button>
+          </div>
         </div>
+        {isMaterialOpen[material.material_id] && (
+          <div className="pl-6">{renderMaterials(material.material_id)}</div>
+        )}
       </div>
-      {isMaterialOpen[material.material_id] && (
-        <div className="pl-6">{renderMaterials(material.material_id)}</div>
-      )}
-    </div>
-  ));
-};
+    ));
+  };
 
   if (loading) return <div>Loading...</div>;
   if (error) return <div className="text-red-500">{error}</div>;
@@ -110,11 +116,28 @@ const renderMaterials = (parentId = null) => {
       {/* Header */}
       <header className="bg-white shadow p-4 flex flex-col items-center">
         <div className="flex justify-center w-full mb-4">
-          <img src={Logo} alt="PINTUR Logo" className="h-16 w-16 object-contain" />
+          <img
+            src={Logo}
+            alt="PINTUR Logo"
+            className="h-16 w-16 object-contain"
+          />
         </div>
         <div className="flex justify-between items-center w-full">
           <div className="text-sm text-gray-500">
-            Home &gt; My Courses &gt; {course?.course_title} &gt; Materials
+            Home &gt;{" "}
+            <span
+              className="text-blue-500 underline cursor-pointer"
+              onClick={() => navigate("/dashboard/mycourses")}
+            >
+              My Courses
+            </span>{" "}
+            &gt;{" "} 
+            <span
+              className="text-blue-500 underline cursor-pointer"
+              onClick={() => navigate(`/dashboard/mycourses/learningviewdetail/${course_id}`)}>
+              {course?.course_title}
+              </span>
+              &gt;
           </div>
         </div>
       </header>
@@ -141,8 +164,11 @@ const renderMaterials = (parentId = null) => {
         </aside>
 
         {/* Main Section */}
+
         <section className="flex-1 bg-gray-50 p-4">
-          {selectedMaterial ? (
+          {isQuizPage ? (
+            <LearningQuizPage material={selectedMaterial} />
+          ) : selectedMaterial ? (
             <MaterialDetail material={selectedMaterial} />
           ) : (
             <div>
