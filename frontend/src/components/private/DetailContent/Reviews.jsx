@@ -3,21 +3,21 @@ import React from 'react'
 const Reviews = () => {
   const reviews = [
     {
-      name: "Jessica",
+      name: "Shakira",
       title: "Marketing Analyst",
-      image: "https://placehold.co/100x100",
+      image: "/reviews/shakira.png",
       review: "This course helped me understand data analysis from scratch. The real-world applications were invaluable!"
     },
     {
-      name: "Farah",
+      name: "Axel",
       title: "Data Intern",
-      image: "https://placehold.co/100x100",
+      image: "/reviews/axel.png",
       review: "This course provided a great foundation for my career in data analytics. Highly recommend it!"
     },
     {
-      name: "Rahmat",
+      name: "Nando",
       title: "Finance Student",
-      image: "https://placehold.co/100x100",
+      image: "/reviews/nando.png",
       review: "Excellent course! The instructor explained everything clearly, and the exercises were challenging yet rewarding."
     }
   ];

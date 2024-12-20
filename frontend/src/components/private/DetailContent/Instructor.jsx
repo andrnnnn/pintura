@@ -6,7 +6,7 @@ const Instructor = () => {
       <h1 className="text-2xl font-bold text-blue-700 mb-4">Instructor</h1>
       <div className="border border-blue-500 rounded-lg p-4 flex items-center mb-6">
         <img
-          src="https://placehold.co/100x100"
+          src="/instructor/dr.andy.png"
           alt="Portrait of Dr. Andi Prasetyo"
           className="w-24 h-24 rounded-full mr-4"
         />
