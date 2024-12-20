@@ -61,12 +61,6 @@ const Tabs = () => {
             DetailSkills
           </button>
           <button 
-            onClick={() => setActiveTab('')}
-            className={`px-4 py-2 ${activeTab === 'skills' ? 'bg-blue-700 text-white' : 'text-gray-500'}`}
-          >
-            
-          </button>
-          <button 
             onClick={() => setActiveTab('similar-courses')}
             className={`px-4 py-2 ${activeTab === 'similar-courses' ? 'bg-blue-700 text-white' : 'text-gray-500'}`}
           >
