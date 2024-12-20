@@ -2,6 +2,12 @@ import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom'; // Import useNavigate
 import Img from '../../assets/public/imgregisterpage.svg';
 
+// Utility function for password strength validation
+const validatePassword = (password) => {
+  // Password must be at least 8 characters long, contain at least one number, one uppercase letter, and one special character
+  const passwordRegex = /^(?=.*[A-Za-z])(?=.*\d)(?=.*[!@#$%^&*])[A-Za-z\d@$!%*?&]{8,}$/;
+  return passwordRegex.test(password);
+};
 
 const RegisterPage = () => {
   const [firstName, setFirstName] = useState('');
@@ -19,9 +25,21 @@ const RegisterPage = () => {
     // Reset error message
     setError('');
 
-    // Validate password
+    // Validate password strength
+    if (!validatePassword(password)) {
+      setError('Password must be at least 8 characters long, contain a number, an uppercase letter, and a special character.');
+      return;
+    }
+
+    // Validate if passwords match
     if (password !== confirmPassword) {
       setError('Passwords do not match.');
+      return;
+    }
+    // Validate email format
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(email)) {
+      setError('Please enter a valid email address.');
       return;
     }
 
@@ -69,7 +87,6 @@ const RegisterPage = () => {
       setLoading(false);
     }
   };
-
 
   return (
     <body className="bg-white flex items-center justify-center min-h-screen font-poppins">
@@ -205,7 +222,6 @@ const RegisterPage = () => {
               </div>
             </div>
             
-
           <p className="mt-2 text-center text-sm text-gray-600">
             Have an Account?{' '}
             <Link className="font-medium text-blue-600 hover:text-blue-500" to="/login">
