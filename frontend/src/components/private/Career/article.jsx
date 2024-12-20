@@ -68,7 +68,6 @@ const Article = () => {
                 <div className="space-y-6">
                     <div className="bg-white shadow rounded-lg p-4">
                         <div className="flex items-center mb-4">
-                            <img src="https://placehold.co/50x50" alt="Commenter's profile picture" className="rounded-full w-12 h-12 mr-4" />
                             <div>
                                 <div className="font-bold">Sarah Tan</div>
                                 <div className="text-gray-500">18:32, 2 days ago</div>
@@ -82,7 +81,6 @@ const Article = () => {
                     </div>
                     <div className="bg-white shadow rounded-lg p-4">
                         <div className="flex items-center mb-4">
-                            <img src="https://placehold.co/50x50" alt="Commenter's profile picture" className="rounded-full w-12 h-12 mr-4" />
                             <div>
                                 <div className="font-bold">Muhammad Yusuf</div>
                                 <div className="text-gray-500">17:45, 3 days ago</div>
@@ -96,7 +94,6 @@ const Article = () => {
                     </div>
                     <div className="bg-white shadow rounded-lg p-4">
                         <div className="flex items-center mb-4">
-                            <img src="https://placehold.co/50x50" alt="Commenter's profile picture" className="rounded-full w-12 h-12 mr-4" />
                             <div>
                                 <div className="font-bold">Clara Wijaya</div>
                                 <div className="text-gray-500">14:07, 4 days ago</div>

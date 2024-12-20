@@ -5,7 +5,7 @@ import Img from '../../assets/public/imgregisterpage.svg';
 // Utility function for password strength validation
 const validatePassword = (password) => {
   // Password must be at least 8 characters long, contain at least one number, one uppercase letter, and one special character
-  const passwordRegex = /^(?=.*[A-Za-z])(?=.*\d)(?=.*[!@#$%^&*])[A-Za-z\d@$!%*?&]{8,}$/;
+  const passwordRegex = /^(?=.*[A-Za-z])(?=.*\d)(?=.*[^A-Za-z\d])[A-Za-z\d\S]{8,}$/;
   return passwordRegex.test(password);
 };
 

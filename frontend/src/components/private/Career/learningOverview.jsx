@@ -141,7 +141,6 @@ const LearningOverview = () => {
 
               {/* Add Comment Input */}
               <div className="flex items-start space-x-4">
-                <img src="https://placehold.co/40x40" alt="User avatar" className="rounded-full" />
                 <div className="flex-1">
                   <input
                     type="text"
