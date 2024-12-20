@@ -7,24 +7,24 @@ const SimilarCourses = () => {
       description: "Learn how to harness Python's power for data analysis, visualization, and machine learning in real-world applications.",
       category: "Data Science",
       university: "Bina Sarana Informatika University",
-      imageUrl: "https://placehold.co/600x400?text=Python+for+Data+Science",
-      universityLogo: "https://placehold.co/20x20?text=BSI"
+      imageUrl: "/courses/similar1.png",
+      universityLogo: "/logo-companies/bina.png"
     },
     {
       title: "Excel Essentials for Business Analysis",
       description: "Master essential Excel tools and techniques to streamline business analysis and improve decision-making.",
       category: "Business",
       university: "Shopee Indonesia",
-      imageUrl: "https://placehold.co/600x400?text=Excel+Essentials",
-      universityLogo: "https://placehold.co/20x20?text=Shopee"
+      imageUrl: "/courses/similar2.png",
+      universityLogo: "/logo-companies/shopee.png"
     },
     {
       title: "SQL Fundamentals for Data Analysts",
       description: "Build a strong foundation in SQL to query, manipulate, and analyze databases effectively for actionable insights.",
       category: "Data Science",
       university: "Padjadjaran University",
-      imageUrl: "https://placehold.co/600x400?text=SQL+Fundamentals",
-      universityLogo: "https://placehold.co/20x20?text=Padjadjaran"
+      imageUrl: "/courses/similar3.png",
+      universityLogo: "/logo-companies/pu.png"
     }
   ];
 
