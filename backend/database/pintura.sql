@@ -45,7 +45,7 @@ CREATE TABLE users (
 CREATE TABLE userprofiles (
     profile_id int NOT NULL AUTO_INCREMENT,
     user_id int NOT NULL,
-    username varchar(50) UNIQUE NOT NULL, -- Nama unik untuk pengguna
+    username varchar(50) UNIQUE NULL, -- Nama unik untuk pengguna
     image_url varchar(255) DEFAULT NULL, -- URL gambar profil
     date_of_birth date DEFAULT NULL,
     gender enum('Male', 'Female') DEFAULT NULL,
