@@ -80,12 +80,17 @@ const handlePageChange = (page) => {
             <main className="container mx-auto px-4 py-8">
                 {/* Highlight Event Section */}
                 <section className="text-center mb-8">
-                    <h2 className="text-2xl font-semibold text-blue-600">Highlight Event</h2>
-                    <p className="text-gray-600">Don't miss out on this exclusive opportunity to elevate your career and gain insights from top speakers — secure your spot now!</p>
-                    <div className="mt-4 flex justify-center">
-                        <img src="/career/highlightcareer.png" alt="Highlight Event" className="rounded-lg shadow-lg" />
-                    </div>
+                <h2 className="text-2xl font-semibold text-blue-600">Highlight Event</h2>
+                    <p className="text-gray-600">
+                    Don't miss out on this exclusive opportunity to elevate your career and gain insights from top speakers — secure your spot now!
+                    </p>
+                        <div className="mt-4 flex justify-center">
+                            <a href="https://forms.gle/wNDqjvCLS5kNWqwc7" target="_blank" rel="noopener noreferrer">
+                                <img src="/career/highlightcareer.png" alt="Highlight Event" className="rounded-lg shadow-lg cursor-pointer hover:opacity-90 transition duration-300" />
+                            </a>
+                        </div>
                 </section>
+
 
 {/* Video Content Section */}
 <section className="mb-8">
