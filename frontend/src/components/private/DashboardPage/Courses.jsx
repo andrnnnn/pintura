@@ -9,11 +9,24 @@ const CourseCard = ({ course }) => {
     navigate('/dashboard/detailcontent', { state: { course } });
   };
 
+  const priceLabel = parseFloat(course.price).toFixed(2) === "0.00" || course.price === null
+    ? "Free"
+    : "Premium";
+
   return (
     <div
       onClick={handleClick}
-      className="bg-white rounded-lg shadow-md overflow-hidden cursor-pointer hover:shadow-lg transition-shadow"
+      className="bg-white rounded-lg shadow-md overflow-hidden cursor-pointer hover:shadow-lg transition-shadow relative"
     >
+      {/* Label Free/Premium */}
+      <div
+        className={`absolute top-2 left-2 px-4 py-1 rounded text-white ${
+          priceLabel === "Free" ? "bg-green-600" : "bg-yellow-600"
+        }`}
+      >
+        {priceLabel}
+      </div>
+
       <img
         src={course.image_url || "https://placehold.co/400x200?text=No+Image"}
         alt={course.title || "No Title"}
@@ -26,11 +39,6 @@ const CourseCard = ({ course }) => {
         <p className="text-gray-600 mt-2">
           {course.description || "No Description Available"}
         </p>
-        <div className="flex items-center mt-4">
-          <span className="text-sm text-gray-500">
-            {course.price !== null ? `$ ${course.price}` : "Free"}
-          </span>
-        </div>
         <div className="flex items-center mt-2">
           <img
             src={course.image_url || "https://placehold.co/20x20?text=Logo"}
@@ -54,7 +62,6 @@ const Courses = () => {
   const coursesPerPage = 6;
 
   useEffect(() => {
-
     fetch('/api/auth/courses')
       .then((res) => res.json())
       .then((data) => {

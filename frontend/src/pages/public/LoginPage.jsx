@@ -16,6 +16,11 @@ const LoginPage = () => {
     const sanitizedValue = DOMPurify.sanitize(e.target.value);
     setValue(sanitizedValue);
   };
+  // Validate Email Format
+  const validateEmail = (email) => {
+    const emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+    return emailPattern.test(email);
+  };
 
   // Handle form submission
   const handleSubmit = async (e) => {
@@ -23,6 +28,10 @@ const LoginPage = () => {
 
     if (!email || !password) {
       setErrorMessage('Email and password are required');
+      return;
+    }
+    if (!validateEmail(email)) {
+      setErrorMessage('Invalid email format');
       return;
     }
 

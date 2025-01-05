@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import LayoutWithSidebar from "./LayoutWithSidebar";
 
 const Notifications = () => {
-  // Fungsi untuk render setiap bagian
   const renderSection = (title, itemCount) => (
     <div>
       <h2 className="text-lg font-bold text-blue-600 mb-2">{title}</h2>
@@ -22,7 +21,6 @@ const Notifications = () => {
                 </a>.
               </p>
             </div>
-            {/* Semua switch otomatis aktif */}
             <ToggleSwitch defaultChecked />
           </div>
         ))}
@@ -48,7 +46,6 @@ const Notifications = () => {
   );
 };
 
-// Komponen ToggleSwitch dengan kondisi default aktif
 const ToggleSwitch = ({ defaultChecked = false }) => {
   const [isActive, setIsActive] = useState(defaultChecked);
 

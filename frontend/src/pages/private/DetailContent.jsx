@@ -18,13 +18,13 @@ const DetailContent = () => {
       <Navbar />
       <Hero />
       <Tabs />
-      <Overview />
+      {/* <Overview />
       <Modules />
       <Instructor />
       <DetailSkills />
       <Reviews />
       <SimilarCourses />
-      <Faqs />
+      <Faqs /> */}
       <Footer />
     </div>
   )

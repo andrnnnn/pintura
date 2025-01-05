@@ -15,14 +15,12 @@ const CertificateModal = () => {
   const [error, setError] = useState(null);
 
   useEffect(() => {
-    // Pastikan enrollmentId tersedia sebelum fetch
     if (!enrollmentId) {
       console.error("Enrollment ID not provided");
       setLoading(false);
       return;
     }
 
-    // Fetch data dari server
     const fetchCertificate = async () => {
       try {
         const response = await fetch(`/api/auth/certificate/${enrollmentId}`);
@@ -41,14 +39,12 @@ const CertificateModal = () => {
     fetchCertificate();
   }, [enrollmentId]);
 
-  // Fungsi untuk generate certificateId
   const   generateCertificateId = (dateCompletion, enrollmentId) => {
     const date = new Date(dateCompletion);
     const formattedDate = `${date.getFullYear()}${(date.getMonth() + 1).toString().padStart(2, '0')}${date.getDate().toString().padStart(2, '0')}`;
     return `${enrollmentId}${formattedDate}`;
   };
 
-  // Format the date once certificateData is available
   const formattedDate = certificateData ? (() => {
     const isoDate = certificateData.dateCompletion;
     const date = new Date(isoDate);
@@ -57,7 +53,7 @@ const CertificateModal = () => {
       day: '2-digit',
       month: 'long',
       year: 'numeric',
-      timeZone: 'Asia/Jakarta' // Sesuaikan zona waktu
+      timeZone: 'Asia/Jakarta' 
     };
 
     return new Intl.DateTimeFormat('id-ID', options).format(date);

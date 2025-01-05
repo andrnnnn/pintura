@@ -1,19 +1,18 @@
-import React, { useState } from 'react'; // Import useState
-import { useNavigate } from 'react-router-dom'; // Import useNavigate
+import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom'; 
 import Logo from '/logo/logo.png';
 
 const LearningaSectionComent = () => {
-  const [isModuleOpen, setIsModuleOpen] = useState(Array(6).fill(false)); // Array for tracking the open/close state for each module
-  const [selectedModule, setSelectedModule] = useState(null); // Track selected module
-  const [selectedLesson, setSelectedLesson] = useState(null); // Track selected lesson
-  const navigate = useNavigate(); // Use useNavigate for navigation
+  const [isModuleOpen, setIsModuleOpen] = useState(Array(6).fill(false)); 
+  const [selectedModule, setSelectedModule] = useState(null); 
+  const [selectedLesson, setSelectedLesson] = useState(null); 
+  const navigate = useNavigate(); 
 
   const toggleModule = (index) => {
     const updatedModuleStatus = [...isModuleOpen];
     updatedModuleStatus[index] = !updatedModuleStatus[index];
     setIsModuleOpen(updatedModuleStatus);
 
-    // Ensures the same module can be opened and closed
     if (selectedModule === index) {
       setSelectedModule(null);
     } else {
@@ -22,7 +21,6 @@ const LearningaSectionComent = () => {
   };
 
   const toggleLesson = (lessonIndex) => {
-    // Toggle lesson content display
     setSelectedLesson(selectedLesson === lessonIndex ? null : lessonIndex);
   };
 

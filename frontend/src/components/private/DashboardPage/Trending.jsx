@@ -6,14 +6,29 @@ const CourseCard = ({ course }) => {
   const navigate = useNavigate();
 
   const handleClick = () => {
-    navigate('/dashboard/detailcontent', { state: { course } });
+    navigate("/dashboard/detailcontent", { state: { course } });
   };
+
+  // Tentukan label harga
+  const priceLabel =
+    parseFloat(course.price).toFixed(2) === "0.00" || course.price === null
+      ? "Free"
+      : "Premium";
 
   return (
     <div
       onClick={handleClick}
-      className="bg-white rounded-lg shadow-md overflow-hidden cursor-pointer hover:shadow-lg transition-shadow"
+      className="bg-white rounded-lg shadow-md overflow-hidden cursor-pointer hover:shadow-lg transition-shadow relative"
     >
+      {/* Label Free/Premium */}
+      <div
+        className={`absolute top-2 left-2 px-4 py-1 rounded text-white ${
+          priceLabel === "Free" ? "bg-green-600" : "bg-yellow-600"
+        }`}
+      >
+        {priceLabel}
+      </div>
+      
       <img
         src={course.image_url || "https://placehold.co/400x200?text=No+Image"}
         alt={course.title || "No Title"}
@@ -28,7 +43,9 @@ const CourseCard = ({ course }) => {
         </p>
         <div className="flex items-center mt-4">
           <span className="text-sm text-gray-500">
-            {course.price !== null ? `$ ${course.price}` : "Free"}
+            {parseFloat(course.price).toFixed(2) === "0.00" || course.price === null
+              ? "Free"
+              : `$ ${course.price}`}
           </span>
         </div>
         <div className="flex items-center mt-2">
@@ -67,14 +84,14 @@ const Trending = () => {
   return (
     <div className="p-8">
       <h1 className="text-2xl font-bold text-blue-700 mb-6">Trending Now</h1>
-      <div className="grid grid-cols-3 gap-6">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {courses.slice(0, visibleCourses).map((course) => (
           <CourseCard key={course.course_id} course={course} />
         ))}
       </div>
       {/* Tombol untuk menambah 3 courses lagi */}
       {visibleCourses < courses.length && (
-        <button 
+        <button
           onClick={handleViewMore}
           className="mt-6 bg-blue-700 text-white py-2 px-4 rounded-lg flex items-center"
         >

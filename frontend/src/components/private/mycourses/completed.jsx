@@ -9,7 +9,7 @@ const CompletedCourses = () => {
 
   useEffect(() => {
     const fetchCourses = async () => {
-      const token = localStorage.getItem("token"); // Ambil token dari localStorage
+      const token = localStorage.getItem("token"); 
 
       console.log("Token from localStorage:", token);
 

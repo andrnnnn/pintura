@@ -1,19 +1,18 @@
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom'; // Impor useNavigate
+import { useNavigate } from 'react-router-dom';
 import Logo from '/logo/logo.png';
 
 const Learningstartquiz = () => {
-  const [isModuleOpen, setIsModuleOpen] = useState(Array(6).fill(false)); // Array untuk menyimpan status terbuka/tutup untuk setiap modul
-  const [showConfirmation, setShowConfirmation] = useState(false); // Menyimpan status tampilan konfirmasi
-  const navigate = useNavigate(); // Gunakan useNavigate untuk navigasi
-  const [selectedModule, setSelectedModule] = useState(null); // Menyimpan modul yang dipilih untuk menambahkan background biru
+  const [isModuleOpen, setIsModuleOpen] = useState(Array(6).fill(false)); 
+  const [showConfirmation, setShowConfirmation] = useState(false); 
+  const navigate = useNavigate(); 
+  const [selectedModule, setSelectedModule] = useState(null); 
 
   const toggleModule = (index) => {
     const updatedModuleStatus = [...isModuleOpen];
     updatedModuleStatus[index] = !updatedModuleStatus[index];
     setIsModuleOpen(updatedModuleStatus);
 
-    // Memastikan modul yang sama bisa dibuka dan ditutup
     if (selectedModule === index) {
       setSelectedModule(null);
     } else {
@@ -22,16 +21,15 @@ const Learningstartquiz = () => {
   };
 
   const handleStartClick = () => {
-    setShowConfirmation(true); // Tampilkan konfirmasi ketika tombol Start diklik
+    setShowConfirmation(true); 
   };
 
   const handleCancel = () => {
-    setShowConfirmation(false); // Sembunyikan konfirmasi jika dibatalkan
+    setShowConfirmation(false); 
   };
 
   const handleContinue = () => {
-    setShowConfirmation(false); // Sembunyikan konfirmasi dan lanjutkan ke kuis
-    // Arahkan pengguna ke halaman yang diinginkan setelah klik continue
+    setShowConfirmation(false); 
     navigate('/dashboard/mycourses/learningquiz'); 
   };
 
